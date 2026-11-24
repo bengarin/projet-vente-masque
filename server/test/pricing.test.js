@@ -29,3 +29,13 @@ test("téléphone marocain", () => {
   for (const ok of ["06 12 34 56 78", "+212 6 12 34 56 78", "00212712345678", "0512345678"]) assert.ok(PHONE_RE.test(normalizePhone(ok)), ok);
   for (const ko of ["0812345678", "061234567", "+33612345678"]) assert.ok(!PHONE_RE.test(normalizePhone(ko)), ko);
 });
+
+import { productInput } from "../src/validation.js";
+test("stock vide = non suivi (null), jamais 0", () => {
+  const base = { brand: "B", name: "N" };
+  assert.equal(productInput.parse({ ...base, stock: null }).stock, null);
+  assert.equal(productInput.parse({ ...base, stock: "" }).stock, null);
+  assert.equal(productInput.parse({ ...base }).stock, null);
+  assert.equal(productInput.parse({ ...base, stock: 0 }).stock, 0);
+  assert.equal(productInput.parse({ ...base, stock: "7" }).stock, 7);
+});

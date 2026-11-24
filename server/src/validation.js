@@ -47,7 +47,8 @@ export const productInput = z.object({
   usageFr: optText(5000), usageAr: optText(5000), usageEn: optText(5000),
   packMentions: optText(5000),
   price: optMoney,
-  stock: z.union([z.coerce.number().int("Nombre entier.").min(0, "Doit être positif.").max(1_000_000), z.null(), z.literal("")])
+  // null/"" testés EN PREMIER : sinon z.coerce transforme null en 0 (stock « épuisé » au lieu de « non suivi »)
+  stock: z.union([z.null(), z.literal(""), z.coerce.number().int("Nombre entier.").min(0, "Doit être positif.").max(1_000_000)])
     .optional().transform(v => (v === "" || v === undefined ? null : v)),
   isActive: bool.default(true),
   tape: z.enum(TAPES).default("ging"),
