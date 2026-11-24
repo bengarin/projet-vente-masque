@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Finalise ta commande</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.band{padding:18px 0 24px;text-align:center}
+.band .d1{width:42px;top:10px;inset-inline-start:12px;transform:rotate(-12deg)}
+.band .d2{width:40px;top:14px;inset-inline-end:14px}
+.tagw{display:inline-flex;align-items:center;gap:4px}
+.tagw .dc{position:static;width:28px}
+.tagw .dc:last-child{transform:scaleX(-1)}
+.h1w{margin-top:6px}
+.h1w .paper{padding:12px 20px 14px}
+.h1w h1{font-size:clamp(30px,8.6vw,42px)}
+.co{display:grid;gap:18px;margin-top:18px}
+.sec{position:relative;background:var(--grain),#fff;border-radius:18px;padding:16px 14px 16px;box-shadow:0 3px 0 var(--lav2),0 6px 16px rgba(27,18,64,.06)}
+.sec .tape{width:76px;top:-10px;inset-inline-end:22px;transform:rotate(8deg)}
+.sh2{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:19px;line-height:1.15;color:var(--navy)}
+.sh2 .n{flex:0 0 auto;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--yel);color:var(--navy);font-size:16px;font-weight:800;box-shadow:0 2px 0 var(--yel2)}
+/* récap */
+.rl{list-style:none;margin:0;padding:0}
+.rl li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:2px dashed var(--lav)}
+.rl li:last-child{border-bottom:0}
+.rl img{flex:0 0 auto;width:60px;height:60px;object-fit:contain;background:#fff;border-radius:10px;border:1.5px solid var(--lav)}
+.rl .i{flex:1;min-width:0}
+.rl small{display:block;font-size:11.5px;font-weight:800;color:var(--lav3);text-transform:uppercase;letter-spacing:.3px;unicode-bidi:plaintext;text-align:start}
+.rl b{display:block;font-size:15px;line-height:1.2;color:var(--navy);unicode-bidi:plaintext;text-align:start}
+[dir=rtl] .rl small,[dir=rtl] .rl b{text-align:right}
+.rl .u{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.rl .r{flex:0 0 auto;text-align:end}
+.rl .q{display:inline-block;font-weight:800;font-size:14px;color:var(--navy);background:var(--lav);border-radius:999px;padding:2px 10px;direction:ltr}
+.rl .lt{display:block;margin-top:4px;font-weight:800;color:var(--navy);white-space:nowrap}
+.editc{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:46px;margin-top:10px;border-radius:14px;background:#fff;border:2.5px solid var(--cob);color:var(--cob);font-weight:800;font-size:15px;box-shadow:0 3px 0 var(--cob)}
+.editc svg{width:18px;height:18px}
+.editc:active{transform:translateY(2px);box-shadow:0 1px 0 var(--cob)}
+/* formulaire */
+.fld{display:grid;gap:4px;margin-bottom:12px}
+.fld:last-child{margin-bottom:0}
+.fld label{font-size:14px;font-weight:800;color:var(--navy)}
+.fld label i{font-style:normal;color:#B3261E}
+.fld label span{font-weight:600;color:var(--muted)}
+.fld input[dir=auto],.fld textarea[dir=auto]{text-align:start}
+[dir=rtl] .fld input[dir=auto]:placeholder-shown{text-align:right}
+.fld input,.fld textarea{width:100%;font:inherit;font-size:16px;font-weight:600;color:var(--ink);background:var(--paper);border:2px solid var(--lav2);border-radius:12px;padding:11px 12px;min-height:48px;transition:border-color .15s,box-shadow .15s}
+.fld textarea{min-height:72px;resize:vertical;line-height:1.35}
+.fld input:focus,.fld textarea:focus{outline:none;border-color:var(--cob);box-shadow:0 0 0 3px rgba(21,48,200,.15);background:#fff}
+.fld [aria-invalid=true]{border-color:#B3261E;background:#FFF6F5}
+.fld .err{min-height:0;font-size:13px;font-weight:700;color:#B3261E}
+.fld .err:empty{display:none}
+.fld .hint{font-size:12.5px;color:var(--muted)}
+.row2{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+/* liste des villes */
+.cbx{position:relative}
+.cbx input{padding-inline-end:48px}
+.cbtn{position:absolute;inset-inline-end:4px;top:4px;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:var(--cob)}
+.cbtn svg{width:20px;height:20px;transition:transform .15s}
+.cbx.open .cbtn svg{transform:rotate(180deg)}
+.clist{position:absolute;z-index:30;inset-inline:0;top:calc(100% + 6px);max-height:min(300px,45dvh);overflow-y:auto;overscroll-behavior:contain;margin:0;padding:6px;list-style:none;background:var(--grain),#fff;border:2.5px solid var(--cob);border-radius:14px;box-shadow:0 10px 24px rgba(27,18,64,.2)}
+.clist .grp{padding:8px 10px 4px;font-size:12px;font-weight:800;color:var(--lav3);text-transform:uppercase;letter-spacing:.4px}
+.clist .grp:not(:first-child){margin-top:4px;border-top:2px dashed var(--lav)}
+.clist [role=option]{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:8px 10px;border-radius:10px;font-weight:700;color:var(--navy);cursor:pointer}
+.clist [role=option] small{font-weight:600;color:var(--muted);font-size:13px}
+.clist [role=option][aria-selected=true]{background:var(--yel)}
+.clist [role=option].act{background:var(--lav);outline:2px solid var(--cob);outline-offset:-2px}
+.clist .other{margin-top:4px;border-top:2px dashed var(--lav);border-radius:0 0 10px 10px;color:var(--cob)}
+.clist .none{padding:10px;color:var(--muted);font-size:14px}
+/* options */
+.opts{display:grid;gap:8px}
+.ch{display:flex;align-items:center;gap:12px;min-height:58px;padding:10px 12px;border-radius:14px;background:#fff;border:2.5px solid var(--lav2);cursor:pointer}
+.ch:has(input:checked){border-color:var(--cob);background:var(--grain),#F1EEFF;box-shadow:0 3px 0 var(--cob)}
+.ch:has(input:focus-visible){outline:3px solid var(--yel2);outline-offset:2px}
+.ch input{position:absolute;opacity:0;width:1px;height:1px}
+.ch .rd{flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:2.5px solid var(--lav3);background:#fff}
+.ch:has(input:checked) .rd{border-color:var(--cob);background:var(--cob);box-shadow:inset 0 0 0 4px #fff}
+.ch .tx{flex:1;min-width:0;font-weight:800;color:var(--navy);line-height:1.2}
+.ch .tx small{display:block;font-weight:600;font-size:13px;color:var(--muted)}
+.ch .fee{flex:0 0 auto;font-weight:800;color:var(--navy);white-space:nowrap}
+.sub3{margin:14px 0 8px;font-size:15px;font-weight:800;color:var(--navy)}
+.sub3:first-of-type{margin-top:0}
+.missing{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--lav);border:1.5px dashed var(--lav3);color:var(--navy);font-size:14px;font-weight:600;line-height:1.35}
+.missing svg{flex:0 0 auto;width:20px;height:20px;margin-top:1px;color:var(--lav3)}
+.fielderr{font-size:13px;font-weight:700;color:#B3261E;margin-top:6px}
+.fielderr:empty{display:none}
+/* totaux */
+.tot{display:grid;gap:6px}
+.tot div{display:flex;justify-content:space-between;gap:10px;font-size:15px;color:var(--ink)}
+.tot .big{margin-top:4px;padding:10px 14px;border-radius:14px;background:var(--grain),var(--yel);font-size:20px;font-weight:800;color:var(--navy)}
+.tot .tbd{color:var(--muted);font-weight:700}
+.note{font-size:13px;color:var(--muted);margin:10px 2px 0}
+.block{margin-top:12px;padding:10px 12px;border-radius:12px;background:#FCE8E6;color:#8C1D18;font-size:14px;font-weight:700}
+.block:empty{display:none}
+/* barre */
+.barin .tt{flex:1;min-width:0;line-height:1.15}
+.barin .tt small{display:block;font-size:13px;opacity:.85}
+.barin .tt b{display:block;font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cta.conf{flex:0 0 auto;max-width:none;font-size:16px;padding:0 20px}
+.cta.busy{opacity:.7}
+/* vide + succès */
+.empty,.okv{text-align:center;padding:26px 16px}
+.empty .dc,.okv .stamp{position:static;display:inline-block}
+.empty .dc{width:70px}
+.empty p{margin:10px 0 16px;font-size:17px;color:var(--navy);font-weight:700}
+.btnp{display:inline-flex;align-items:center;justify-content:center;height:50px;padding:0 22px;border-radius:25px;background:var(--cob);color:#fff;font-weight:800;text-decoration:none;box-shadow:0 3px 0 var(--navy)}
+.stamp{width:84px;height:84px;border-radius:50%;background:var(--yel);display:grid;place-items:center;margin:0 auto;box-shadow:0 4px 0 var(--yel2);animation:popin .35s cubic-bezier(.2,.9,.3,1.3)}
+.stamp svg{width:44px;height:44px;color:var(--navy)}
+.okv h2{margin:14px 0 4px;font-size:26px;color:var(--navy);line-height:1.15}
+.okv .num{font-size:15px;color:var(--muted)}
+.okv .num b{color:var(--navy);direction:ltr;unicode-bidi:isolate}
+.test{display:inline-block;margin-top:10px;padding:4px 12px;border-radius:999px;background:var(--lav);border:1.5px dashed var(--lav3);font-size:13px;font-weight:800;color:var(--navy)}
+.okd{text-align:start;margin-top:16px}
+.okd dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;margin:0;font-size:15px}
+.okd dt{font-weight:800;color:var(--navy)}
+.okd dd{margin:0;overflow-wrap:anywhere;unicode-bidi:plaintext;text-align:start}
+[dir=rtl] .okd dd{text-align:right}
+[dir=rtl] .okd dd.ph{text-align:right}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="top" id="top"></header>
+
+<section class="band">
+  <div class="bg paper lav" data-torn="9" data-sides="tb"></div>
+  <span class="dc d1" data-dc="heart"></span><span class="dc d2" data-dc="sparks"></span>
+  <div class="wrap">
+    <div class="tagw"><span class="dc" data-dc="rays"></span><div class="sh"><div class="paper yel" data-torn="3"><span class="tag" data-i18n="tag"></span></div></div><span class="dc" data-dc="rays"></span></div><br>
+    <div class="h1w"><div class="sh"><div class="paper" data-torn="6"><h1 data-i18n="title"></h1></div></div></div>
+  </div>
+</section>
+
+<main class="wrap">
+  <!-- Pas de pack complet -->
+  <section class="sec empty" id="empty" hidden>
+    <span class="dc" data-dc="face"></span>
+    <p id="emptyTxt"></p>
+    <a class="btnp" id="emptyGo" href="etape-3.html"></a>
+  </section>
+
+  <form id="co" class="co" novalidate hidden>
+    <!-- 1. Récapitulatif -->
+    <section class="sec" aria-labelledby="h1s">
+      <span class="tape ging"></span>
+      <h2 class="sh2" id="h1s"><span class="n">1</span><span data-i18n="s1"></span></h2>
+      <p class="note" id="packLine" style="margin:-4px 2px 8px"></p>
+      <ul class="rl" id="recap"></ul>
+      <button type="button" class="editc" id="editCart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg><span data-i18n="edit"></span></button>
+    </section>
+
+    <!-- 2. Livraison -->
+    <section class="sec" aria-labelledby="h2s">
+      <span class="tape dots"></span>
+      <h2 class="sh2" id="h2s"><span class="n">2</span><span data-i18n="s2"></span></h2>
+      <div class="fld"><label for="f_name"><span data-i18n="name"></span> <i aria-hidden="true">*</i></label>
+        <input id="f_name" dir="auto" name="name" autocomplete="name" required aria-describedby="e_name"><span class="err" id="e_name"></span></div>
+      <div class="fld"><label for="f_phone"><span data-i18n="phone"></span> <i aria-hidden="true">*</i></label>
+        <input id="f_phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" required aria-describedby="h_phone e_phone"><span class="hint" id="h_phone" data-i18n="phoneHint"></span><span class="err" id="e_phone"></span></div>
+      <div class="fld"><label for="f_address"><span data-i18n="address"></span> <i aria-hidden="true">*</i></label>
+        <textarea id="f_address" dir="auto" name="address" autocomplete="street-address" required aria-describedby="e_address"></textarea><span class="err" id="e_address"></span></div>
+      <div class="row2">
+        <div class="fld"><label for="f_city" id="l_city"><span data-i18n="city"></span> <i aria-hidden="true">*</i></label>
+          <div class="cbx" id="cbx">
+            <input id="f_city" name="city" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cityList" autocomplete="off" required aria-describedby="e_city">
+            <button type="button" class="cbtn" id="cityBtn" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+            <ul class="clist" id="cityList" role="listbox" aria-labelledby="l_city" hidden></ul>
+          </div>
+          <span class="err" id="e_city"></span></div>
+        <div class="fld" id="otherWrap" hidden><label for="f_cityOther"><span data-i18n="cityOther"></span> <i aria-hidden="true">*</i></label>
+          <input id="f_cityOther" dir="auto" name="cityOther" autocomplete="address-level2" aria-describedby="e_cityOther"><span class="err" id="e_cityOther"></span></div>
+        <div class="fld"><label for="f_area"><span data-i18n="area"></span> <span data-i18n="optional"></span></label>
+          <input id="f_area" dir="auto" name="area" autocomplete="postal-code"></div>
+      </div>
+    </section>
+
+    <!-- 3. Livraison et paiement -->
+    <section class="sec" aria-labelledby="h3s">
+      <span class="tape grid"></span>
+      <h2 class="sh2" id="h3s"><span class="n">3</span><span data-i18n="s3"></span></h2>
+      <p class="sub3" data-i18n="ship"></p>
+      <div class="opts" id="shipOpts" role="radiogroup"></div>
+      <p class="fielderr" id="e_ship"></p>
+      <p class="sub3" data-i18n="pay"></p>
+      <div class="opts" id="payOpts" role="radiogroup"></div>
+      <p class="fielderr" id="e_pay"></p>
+    </section>
+
+    <!-- 4. Total -->
+    <section class="sec" aria-labelledby="h4s">
+      <span class="tape ydots"></span>
+      <h2 class="sh2" id="h4s"><span class="n">4</span><span data-i18n="s4"></span></h2>
+      <div class="tot" id="tot"></div>
+      <p class="block" id="block" role="alert"></p>
+    </section>
+  </form>
+
+  <!-- Succès -->
+  <section class="sec okv" id="ok" hidden tabindex="-1" aria-live="polite"></section>
+</main>
+
+<div class="bar" id="bar" hidden>
+  <div class="barin">
+    <div class="tt"><small data-i18n="total"></small><b id="barTot"></b></div>
+    <button class="cta conf" type="submit" form="co" id="confirm"></button>
+  </div>
+</div>
+
+<script src="assets/products.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/cities.js"></script>
+<script>
+{
+const {CONFIG, esc, iso, chrome, i18n, getLang, getPack, toast, fmt, deco, tear, Pack, Cart, onChange, store, url, RM} = MC;
+const P = {
+  fr:{tag:"COMMANDE",title:"Finalise ta commande",s1:"Ton pack",s2:"Livraison",s3:"Livraison et paiement",s4:"Total",
+      edit:"Modifier mon panier",packLine:(n,t)=>`Pack de ${t} masques · ${iso(n+"/"+t)}`,unit:"Prix unitaire",tbd:"à renseigner",
+      name:"Nom complet",phone:"Téléphone",phoneHint:"Ex. 06 12 34 56 78 ou +212 6 12 34 56 78",address:"Adresse",city:"Ville",cityOther:"Ta ville",cityPh:"Cherche ta ville…",cityTop:"Casablanca et environs",cityAll:"Autres villes",cityOtherOpt:"Autre ville (à saisir)",cityNone:"Aucune ville trouvée.",cityPick:"Choisis ta ville dans la liste, ou « Autre ville ».",area:"Quartier ou code postal",optional:"(facultatif)",
+      ship:"Mode de livraison",pay:"Mode de paiement",free:"Gratuit",freeFrom:v=>`Gratuit dès ${v} d'achat`,
+      noShip:"Aucun mode de livraison n'est encore configuré sur le site.",noPay:"Aucun mode de paiement n'est encore configuré sur le site.",
+      products:"Produits",delivery:"Livraison",total:"Total à payer",toSet:"À renseigner",chooseShip:"À choisir",
+      confirm:"Confirmer la commande",sending:"Envoi…",
+      req:"Ce champ est obligatoire.",badPhone:"Numéro invalide : 10 chiffres (06…, 07…, 05…) ou +212…",short:"Merci de préciser davantage.",
+      pickShip:"Choisis un mode de livraison.",pickPay:"Choisis un mode de paiement.",fix:"Vérifie les champs en rouge.",
+      blocked:"Commande impossible pour le moment : il manque des informations sur le site (prix, livraison ou paiement).",
+      sendErr:"La commande n'a pas pu être envoyée. Réessaie dans un instant.",
+      emptyTxt:"Ton pack n'est pas encore complet.",emptyGo:"Compléter mon pack",
+      okT:"Merci, ta commande est confirmée !",okNum:"Numéro de commande",okTest:"Commande test — aucune commande réelle n'a été envoyée",
+      okWho:"Nom",okTel:"Téléphone",okAddr:"Adresse",okShip:"Livraison",okPay:"Paiement",okTot:"Total",okBack:"Retour à l'accueil"},
+  ar:{tag:"الطلب",title:"كمّلي الطلب ديالك",s1:"الباك ديالك",s2:"التوصيل",s3:"التوصيل والأداء",s4:"المجموع",
+      edit:"بدّلي السلة",packLine:(n,t)=>`باك ديال ${t} ماسكات · ${iso(n+"/"+t)}`,unit:"ثمن الوحدة",tbd:"يُحدَّد",
+      name:"الاسم الكامل",phone:"الهاتف",phoneHint:"مثال: 06 12 34 56 78 أو +212 6 12 34 56 78",address:"العنوان",city:"المدينة",cityOther:"المدينة ديالك",cityPh:"قلّبي على المدينة…",cityTop:"الدار البيضاء والنواحي",cityAll:"مدن أخرى",cityOtherOpt:"مدينة أخرى (كتبيها)",cityNone:"ما لقيناش هاد المدينة.",cityPick:"اختاري المدينة من اللائحة، ولا «مدينة أخرى».",area:"الحي أو الرمز البريدي",optional:"(اختياري)",
+      ship:"طريقة التوصيل",pay:"طريقة الأداء",free:"مجاني",freeFrom:v=>`مجاني ابتداءً من ${v}`,
+      noShip:"ما زال ما تزادت حتى طريقة توصيل فالموقع.",noPay:"ما زال ما تزادت حتى طريقة أداء فالموقع.",
+      products:"المنتجات",delivery:"التوصيل",total:"المجموع للأداء",toSet:"يُحدَّد",chooseShip:"اختاري",
+      confirm:"أكّدي الطلب",sending:"كيتصيفط…",
+      req:"هاد الخانة ضرورية.",badPhone:"رقم غير صحيح: 10 أرقام (06…، 07…، 05…) أو +212…",short:"عافاك وضّحي أكثر.",
+      pickShip:"اختاري طريقة التوصيل.",pickPay:"اختاري طريقة الأداء.",fix:"راجعي الخانات اللي بالأحمر.",
+      blocked:"ما يمكنش تدوزي الطلب دابا: ناقصين معلومات فالموقع (الثمن، التوصيل أو الأداء).",
+      sendErr:"ما تصيفطش الطلب. عاودي من بعد شوية.",
+      emptyTxt:"الباك ديالك ما زال ما كملش.",emptyGo:"كمّلي الباك ديالي",
+      okT:"شكراً، الطلب ديالك تأكّد!",okNum:"رقم الطلب",okTest:"طلب تجريبي — ما تصيفط حتى طلب حقيقي",
+      okWho:"الاسم",okTel:"الهاتف",okAddr:"العنوان",okShip:"التوصيل",okPay:"الأداء",okTot:"المجموع",okBack:"رجوع للرئيسية"},
+  en:{tag:"CHECKOUT",title:"Complete your order",s1:"Your pack",s2:"Delivery details",s3:"Delivery & payment",s4:"Total",
+      edit:"Edit my cart",packLine:(n,t)=>`Pack of ${t} masks · ${iso(n+"/"+t)}`,unit:"Unit price",tbd:"to be set",
+      name:"Full name",phone:"Phone",phoneHint:"e.g. 06 12 34 56 78 or +212 6 12 34 56 78",address:"Address",city:"City",cityOther:"Your city",cityPh:"Search your city…",cityTop:"Casablanca & surroundings",cityAll:"Other cities",cityOtherOpt:"Other city (type it)",cityNone:"No city found.",cityPick:"Pick your city from the list, or “Other city”.",area:"Neighbourhood or postcode",optional:"(optional)",
+      ship:"Delivery method",pay:"Payment method",free:"Free",freeFrom:v=>`Free from ${v}`,
+      noShip:"No delivery method has been set up on the site yet.",noPay:"No payment method has been set up on the site yet.",
+      products:"Products",delivery:"Delivery",total:"Total to pay",toSet:"To be set",chooseShip:"To choose",
+      confirm:"Confirm order",sending:"Sending…",
+      req:"This field is required.",badPhone:"Invalid number: 10 digits (06…, 07…, 05…) or +212…",short:"Please add more detail.",
+      pickShip:"Choose a delivery method.",pickPay:"Choose a payment method.",fix:"Please check the fields in red.",
+      blocked:"Ordering isn't possible yet: some site information is missing (prices, delivery or payment).",
+      sendErr:"The order couldn't be sent. Please try again shortly.",
+      emptyTxt:"Your pack isn't complete yet.",emptyGo:"Complete my pack",
+      okT:"Thank you, your order is confirmed!",okNum:"Order number",okTest:"Test order — no real order was sent",
+      okWho:"Name",okTel:"Phone",okAddr:"Address",okShip:"Delivery",okPay:"Payment",okTot:"Total",okBack:"Back to home"}
+};
+let lang = getLang() || "fr";
+const $ = id => document.getElementById(id);
+const lab = o => o && (o.label && (o.label[lang] || o.label.fr)) || "";
+const F = ["name","phone","address","city","area"];
+let done = false;
+
+/* Formulaire mémorisé dans ce navigateur (pratique si la cliente revient) */
+let saved = {};
+try { saved = JSON.parse(store.get("mc_ship") || "{}"); F.forEach(k => { if (k !== "city" && saved[k]) $("f_"+k).value = saved[k]; }); } catch(e){}
+const saveForm = () => { const o = {}; F.forEach(k => o[k] = k === "city" ? "" : $("f_"+k).value); o.cityKey = cityKey; o.cityOther = $("f_cityOther").value; store.set("mc_ship", JSON.stringify(o)); };
+
+/* ---------- Ville : liste déroulante avec recherche ---------- */
+const CITIES = window.MA_CITIES || [];
+const norm = v => String(v).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f\u064B-\u0652]/g, "").replace(/[’'`\-]/g, " ").replace(/\s+/g, " ").trim();
+const cityName = c => (lang === "ar" ? c.ar : c.fr);
+let cityKey = "", act = -1;                         // cityKey = nom français de la ville, ou "other"
+function setCity(key, {silent} = {}){
+  cityKey = key;
+  const c = CITIES.find(x => x.fr === key);
+  $("f_city").value = key === "other" ? P[lang].cityOtherOpt : c ? cityName(c) : "";
+  $("otherWrap").hidden = key !== "other";
+  $("f_cityOther").required = key === "other";
+  if (!silent){ closeList(); saveForm(); if ($("f_city").getAttribute("aria-invalid") === "true") validate("city"); if (key === "other") $("f_cityOther").focus(); }
+}
+function renderList(q){
+  const p = P[lang], nq = norm(q || "");
+  const hit = c => !nq || norm(c.fr).includes(nq) || norm(c.ar).includes(nq);
+  const top = CITIES.filter(c => c.top && hit(c));
+  const rest = CITIES.filter(c => !c.top && hit(c)).sort((a,b) => cityName(a).localeCompare(cityName(b), lang));
+  const opt = (c) => `<li role="option" id="co_${esc(norm(c.fr).replace(/ /g,"_"))}" data-key="${esc(c.fr)}" aria-selected="${cityKey===c.fr}">${esc(cityName(c))}${lang==="ar" ? `<small dir="ltr">${esc(c.fr)}</small>` : ""}</li>`;
+  let h = "";
+  if (top.length) h += `<li class="grp" role="presentation">${esc(p.cityTop)}</li>` + top.map(opt).join("");
+  if (rest.length) h += `<li class="grp" role="presentation">${esc(p.cityAll)}</li>` + rest.map(opt).join("");
+  if (!top.length && !rest.length) h += `<li class="none" role="presentation">${esc(p.cityNone)}</li>`;
+  h += `<li role="option" class="other" id="co_other" data-key="other" aria-selected="${cityKey==="other"}">${esc(p.cityOtherOpt)}</li>`;
+  $("cityList").innerHTML = h; act = -1; $("f_city").removeAttribute("aria-activedescendant");
+}
+function openList(q){
+  renderList(q); $("cityList").hidden = false; $("cbx").classList.add("open"); $("f_city").setAttribute("aria-expanded","true");
+  const sel = $("cityList").querySelector("[aria-selected=true]"); if (sel && !q) sel.scrollIntoView({block:"nearest"});
+  // garder la liste visible au-dessus de la barre fixe du bas
+  const r = $("cityList").getBoundingClientRect(), bar = document.querySelector(".bar").getBoundingClientRect().top;
+  if (r.bottom > bar - 8) scrollBy({top: r.bottom - bar + 16, behavior: RM() ? "auto" : "smooth"});
+}
+function closeList(){ $("cityList").hidden = true; $("cbx").classList.remove("open"); $("f_city").setAttribute("aria-expanded","false"); $("f_city").removeAttribute("aria-activedescendant"); }
+function moveAct(d){
+  const opts = [...$("cityList").querySelectorAll("[role=option]")]; if (!opts.length) return;
+  act = (act + d + opts.length) % opts.length;
+  opts.forEach((o,i) => o.classList.toggle("act", i === act));
+  opts[act].scrollIntoView({block:"nearest"}); $("f_city").setAttribute("aria-activedescendant", opts[act].id);
+}
+$("f_city").addEventListener("focus", () => { $("f_city").select(); openList(""); });
+$("f_city").addEventListener("click", () => { if ($("cityList").hidden) openList(""); });
+$("f_city").addEventListener("input", () => { cityKey = ""; $("otherWrap").hidden = true; openList($("f_city").value); });
+$("f_city").addEventListener("keydown", e => {
+  if (e.key === "ArrowDown"){ e.preventDefault(); if ($("cityList").hidden) openList(""); moveAct(1); }
+  else if (e.key === "ArrowUp"){ e.preventDefault(); if ($("cityList").hidden) openList(""); moveAct(-1); }
+  else if (e.key === "Enter"){ if (!$("cityList").hidden){ e.preventDefault(); const o = $("cityList").querySelectorAll("[role=option]")[act < 0 ? 0 : act]; if (o) setCity(o.dataset.key); } }
+  else if (e.key === "Escape"){ closeList(); }
+});
+$("cityList").addEventListener("pointerdown", e => e.preventDefault());   // garde le focus dans le champ
+$("cityList").addEventListener("click", e => { const o = e.target.closest("[role=option]"); if (o) setCity(o.dataset.key); });
+$("cityBtn").addEventListener("click", () => { if ($("cityList").hidden){ $("f_city").focus(); } else closeList(); });
+$("f_city").addEventListener("blur", () => setTimeout(() => {
+  if (document.activeElement === $("f_city")) return;
+  closeList();
+  if (!cityKey){                                    // saisie exacte d'une ville de la liste → acceptée
+    const v = norm($("f_city").value), c = v && CITIES.find(x => norm(x.fr) === v || norm(x.ar) === v);
+    if (c) setCity(c.fr, {silent:true}), saveForm();
+  }
+  if ($("f_city").value.trim() || $("f_city").getAttribute("aria-invalid") === "true") validate("city");
+}, 120));
+document.addEventListener("pointerdown", e => { if (!$("cbx").contains(e.target)) closeList(); });
+$("f_cityOther").addEventListener("input", () => { saveForm(); if ($("f_cityOther").getAttribute("aria-invalid") === "true") validate("cityOther"); });
+$("f_cityOther").addEventListener("blur", () => { if ($("f_cityOther").value.trim()) validate("cityOther"); });
+if (saved.cityKey){ setCity(saved.cityKey, {silent:true}); if (saved.cityOther) $("f_cityOther").value = saved.cityOther; }
+const cityValue = () => cityKey === "other" ? $("f_cityOther").value.trim() : cityKey;
+
+function money(){
+  const {items, sum, pack, total} = Pack.totals();
+  const shipSel = CONFIG.shipping.find(s => s.id === $("co").elements.ship?.value);
+  let ship = null;
+  if (shipSel){ ship = (shipSel.freeFrom != null && total != null && total >= shipSel.freeFrom) ? 0 : shipSel.fee; }
+  const grand = total != null && ship != null ? total + ship : null;
+  return {items, sum, pack, products: total, ship, shipSel, grand};
+}
+const ready = () => !CONFIG.shipping.length || !CONFIG.payments.length || Pack.totals().total == null ? false : true;
+
+function renderRecap(){
+  const p = P[lang], N = Pack.N, n = Pack.count();
+  $("packLine").textContent = p.packLine(n, N);
+  $("recap").innerHTML = Pack.items().map(({x,q}) => `<li>
+    <img src="${esc(x.images[0])}" alt="">
+    <div class="i"><small>${esc(x.brand)}</small><b>${esc(x.name)}</b><span class="u">${esc(p.unit)} : ${x.price==null ? esc(p.tbd) : esc(fmt(x.price))}</span></div>
+    <div class="r"><span class="q">×${q}</span>${x.price==null ? "" : `<span class="lt">${esc(fmt(x.price*q))}</span>`}</div></li>`).join("");
+}
+function renderOpts(){
+  const p = P[lang], warn = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.5"/></svg>';
+  const keepShip = $("co").elements.ship?.value, keepPay = $("co").elements.pay?.value;
+  $("shipOpts").innerHTML = CONFIG.shipping.length ? CONFIG.shipping.map((s,i) => `<label class="ch"><input type="radio" name="ship" value="${esc(s.id)}" ${keepShip===s.id || (!keepShip && CONFIG.shipping.length===1) ? "checked" : ""}><span class="rd"></span>
+      <span class="tx">${esc(lab(s))}${s.delay && s.delay[lang] ? `<small>${esc(s.delay[lang])}</small>` : ""}${s.freeFrom != null ? `<small>${esc(p.freeFrom(fmt(s.freeFrom)))}</small>` : ""}</span>
+      <span class="fee">${s.fee === 0 ? esc(p.free) : esc(fmt(s.fee))}</span></label>`).join("")
+    : `<p class="missing">${warn}<span>${esc(p.noShip)}</span></p>`;
+  $("payOpts").innerHTML = CONFIG.payments.length ? CONFIG.payments.map(m => `<label class="ch"><input type="radio" name="pay" value="${esc(m.id)}" ${keepPay===m.id || (!keepPay && CONFIG.payments.length===1) ? "checked" : ""}><span class="rd"></span><span class="tx">${esc(lab(m))}</span></label>`).join("")
+    : `<p class="missing">${warn}<span>${esc(p.noPay)}</span></p>`;
+}
+function renderTotals(){
+  const p = P[lang], m = money();
+  const v = (x, fallback) => x == null ? `<span class="tbd">${esc(fallback)}</span>` : `<span dir="ltr">${esc(x === 0 && fallback !== p.toSet ? p.free : fmt(x))}</span>`;
+  $("tot").innerHTML = `<div><span>${esc(p.products)}</span>${v(m.products, p.toSet)}</div>
+    <div><span>${esc(p.delivery)}</span>${CONFIG.shipping.length && !m.shipSel ? `<span class="tbd">${esc(p.chooseShip)}</span>` : m.ship === 0 ? `<span>${esc(p.free)}</span>` : v(m.ship, p.toSet)}</div>
+    <div class="big"><span>${esc(p.total)}</span>${m.grand == null ? `<span class="tbd">${esc(p.toSet)}</span>` : `<span dir="ltr">${esc(fmt(m.grand))}</span>`}</div>`;
+  $("barTot").textContent = m.grand == null ? p.toSet : fmt(m.grand);
+}
+function render(){
+  const p = P[lang], N = Pack.N, full = N && Pack.count() === N;
+  chrome(4, lang, {onLang: l => { lang = l; render(); }});
+  i18n(p);
+  document.title = p.title;
+  $("confirm").textContent = p.confirm;
+  $("f_city").placeholder = p.cityPh;
+  if (cityKey) setCity(cityKey, {silent:true});
+  if (!$("cityList").hidden) renderList($("f_city").value);
+  if (done) return;
+  $("empty").hidden = !!full; $("co").hidden = !full; $("bar").hidden = !full;
+  if (!full){ $("emptyTxt").textContent = p.emptyTxt; $("emptyGo").textContent = p.emptyGo; $("emptyGo").href = url(N ? 3 : 2); return; }
+  renderRecap(); renderOpts(); renderTotals();
+  document.querySelectorAll(".fld [aria-invalid=true]").forEach(el => validate(el.name));
+}
+
+/* Vérification des champs */
+const normPhone = v => v.replace(/[\s.\-()]/g, "");
+function check(k){
+  const p = P[lang], v = $("f_"+k).value.trim();
+  if (k === "area") return "";
+  if (k === "city") return cityKey ? "" : (v ? p.cityPick : p.req);
+  if (k === "cityOther"){ if (cityKey !== "other") return ""; if (!v) return p.req; return v.length < 2 ? p.short : ""; }
+  if (!v) return p.req;
+  if (k === "phone"){ const d = normPhone(v); if (!/^(0[5-7]\d{8}|(\+|00)212[5-7]\d{8})$/.test(d)) return p.badPhone; }
+  if (k === "name" && v.length < 2) return p.short;
+  if (k === "address" && v.length < 6) return p.short;
+  return "";
+}
+function validate(k){
+  const msg = check(k), el = $("f_"+k), er = $("e_"+k);
+  if (er) er.textContent = msg;
+  el.setAttribute("aria-invalid", msg ? "true" : "false");
+  return !msg;
+}
+F.filter(k => k !== "city").forEach(k => {
+  const el = $("f_"+k);
+  el.addEventListener("blur", () => { if (el.value.trim() || el.getAttribute("aria-invalid") === "true") validate(k); });
+  el.addEventListener("input", () => { saveForm(); if (el.getAttribute("aria-invalid") === "true") validate(k); });
+});
+$("co").addEventListener("change", e => { if (e.target.name === "ship"){ $("e_ship").textContent = ""; renderTotals(); } if (e.target.name === "pay") $("e_pay").textContent = ""; });
+$("editCart").addEventListener("click", () => Cart.open());
+onChange(() => { if (!done) render(); });
+
+/* Confirmation */
+$("co").addEventListener("submit", async e => {
+  e.preventDefault();
+  const p = P[lang], f = $("co").elements;
+  $("block").textContent = "";
+  let first = null;
+  [...F.slice(0,4), "cityOther"].forEach(k => { if (!validate(k) && !first) first = $("f_"+k); });
+  if (CONFIG.shipping.length && !f.ship?.value){ $("e_ship").textContent = p.pickShip; first = first || $("shipOpts").querySelector("input"); }
+  if (CONFIG.payments.length && !f.pay?.value){ $("e_pay").textContent = p.pickPay; first = first || $("payOpts").querySelector("input"); }
+  if (first){ first.focus({preventScroll:true}); first.scrollIntoView({block:"center", behavior: RM() ? "auto" : "smooth"}); toast(p.fix); return; }
+  if (Pack.count() !== Pack.N) return render();
+  const isTest = !ready() || !CONFIG.orderEndpoint;
+  if (isTest && !CONFIG.previewMode){ $("block").textContent = p.blocked; $("block").scrollIntoView({block:"center"}); return; }
+
+  const m = money();
+  const order = {
+    id: "MPC-" + new Date().toISOString().slice(2,10).replace(/-/g,"") + "-" + Math.random().toString(36).slice(2,6).toUpperCase(),
+    test: isTest, lang, pack: Pack.N,
+    items: m.items.map(({x,q}) => ({id:x.id, brand:x.brand, name:x.name, qty:q, unitPrice:x.price, variantId:x.variantId})),
+    customer: Object.assign(Object.fromEntries(F.map(k => [k, $("f_"+k).value.trim()])), {city: cityValue(), cityLabel: cityKey === "other" ? cityValue() : $("f_city").value.trim(), cityOther: cityKey === "other"}),
+    shipping: m.shipSel ? {id:m.shipSel.id, label:lab(m.shipSel), fee:m.ship} : null,
+    payment: (CONFIG.payments.find(x => x.id === f.pay?.value) || null) && {id:f.pay.value, label:lab(CONFIG.payments.find(x => x.id === f.pay.value))},
+    productsTotal: m.products, total: m.grand, currency: CONFIG.currency, createdAt: new Date().toISOString()
+  };
+  if (!isTest){
+    const b = $("confirm"); b.disabled = true; b.classList.add("busy"); b.textContent = p.sending;
+    try{
+      const r = await fetch(CONFIG.orderEndpoint, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(order)});
+      if (!r.ok) throw new Error(r.status);
+    }catch(err){ b.disabled = false; b.classList.remove("busy"); b.textContent = p.confirm; $("block").textContent = p.sendErr; return; }
+  }
+  showSuccess(order);
+});
+
+function showSuccess(o){
+  const p = P[lang];
+  done = true;
+  const rows = [[p.okWho,o.customer.name],[p.okTel,o.customer.phone],[p.okAddr,[o.customer.address,o.customer.area,o.customer.cityLabel || o.customer.city].filter(Boolean).join(", ")],
+    [p.okShip,o.shipping ? o.shipping.label + " — " + (o.shipping.fee === 0 ? p.free : fmt(o.shipping.fee)) : p.toSet],
+    [p.okPay,o.payment ? o.payment.label : p.toSet],[p.okTot,o.total == null ? p.toSet : fmt(o.total)]];
+  $("ok").innerHTML = `
+    <div class="stamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2>${esc(p.okT)}</h2>
+    <p class="num">${esc(p.okNum)} : <b>${esc(o.id)}</b></p>
+    ${o.test ? `<span class="test">${esc(p.okTest)}</span>` : ""}
+    <div class="okd">
+      <ul class="rl">${o.items.map(it => { const x = MC.byId(it.id); return `<li><img src="${esc(x.images[0])}" alt=""><div class="i"><small>${esc(it.brand)}</small><b>${esc(it.name)}</b></div><div class="r"><span class="q">×${it.qty}</span>${it.unitPrice==null?"":`<span class="lt">${esc(fmt(it.unitPrice*it.qty))}</span>`}</div></li>`; }).join("")}</ul>
+      <dl style="margin-top:14px">${rows.map(([a,b],i) => `<dt>${esc(a)}</dt><dd${i===1?' dir="ltr" class="ph"':''}>${esc(b)}</dd>`).join("")}</dl>
+    </div>
+    <p style="margin-top:18px"><a class="btnp" href="${esc(CONFIG.homeUrl)}">${esc(p.okBack)}</a></p>`;
+  document.getElementById("toast")?.classList.remove("show");
+  $("co").hidden = true; $("bar").hidden = true; $("empty").hidden = true; $("ok").hidden = false;
+  try { store.set("mc_lastOrder", JSON.stringify(o)); } catch(e){}
+  Pack.order = []; Pack.save();                       // le pack est vidé après la commande
+  scrollTo({top:0, behavior: RM() ? "auto" : "smooth"}); $("ok").focus({preventScroll:true});
+}
+
+deco(); tear(); render();
+}
+</script>
+</body>
+</html>

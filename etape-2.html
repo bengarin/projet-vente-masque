@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Choisis ton pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.hero{position:relative;text-align:center;padding:20px 0 4px}
+.hero .tagw .paper{padding:0 2px}
+.hero .tagw .dc{width:32px;top:-22px;inset-inline-end:-30px}
+.hero .h1w{margin-top:4px;transform:rotate(-1.2deg)}
+.hero .h1w .paper{padding:16px 22px 18px}
+.hero .subw{margin-top:-8px}
+.hero .d1{width:62px;top:4px;inset-inline-start:-2px;transform:rotate(-10deg)}
+.hero .d2{width:40px;bottom:6px;inset-inline-end:-2px}
+.hero .tape{width:110px;top:-6px;inset-inline-end:-30px;transform:rotate(18deg)}
+.opts{display:grid;gap:18px;margin:22px 0 0}
+.opt{display:block;cursor:pointer}
+.opt .sh{transition:filter .2s,transform .2s}
+.opt:has(input:checked) .sh{filter:drop-shadow(2.5px 0 0 var(--cob)) drop-shadow(-2.5px 0 0 var(--cob)) drop-shadow(0 2.5px 0 var(--cob)) drop-shadow(0 -2.5px 0 var(--cob)) drop-shadow(0 6px 4px rgba(21,48,200,.25));transform:translateY(-2px)}
+.opt:has(input:focus-visible) .sh{outline:3px solid var(--cob);outline-offset:6px}
+.card{display:flex;align-items:center;gap:12px;padding:20px 16px 22px;min-height:150px}
+.opt:has(input:checked) .card{background:var(--grain),#FFFDF2}
+.art{flex:0 0 36%;max-width:150px;display:grid;place-items:center}
+.art svg{width:100%;height:auto}
+.div{align-self:stretch;width:0;border-inline-start:2.5px dashed var(--lav2);margin:6px 0}
+.txt{flex:1;display:flex;flex-direction:column;gap:8px;text-align:start}
+.big{font-weight:800;font-size:25px;line-height:1.02;color:var(--navy)}
+.chip{display:inline-block;width:max-content;max-width:100%;padding:3px 10px 4px;font-size:13px;font-weight:700;color:var(--navy);background:url("images/deco/papier-lavande.webp") center/100% 100% no-repeat;line-height:1.25}
+.chip.price{background-image:url("images/deco/papier-jaune.webp");font-size:17px;font-weight:800}
+.opt .dc{z-index:4}
+.cursel{margin:18px auto 0;width:max-content;max-width:100%;text-align:center;background:var(--grain),#fff;padding:6px 14px 8px;border-radius:10px;font-size:15px;color:var(--navy);box-shadow:0 3px 0 var(--lav2)}
+.k1 .a{width:34px;top:4px;inset-inline-start:14px}
+.k1 .tape{width:84px;bottom:-4px;inset-inline-end:4px;transform:rotate(-14deg)}
+.k2 .a{width:46px;top:-8px;inset-inline-start:8px;transform:rotate(-10deg)}
+.k2 .b{width:30px;bottom:8px;inset-inline-end:16px;transform:rotate(60deg)}
+.k3 .a{width:44px;top:-6px;inset-inline-start:10px}
+.k3 .tape{width:90px;bottom:-6px;inset-inline-start:6px;transform:rotate(6deg)}
+.k3 .b{width:48px;bottom:-12px;inset-inline-end:2px;transform:rotate(12deg)}
+@media(max-width:370px){.big{font-size:22px}.chip{font-size:13px}.card{gap:8px;padding-inline:12px}}
+</style>
+</head>
+<body class="lavpage">
+<header class="top" id="top"></header>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="dc d1" data-dc="star"></span>
+    <span class="tape check"></span>
+    <div class="tagw"><div class="sh"><div class="paper yel" data-torn="3"><span class="tag" data-tag></span></div></div><span class="dc" data-dc="rays"></span></div><br>
+    <div class="h1w"><div class="sh"><div class="paper yel" data-torn="7"><h1 data-i18n="title"></h1></div></div></div><br>
+    <div class="subw"><div class="sh"><div class="paper" data-torn="5"><span data-i18n="sub"></span></div></div></div>
+    <span class="dc d2" data-dc="spark"></span>
+  </section>
+
+  <form class="opts" id="form" onsubmit="return false"></form>
+  <p class="cursel" id="cursel" hidden></p>
+</main>
+
+<div class="bar">
+  <div class="barin">
+    <ol class="sdots" id="sdots"></ol><span class="sep"></span>
+    <a class="cta" id="cta" href="#" aria-disabled="true"><span id="ctaTxt"></span><span class="ic"></span></a>
+  </div>
+</div>
+
+<script src="assets/products.js"></script>
+<script src="assets/app.js"></script>
+<script>
+{
+const {CONFIG, T, chrome, i18n, getLang, getPack, setPack, go, esc, fmt, maskStack, ICON, deco, tear, Pack, byId, dialog, toast, iso} = MC;
+const P = {
+  fr:{title:"Choisis ton pack !",sub_html:'Combien de masques veux-tu <span class="hl cobu">composer</span> ?',
+      line1:"Pack de",line2:"masques",later:"Prix du pack affiché ensuite",
+      cur:(c)=>`Ta sélection actuelle : ${c} masque${c>1?"s":""}. Elle est conservée.`,
+      shrinkT:"Réduire ton pack ?",shrink:(c,n,k)=>`Tu as déjà choisi ${c} masques. Le pack de ${n} n'en garde que ${n} : ${k===1?"ce masque sera retiré":"ces "+k+" masques seront retirés"} (les derniers ajoutés).`,
+      ok:n=>`Oui, passer au pack de ${n}`,cancel:"Annuler, garder mon pack",done:(n,k)=>`Pack de ${n} : ${k} masque${k>1?"s":""} retiré${k>1?"s":""}.`},
+  ar:{title:"اختاري الباك ديالك!",sub_html:'شحال من ماسك بغيتي <span class="hl cobu">تجمعي</span>؟',
+      line1:"باك ديال",line2:"ماسكات",later:"ثمن الباك غادي يبان من بعد",
+      cur:(c)=>`الاختيار ديالك دابا: ${c} ماسكات. غادي يبقى محفوظ.`,
+      shrinkT:"تصغّري الباك؟",shrink:(c,n,k)=>`اخترتي ${c} ماسكات. باك ${n} فيه غير ${n}: ${k===1?"هاد الماسك غادي يتحيّد":"هاد "+k+" ماسكات غادي يتحيّدو"} (آخر اللي تزادو).`,
+      ok:n=>`إيه، دوزي لباك ${n}`,cancel:"لا، خلي الباك ديالي",done:(n,k)=>k===1?`باك ${n}: تحيّد ماسك واحد.`:`باك ${n}: تحيّدو ${k} ماسكات.`},
+  en:{title:"Choose your pack!",sub_html:'How many masks would you like to <span class="hl cobu">put together</span>?',
+      line1:"Pack of",line2:"masks",later:"Pack price shown next",
+      cur:(c)=>`Your current selection: ${c} mask${c>1?"s":""}. It is kept.`,
+      shrinkT:"Make your pack smaller?",shrink:(c,n,k)=>`You have already picked ${c} masks. The pack of ${n} only keeps ${n}: ${k===1?"this mask will be removed":"these "+k+" masks will be removed"} (the last ones added).`,
+      ok:n=>`Yes, switch to the pack of ${n}`,cancel:"Cancel, keep my pack",done:(n,k)=>`Pack of ${n}: ${k} mask${k>1?"s":""} removed.`}
+};
+const DECOS = [
+  '<span class="dc a" data-dc="rays"></span><span class="tape check"></span>',
+  '<span class="dc a" data-dc="star"></span><span class="dc b" data-dc="rays:#F3CF45"></span>',
+  '<span class="dc a" data-dc="sparks"></span><span class="tape check"></span><span class="dc b" data-dc="star"></span>'
+];
+let lang = getLang() || "fr";
+let pack = getPack();
+
+function render(){
+  const p = P[lang];
+  chrome(2, lang, {onLang:l => { lang = l; render(); }});
+  i18n(p);
+  document.getElementById("form").innerHTML = CONFIG.packSizes.map((n, i) => {
+    const price = CONFIG.packPrices[n];
+    return `<label class="opt k${i+1}">
+      <input type="radio" name="pack" value="${n}" ${n===pack?"checked":""}>
+      <div class="sh"><div class="paper card" data-torn="7">
+        <span class="art">${maskStack(n)}</span>
+        <span class="div" aria-hidden="true"></span>
+        <span class="txt"><span class="big">${esc(p.line1)} ${n}<br>${esc(p.line2)}</span>
+          ${price!=null ? `<span class="chip price">${esc(fmt(price))}</span>` : `<span class="chip">${esc(p.later)}</span>`}</span>
+        <span class="radio">${ICON.check}</span>
+      </div>${DECOS[i]||""}</div>
+    </label>`;
+  }).join("");
+  deco(); tear();
+  document.getElementById("ctaTxt").textContent = T[lang].continue;
+  document.getElementById("cta").setAttribute("aria-disabled", pack ? "false" : "true");
+  const c = Pack.count(), cs = document.getElementById("cursel");
+  cs.hidden = !c; if (c) cs.textContent = p.cur(c);
+}
+document.getElementById("form").addEventListener("change", async e => {
+  const n = +e.target.value, c = Pack.count(), p = P[lang];
+  if (c > n){                                    // la sélection dépasse la nouvelle taille → demander confirmation
+    const gone = Pack.order.slice(n).map(byId);
+    const html = `<p>${esc(p.shrink(c, n, gone.length))}</p><ul class="dlist">${gone.map(x => `<li><div class="dl gone"><img src="${esc(x.images[0])}" alt=""><span>${esc(x.brand)} – ${esc(x.name)}</span></div></li>`).join("")}</ul>`;
+    const ok = await dialog({title:p.shrinkT, html, buttons:[{label:p.ok(n), value:"ok", primary:true},{label:p.cancel, value:"no"}]});
+    if (ok !== "ok"){ document.querySelectorAll("input[name=pack]").forEach(i => i.checked = +i.value === pack); return; }
+    setPack(n); pack = n; render(); toast(p.done(n, gone.length)); return;
+  }
+  pack = n; setPack(pack);
+  document.getElementById("cta").setAttribute("aria-disabled","false");
+});
+document.getElementById("cta").addEventListener("click", e => {
+  e.preventDefault(); if (!pack){ document.querySelector("input[name=pack]").focus(); return; } go(3);
+});
+render();
+}
+</script>
+</body>
+</html>

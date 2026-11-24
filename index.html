@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Choisis ta langue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.hero{display:grid;grid-template-columns:44% minmax(0,1fr);align-items:center;text-align:center}
+.face{grid-row:1/3;width:calc(100% + 26px);margin-inline-start:-26px;max-width:none;align-self:end;margin-bottom:-14px}
+[dir=rtl] .face{transform:scaleX(-1)}
+.head{position:relative;padding-top:4px}
+.tagw{margin-bottom:6px}
+.tagw .dc{width:30px;top:-12px;inset-inline-end:-30px}
+.h1w .paper{padding:12px 14px 14px}
+.h1w h1{font-size:clamp(30px,9vw,44px)}
+.h1w .dc.o{width:44px;top:-20px;inset-inline-end:-14px}
+.h1w .dc.s{width:46px;bottom:-26px;inset-inline-end:-18px;transform:rotate(-12deg)}
+.subrow{grid-column:1/-1;position:relative;z-index:4;margin-top:-6px}
+.subw .paper{font-size:18px}
+.subw .dc{width:30px;inset-inline-start:-22px;top:6px;transform:rotate(90deg)}
+.band .tape{width:92px;inset-inline-end:-14px;bottom:12px;transform:rotate(-24deg)}
+.opts{display:grid;gap:14px;margin:24px 0 0}
+.opt{position:relative;display:flex;align-items:center;gap:12px;padding:16px 16px;min-height:96px;background:#fff;border-radius:18px;box-shadow:0 4px 14px rgba(60,30,110,.10);cursor:pointer;border:3px solid transparent;transition:border-color .2s,transform .2s}
+.opt:has(input:checked){border-color:var(--cob);transform:translateY(-2px)}
+.opt:has(input:focus-visible){outline:3px solid var(--cob);outline-offset:4px}
+.stroke{flex:1;display:flex;align-items:center;gap:6px;padding:6px 10px;background:url("images/deco/papier-lavande.webp") center/100% 100% no-repeat}
+.opt-fr .stroke{background-image:url("images/deco/papier-jaune.webp")}
+.flag{width:92px;flex:0 0 auto;transform:rotate(-4deg)}
+.name{flex:1;text-align:center;font-weight:800;color:var(--navy);line-height:1.1}
+.opt-ar .name{font-size:40px}
+.opt-fr .name,.opt-en .name{font-size:30px}
+.hint{display:flex;align-items:center;justify-content:center;gap:6px;margin:26px 0 0}
+.hint .dc{position:static;width:30px}
+.hint .dc:last-child{transform:scaleX(-1)}
+.hint .subw .paper{font-size:16px;padding:6px 16px 8px}
+@media(max-width:360px){.flag{width:78px}.opt-ar .name{font-size:32px}.opt-fr .name,.opt-en .name{font-size:26px}}
+</style>
+</head>
+<body>
+<header class="top" id="top"></header>
+
+<section class="band">
+  <div class="bg paper lav" data-torn="9" data-sides="tb"></div>
+  <div class="wrap hero">
+    <img class="face" src="images/deco/visage-masque.webp" alt="" width="622" height="640">
+    <div class="head">
+      <div class="tagw"><div class="sh"><div class="paper" data-torn="3"><span class="tag" data-tag></span></div></div><span class="dc" data-dc="rays"></span></div>
+      <div class="h1w"><div class="sh"><div class="paper yel" data-torn="6"><h1 data-i18n="title"></h1></div></div>
+        <span class="dc o" data-dc="ostar"></span><span class="dc s" data-dc="smile"></span></div>
+    </div>
+    <div class="subrow"><div class="subw"><div class="sh"><div class="paper" data-torn="5"><span data-i18n="sub"></span></div></div><span class="dc" data-dc="rays"></span></div></div>
+  </div>
+  <span class="tape checkl"></span>
+</section>
+
+<main class="wrap">
+  <form class="opts" id="form" onsubmit="return false">
+    <label class="opt opt-ar">
+      <input type="radio" name="lang" value="ar">
+      <span class="stroke"><img class="flag" src="images/deco/drapeau-ma.webp" alt=""><span class="name" lang="ar" dir="rtl">العربية</span></span>
+      <span class="radio"></span>
+    </label>
+    <label class="opt opt-fr">
+      <input type="radio" name="lang" value="fr">
+      <span class="stroke"><img class="flag" src="images/deco/drapeau-fr.webp" alt=""><span class="name" lang="fr" dir="ltr">Français</span></span>
+      <span class="radio"></span>
+    </label>
+    <label class="opt opt-en">
+      <input type="radio" name="lang" value="en">
+      <span class="stroke"><img class="flag" src="images/deco/drapeau-en.webp" alt=""><span class="name" lang="en" dir="ltr">English</span></span>
+      <span class="radio"></span>
+    </label>
+  </form>
+  <div class="hint"><span class="dc" data-dc="side"></span><div class="subw"><div class="sh"><div class="paper" data-torn="4"><span data-i18n="hint"></span></div></div></div><span class="dc" data-dc="side"></span></div>
+</main>
+
+<div class="bar">
+  <div class="barin">
+    <ol class="sdots" id="sdots"></ol><span class="sep"></span>
+    <a class="cta" id="cta" href="#" aria-disabled="true"><span id="ctaTxt"></span><span class="ic"></span></a>
+  </div>
+</div>
+
+<script src="assets/products.js"></script>
+<script src="assets/app.js"></script>
+<script>
+{
+const {T, chrome, i18n, setLang, getLang, go, ICON, deco, tear} = MC;
+const P = {
+  fr:{title_html:'Choisis ta <span class="hl lavu">langue</span> !',sub:"Pour continuer, sélectionne ta langue.",hint:"Tu pourras la changer plus tard."},
+  ar:{title_html:'اختاري <span class="hl lavu">اللغة</span>!',sub:"باش تكملي، اختاري اللغة ديالك.",hint:"تقدري تبدليها من بعد."},
+  en:{title_html:'Choose your <span class="hl lavu">language</span>!',sub:"To continue, select your language.",hint:"You can change it later."}
+};
+let lang = getLang();
+document.querySelectorAll(".radio").forEach(r => r.innerHTML = ICON.check);
+
+function render(){
+  const ui = lang || "fr";
+  chrome(1, ui);
+  i18n(P[ui]);
+  document.querySelectorAll("input[name=lang]").forEach(i => i.checked = i.value === lang);
+  document.getElementById("ctaTxt").textContent = T[ui].continue;
+  document.getElementById("cta").setAttribute("aria-disabled", lang ? "false" : "true");
+}
+document.getElementById("form").addEventListener("change", e => { lang = e.target.value; setLang(lang); render(); });
+document.getElementById("cta").addEventListener("click", e => {
+  e.preventDefault(); if (!lang){ document.querySelector("input[name=lang]").focus(); return; } go(2);
+});
+deco(); tear(); render();
+}
+</script>
+</body>
+</html>
