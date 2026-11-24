@@ -1,0 +1,31 @@
+/* Villes du Maroc pour le champ « Ville » du checkout.
+   top:true = groupe « Casablanca et environs », affiché en premier. Ajoute ou retire des villes librement. */
+export const MA_CITIES = [
+  {fr:"Casablanca", ar:"الدار البيضاء", top:true},
+  {fr:"Mohammedia", ar:"المحمدية", top:true},
+  {fr:"Bouskoura", ar:"بوسكورة", top:true},
+  {fr:"Dar Bouazza", ar:"دار بوعزة", top:true},
+  {fr:"Nouaceur", ar:"النواصر", top:true},
+  {fr:"Médiouna", ar:"مديونة", top:true},
+  {fr:"Tit Mellil", ar:"تيط مليل", top:true},
+  {fr:"Aïn Harrouda", ar:"عين حرودة", top:true},
+  {fr:"Berrechid", ar:"برشيد", top:true},
+  {fr:"Had Soualem", ar:"حد السوالم", top:true},
+  {fr:"Deroua", ar:"الدروة", top:true},
+  {fr:"Rabat", ar:"الرباط"}, {fr:"Salé", ar:"سلا"}, {fr:"Témara", ar:"تمارة"}, {fr:"Skhirat", ar:"الصخيرات"},
+  {fr:"Bouznika", ar:"بوزنيقة"}, {fr:"Benslimane", ar:"بنسليمان"}, {fr:"Kénitra", ar:"القنيطرة"},
+  {fr:"Marrakech", ar:"مراكش"}, {fr:"Fès", ar:"فاس"}, {fr:"Meknès", ar:"مكناس"}, {fr:"Tanger", ar:"طنجة"},
+  {fr:"Tétouan", ar:"تطوان"}, {fr:"Agadir", ar:"أكادير"}, {fr:"Inezgane", ar:"إنزكان"}, {fr:"Aït Melloul", ar:"أيت ملول"},
+  {fr:"Oujda", ar:"وجدة"}, {fr:"El Jadida", ar:"الجديدة"}, {fr:"Settat", ar:"سطات"}, {fr:"Safi", ar:"آسفي"},
+  {fr:"Béni Mellal", ar:"بني ملال"}, {fr:"Khouribga", ar:"خريبكة"}, {fr:"Fkih Ben Salah", ar:"الفقيه بن صالح"},
+  {fr:"Kelâat Sraghna", ar:"قلعة السراغنة"}, {fr:"Sidi Bennour", ar:"سيدي بنور"}, {fr:"Youssoufia", ar:"اليوسفية"},
+  {fr:"Essaouira", ar:"الصويرة"}, {fr:"Nador", ar:"الناظور"}, {fr:"Berkane", ar:"بركان"}, {fr:"Taourirt", ar:"تاوريرت"},
+  {fr:"Guercif", ar:"جرسيف"}, {fr:"Al Hoceïma", ar:"الحسيمة"}, {fr:"Taza", ar:"تازة"}, {fr:"Sefrou", ar:"صفرو"},
+  {fr:"Ifrane", ar:"إفران"}, {fr:"Azrou", ar:"أزرو"}, {fr:"Khénifra", ar:"خنيفرة"}, {fr:"Midelt", ar:"ميدلت"},
+  {fr:"Errachidia", ar:"الرشيدية"}, {fr:"Ouarzazate", ar:"ورزازات"}, {fr:"Tinghir", ar:"تنغير"}, {fr:"Zagora", ar:"زاكورة"},
+  {fr:"Khémisset", ar:"الخميسات"}, {fr:"Sidi Slimane", ar:"سيدي سليمان"}, {fr:"Sidi Kacem", ar:"سيدي قاسم"},
+  {fr:"Larache", ar:"العرائش"}, {fr:"Ksar El Kébir", ar:"القصر الكبير"}, {fr:"Asilah", ar:"أصيلة"}, {fr:"Ouazzane", ar:"وزان"},
+  {fr:"Chefchaouen", ar:"شفشاون"}, {fr:"Fnideq", ar:"الفنيدق"}, {fr:"M'diq", ar:"المضيق"}, {fr:"Martil", ar:"مرتيل"},
+  {fr:"Taroudant", ar:"تارودانت"}, {fr:"Tiznit", ar:"تيزنيت"}, {fr:"Guelmim", ar:"كلميم"}, {fr:"Tan-Tan", ar:"طانطان"},
+  {fr:"Laâyoune", ar:"العيون"}, {fr:"Dakhla", ar:"الداخلة"}
+];

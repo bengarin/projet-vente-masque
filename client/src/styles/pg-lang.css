@@ -1,0 +1,32 @@
+/* Styles repris tels quels de l'ancienne page index.html, limités à .pg-lang */
+.pg-lang{
+.hero{display:grid;grid-template-columns:44% minmax(0,1fr);align-items:center;text-align:center}
+.face{grid-row:1/3;width:calc(100% + 26px);margin-inline-start:-26px;max-width:none;align-self:end;margin-bottom:-14px}
+[dir=rtl] & .face{transform:scaleX(-1)}
+.head{position:relative;padding-top:4px}
+.tagw{margin-bottom:6px}
+.tagw .dc{width:30px;top:-12px;inset-inline-end:-30px}
+.h1w .paper{padding:12px 14px 14px}
+.h1w h1{font-size:clamp(30px,9vw,44px)}
+.h1w .dc.o{width:44px;top:-20px;inset-inline-end:-14px}
+.h1w .dc.s{width:46px;bottom:-26px;inset-inline-end:-18px;transform:rotate(-12deg)}
+.subrow{grid-column:1/-1;position:relative;z-index:4;margin-top:-6px}
+.subw .paper{font-size:18px}
+.subw .dc{width:30px;inset-inline-start:-22px;top:6px;transform:rotate(90deg)}
+.band .tape{width:92px;inset-inline-end:-14px;bottom:12px;transform:rotate(-24deg)}
+.opts{display:grid;gap:14px;margin:24px 0 0}
+.opt{position:relative;display:flex;align-items:center;gap:12px;padding:16px 16px;min-height:96px;background:#fff;border-radius:18px;box-shadow:0 4px 14px rgba(60,30,110,.10);cursor:pointer;border:3px solid transparent;transition:border-color .2s,transform .2s}
+.opt:has(input:checked){border-color:var(--cob);transform:translateY(-2px)}
+.opt:has(input:focus-visible){outline:3px solid var(--cob);outline-offset:4px}
+.stroke{flex:1;display:flex;align-items:center;gap:6px;padding:6px 10px;background:url("/images/deco/papier-lavande.webp") center/100% 100% no-repeat}
+.opt-fr .stroke{background-image:url("/images/deco/papier-jaune.webp")}
+.flag{width:92px;flex:0 0 auto;transform:rotate(-4deg)}
+.name{flex:1;text-align:center;font-weight:800;color:var(--navy);line-height:1.1}
+.opt-ar .name{font-size:40px}
+.opt-fr .name,.opt-en .name{font-size:30px}
+.hint{display:flex;align-items:center;justify-content:center;gap:6px;margin:26px 0 0}
+.hint .dc{position:static;width:30px}
+.hint .dc:last-child{transform:scaleX(-1)}
+.hint .subw .paper{font-size:16px;padding:6px 16px 8px}
+@media(max-width:360px){.flag{width:78px}.opt-ar .name{font-size:32px}.opt-fr .name,.opt-en .name{font-size:26px}}
+}

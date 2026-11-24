@@ -1,0 +1,170 @@
+# mapetitecoree.ma — boutique de packs de masques coréens
+
+Application complète : **boutique React** (design scrapbook d'origine, FR / AR / EN avec RTL) + **API Node.js / Express** + **base MySQL** + **espace d'administration** sécurisé.
+
+```
+Navigateur ──► React (client/)  ──/api──►  API Express (server/)  ──►  MySQL
+                boutique + /admin             vérifie et calcule tout       produits, commandes…
+```
+
+> **Important** : aucun prix, frais de livraison, stock ou mode de paiement n'a été inventé.
+> Après l'installation, la boutique affiche « Prix à renseigner » et **refuse les commandes** tant que tu n'as pas rempli ces informations dans l'administration (voir « Avant d'ouvrir les ventes »).
+
+---
+
+## 1. Ce qu'il faut installer
+
+| Outil | Version | Rôle |
+|---|---|---|
+| [Node.js](https://nodejs.org) | 20 ou plus | fait tourner l'API et compile le site |
+| MySQL | 8.0 ou plus (MariaDB 10.6+ marche aussi) | stocke les données |
+
+## 2. Installer le projet
+
+```bash
+npm run install:all
+```
+
+(installe les dépendances de `server/` et de `client/`)
+
+## 3. Créer la base MySQL
+
+Connecte-toi à MySQL en administrateur (`mysql -u root -p`) puis colle ceci, **en remplaçant le mot de passe** par un mot de passe long et unique :
+
+```sql
+CREATE DATABASE mapetitecoree CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'mapetitecoree_app'@'localhost' IDENTIFIED BY 'METS-ICI-UN-MOT-DE-PASSE-LONG';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, REFERENCES, DROP ON mapetitecoree.* TO 'mapetitecoree_app'@'localhost';
+```
+
+L'application utilise ce compte limité à sa propre base (jamais `root`).
+
+## 4. Configurer le fichier `.env`
+
+```bash
+cp server/.env.example server/.env
+```
+
+Ouvre `server/.env` et remplis :
+
+- `DB_PASSWORD` : le mot de passe choisi à l'étape 3 ;
+- `JWT_SECRET` : une longue valeur aléatoire. Pour en générer une :
+
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+```
+
+Le fichier `.env` contient tes secrets : il est exclu de Git (`.gitignore`). **Ne le partage jamais et ne le mets pas dans le code.**
+
+## 5. Créer les tables et les données de départ
+
+```bash
+npm run db:migrate
+```
+
+```bash
+npm run db:seed
+```
+
+- `db:migrate` crée toutes les tables (fichiers `database/migrations/*.sql`, suivis dans la table `schema_migrations` : on peut le relancer sans risque).
+- `db:seed` ajoute les 6 masques de l'ancienne version (marque, nom, mentions d'emballage, photo), la catégorie « Masques en tissu » et les tailles de pack 3 / 4 / 6 — **sans prix ni stock**.
+
+## 6. Créer le premier compte administrateur
+
+```bash
+npm run create-admin
+```
+
+Le script demande l'e-mail et le mot de passe (12 caractères minimum, masqué à la saisie). Relancer la commande avec le même e-mail **réinitialise** le mot de passe.
+
+## 7. Lancer en développement (2 terminaux)
+
+Terminal 1 — l'API (port 4000) :
+
+```bash
+npm run dev:api
+```
+
+Terminal 2 — le site React (port 5173) :
+
+```bash
+npm run dev:web
+```
+
+- Boutique : http://localhost:5173
+- Administration : http://localhost:5173/admin
+
+## 8. Mettre en production
+
+```bash
+npm run build
+```
+
+```bash
+npm start
+```
+
+L'API sert alors aussi le site compilé (`client/dist`) sur un seul port. Dans `server/.env` en production : `NODE_ENV=production`, `COOKIE_SECURE=true` (site en **HTTPS obligatoire**), et `TRUST_PROXY=true` si un proxy (Nginx, hébergeur) est devant. Sauvegarde régulièrement la base MySQL **et** le dossier `server/uploads/` (photos envoyées depuis l'admin).
+
+---
+
+## Avant d'ouvrir les ventes (dans /admin)
+
+1. **Produits** → pour chaque masque : prix, stock (ou vide = non suivi), description / mode d'emploi si tu as des infos vérifiées.
+2. **Paramètres → Tailles et prix des packs** → prix fixe par pack (ou vide = somme des prix unitaires).
+3. **Paramètres → Modes de livraison** → au moins un mode actif avec ses frais réels.
+4. **Paramètres → Modes de paiement** → au moins un mode actif (ex. paiement à la livraison).
+5. Passe une commande test, puis vérifie-la dans **Commandes**.
+
+## Fonctionnement
+
+### Boutique (React)
+- Parcours d'origine conservé : langue → taille du pack (3, 4, 6 ou ce que tu configures) → choix des masques → commande.
+- Panier latéral, remplacement d'un masque quand le pack est plein, fiche produit, animations, mémoire du pack dans le navigateur.
+- Produits, prix, stocks, livraison et paiement **chargés depuis MySQL**. Un produit inactif disparaît de la boutique.
+- Stock : si un stock est renseigné, la cliente ne peut pas dépasser la quantité disponible (« Épuisé » à 0).
+
+### Commande — sécurité
+Le navigateur n'envoie **que** les identifiants des produits et les quantités. Le serveur, dans une transaction :
+vérifie le pack complet, les produits actifs, le stock (et le décompte), le mode de livraison et de paiement, le téléphone marocain ; **recalcule tous les montants** ; enregistre une copie des noms et prix (l'historique reste exact si un prix change). Limite anti-abus : 10 commandes / 15 min par IP.
+
+### Administration
+- Connexion par e-mail + mot de passe (hash bcrypt), session dans un cookie `httpOnly` + `SameSite=Strict`, contrôle d'origine (anti-CSRF), 10 essais / 15 min.
+- Tableau de bord : nombre de commandes, ventes (hors annulées, ce mois-ci, livrées), produits actifs/inactifs, stock bas, dernières commandes.
+- Produits : ajouter, modifier (nom, marque, description FR/AR/EN, mode d'emploi, prix, stock, catégorie…), activer/désactiver, supprimer, photos (envoi, ordre, suppression ; JPEG/PNG/WebP vérifiés).
+- Commandes : recherche par numéro, cliente (nom / téléphone / ville), statut, dates ; détail complet ; statut nouvelle → confirmée → en préparation → expédiée → livrée, ou annulée (remet le stock, statut définitif) ; historique des changements ; note interne ; lien appel / WhatsApp.
+- Paramètres : nom de la boutique, devise, ouverture/pause des commandes, seuil de stock bas, packs, livraison, paiement, catégories.
+
+## Arborescence
+
+```
+client/                 Site React (Vite)
+  public/images/        Logo, décors, photos produit d'origine
+  src/shop/             Boutique : pages (Langue, Pack, Masques, Commande), en-tête, panier, état partagé
+  src/admin/            Administration : connexion, tableau de bord, produits, commandes, paramètres
+  src/ui/ src/lib/      Décor scrapbook (papier déchiré, stickers), API, langues, villes
+  src/styles/           CSS d'origine (style.css) + styles de chaque ancienne page
+server/                 API Express
+  src/routes/           shop.js (public) + admin/ (protégé)
+  src/services/         catalogue, calcul des prix, création de commande
+  scripts/              migrate.js, seed.js, create-admin.js
+  test/                 tests du calcul des prix
+  uploads/              photos envoyées depuis l'admin (non versionnées)
+database/
+  migrations/           structure SQL
+  seed.sql              données de départ (sans prix)
+legacy/                 ancienne maquette HTML statique (archive)
+```
+
+## Tests
+
+```bash
+npm test
+```
+
+## Ce qui n'est PAS fait (volontairement)
+
+- **Paiement en ligne** : non intégré. Les « modes de paiement » sont des libellés (ex. paiement à la livraison). Une carte bancaire (CMI, Stripe…) demanderait un contrat et une intégration dédiée.
+- **Notifications** (e-mail / WhatsApp à chaque commande) : non branchées.
+- **Traductions arabes** : reprises de l'ancienne version, à faire relire par une personne native.
+- **Admin** : en français uniquement ; un seul niveau d'accès (tous les admins ont tous les droits).
