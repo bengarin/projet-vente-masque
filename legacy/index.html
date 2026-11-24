@@ -27,8 +27,8 @@
 .opt{position:relative;display:flex;align-items:center;gap:12px;padding:16px 16px;min-height:96px;background:#fff;border-radius:18px;box-shadow:0 4px 14px rgba(60,30,110,.10);cursor:pointer;border:3px solid transparent;transition:border-color .2s,transform .2s}
 .opt:has(input:checked){border-color:var(--cob);transform:translateY(-2px)}
 .opt:has(input:focus-visible){outline:3px solid var(--cob);outline-offset:4px}
-.stroke{flex:1;display:flex;align-items:center;gap:6px;padding:6px 10px;background:url("images/deco/papier-lavande.webp") center/100% 100% no-repeat}
-.opt-fr .stroke{background-image:url("images/deco/papier-jaune.webp")}
+.stroke{flex:1;display:flex;align-items:center;gap:6px;padding:6px 10px;background:url("../client/public/images/deco/papier-lavande.webp") center/100% 100% no-repeat}
+.opt-fr .stroke{background-image:url("../client/public/images/deco/papier-jaune.webp")}
 .flag{width:92px;flex:0 0 auto;transform:rotate(-4deg)}
 .name{flex:1;text-align:center;font-weight:800;color:var(--navy);line-height:1.1}
 .opt-ar .name{font-size:40px}
@@ -46,7 +46,7 @@
 <section class="band">
   <div class="bg paper lav" data-torn="9" data-sides="tb"></div>
   <div class="wrap hero">
-    <img class="face" src="images/deco/visage-masque.webp" alt="" width="622" height="640">
+    <img class="face" src="../client/public/images/deco/visage-masque.webp" alt="" width="622" height="640">
     <div class="head">
       <div class="tagw"><div class="sh"><div class="paper" data-torn="3"><span class="tag" data-tag></span></div></div><span class="dc" data-dc="rays"></span></div>
       <div class="h1w"><div class="sh"><div class="paper yel" data-torn="6"><h1 data-i18n="title"></h1></div></div>
@@ -61,17 +61,17 @@
   <form class="opts" id="form" onsubmit="return false">
     <label class="opt opt-ar">
       <input type="radio" name="lang" value="ar">
-      <span class="stroke"><img class="flag" src="images/deco/drapeau-ma.webp" alt=""><span class="name" lang="ar" dir="rtl">العربية</span></span>
+      <span class="stroke"><img class="flag" src="../client/public/images/deco/drapeau-ma.webp" alt=""><span class="name" lang="ar" dir="rtl">العربية</span></span>
       <span class="radio"></span>
     </label>
     <label class="opt opt-fr">
       <input type="radio" name="lang" value="fr">
-      <span class="stroke"><img class="flag" src="images/deco/drapeau-fr.webp" alt=""><span class="name" lang="fr" dir="ltr">Français</span></span>
+      <span class="stroke"><img class="flag" src="../client/public/images/deco/drapeau-fr.webp" alt=""><span class="name" lang="fr" dir="ltr">Français</span></span>
       <span class="radio"></span>
     </label>
     <label class="opt opt-en">
       <input type="radio" name="lang" value="en">
-      <span class="stroke"><img class="flag" src="images/deco/drapeau-en.webp" alt=""><span class="name" lang="en" dir="ltr">English</span></span>
+      <span class="stroke"><img class="flag" src="../client/public/images/deco/drapeau-en.webp" alt=""><span class="name" lang="en" dir="ltr">English</span></span>
       <span class="radio"></span>
     </label>
   </form>

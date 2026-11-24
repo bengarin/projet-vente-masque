@@ -1,0 +1,36 @@
+/* Styles repris tels quels de l'ancienne page etape-2.html, limités à .pg-pack */
+.pg-pack{
+.hero{position:relative;text-align:center;padding:20px 0 4px}
+.hero .tagw .paper{padding:0 2px}
+.hero .tagw .dc{width:32px;top:-22px;inset-inline-end:-30px}
+.hero .h1w{margin-top:4px;transform:rotate(-1.2deg)}
+.hero .h1w .paper{padding:16px 22px 18px}
+.hero .subw{margin-top:-8px}
+.hero .d1{width:62px;top:4px;inset-inline-start:-2px;transform:rotate(-10deg)}
+.hero .d2{width:40px;bottom:6px;inset-inline-end:-2px}
+.hero .tape{width:110px;top:-6px;inset-inline-end:-30px;transform:rotate(18deg)}
+.opts{display:grid;gap:18px;margin:22px 0 0}
+.opt{display:block;cursor:pointer}
+.opt .sh{transition:filter .2s,transform .2s}
+.opt:has(input:checked) .sh{filter:drop-shadow(2.5px 0 0 var(--cob)) drop-shadow(-2.5px 0 0 var(--cob)) drop-shadow(0 2.5px 0 var(--cob)) drop-shadow(0 -2.5px 0 var(--cob)) drop-shadow(0 6px 4px rgba(21,48,200,.25));transform:translateY(-2px)}
+.opt:has(input:focus-visible) .sh{outline:3px solid var(--cob);outline-offset:6px}
+.card{display:flex;align-items:center;gap:12px;padding:20px 16px 22px;min-height:150px}
+.opt:has(input:checked) .card{background:var(--grain),#FFFDF2}
+.art{flex:0 0 36%;max-width:150px;display:grid;place-items:center}
+.art svg{width:100%;height:auto}
+.div{align-self:stretch;width:0;border-inline-start:2.5px dashed var(--lav2);margin:6px 0}
+.txt{flex:1;display:flex;flex-direction:column;gap:8px;text-align:start}
+.big{font-weight:800;font-size:25px;line-height:1.02;color:var(--navy)}
+.chip{display:inline-block;width:max-content;max-width:100%;padding:3px 10px 4px;font-size:13px;font-weight:700;color:var(--navy);background:url("/images/deco/papier-lavande.webp") center/100% 100% no-repeat;line-height:1.25}
+.chip.price{background-image:url("/images/deco/papier-jaune.webp");font-size:17px;font-weight:800}
+.opt .dc{z-index:4}
+.cursel{margin:18px auto 0;width:max-content;max-width:100%;text-align:center;background:var(--grain),#fff;padding:6px 14px 8px;border-radius:10px;font-size:15px;color:var(--navy);box-shadow:0 3px 0 var(--lav2)}
+.k1 .a{width:34px;top:4px;inset-inline-start:14px}
+.k1 .tape{width:84px;bottom:-4px;inset-inline-end:4px;transform:rotate(-14deg)}
+.k2 .a{width:46px;top:-8px;inset-inline-start:8px;transform:rotate(-10deg)}
+.k2 .b{width:30px;bottom:8px;inset-inline-end:16px;transform:rotate(60deg)}
+.k3 .a{width:44px;top:-6px;inset-inline-start:10px}
+.k3 .tape{width:90px;bottom:-6px;inset-inline-start:6px;transform:rotate(6deg)}
+.k3 .b{width:48px;bottom:-12px;inset-inline-end:2px;transform:rotate(12deg)}
+@media(max-width:370px){.big{font-size:22px}.chip{font-size:13px}.card{gap:8px;padding-inline:12px}}
+}

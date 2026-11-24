@@ -4,7 +4,7 @@
 window.MC = (() => {
 const CONFIG = {
   brand: "mapetitecoree.ma",
-  logo: {src:"images/logo-mapetitecoree.png", src2x:"images/logo-mapetitecoree@2x.png", webp:"images/logo-mapetitecoree.webp", webp2x:"images/logo-mapetitecoree@2x.webp", w:640, h:175,
+  logo: {src:"../client/public/images/logo-mapetitecoree.png", src2x:"../client/public/images/logo-mapetitecoree@2x.png", webp:"../client/public/images/logo-mapetitecoree.webp", webp2x:"../client/public/images/logo-mapetitecoree@2x.webp", w:640, h:175,
          alt:"mapetitecoree.ma — Korean & Natural Skincare"},
   currency: "DH",
   packSizes: [3, 4, 6],
@@ -32,9 +32,9 @@ const CONFIG = {
   shopify: "auto"                          // "auto" = actif sur la boutique Shopify si tous les variantId sont remplis
 };
 const LANGS = [
-  {code:"ar", label:"العربية", flag:"images/deco/drapeau-ma.webp", dir:"rtl"},
-  {code:"fr", label:"Français", flag:"images/deco/drapeau-fr.webp", dir:"ltr"},
-  {code:"en", label:"English",  flag:"images/deco/drapeau-en.webp", dir:"ltr"}
+  {code:"ar", label:"العربية", flag:"../client/public/images/deco/drapeau-ma.webp", dir:"rtl"},
+  {code:"fr", label:"Français", flag:"../client/public/images/deco/drapeau-fr.webp", dir:"ltr"},
+  {code:"en", label:"English",  flag:"../client/public/images/deco/drapeau-en.webp", dir:"ltr"}
 ];
 const LRI = "⁦", PDI = "⁩";       // isole « 2/4 » pour l'arabe
 const iso = s => LRI + s + PDI;
