@@ -39,3 +39,15 @@ test("stock vide = non suivi (null), jamais 0", () => {
   assert.equal(productInput.parse({ ...base, stock: 0 }).stock, 0);
   assert.equal(productInput.parse({ ...base, stock: "7" }).stock, 7);
 });
+
+test("pack + soins à l'unité", () => {
+  const t = computeTotals({ lines: [{ unitPrice: 30, qty: 3 }], extras: [{ unitPrice: 179, qty: 1 }, { unitPrice: 199, qty: 2 }], shipping: { fee: 20, freeFrom: null } });
+  assert.equal(t.itemsTotal, 90); assert.equal(t.extrasTotal, 577); assert.equal(t.productsTotal, 667); assert.equal(t.total, 687);
+});
+test("soins seuls, sans pack", () => {
+  const t = computeTotals({ lines: [], extras: [{ unitPrice: 179, qty: 1 }], shipping: { fee: 20, freeFrom: 150 } });
+  assert.equal(t.ok, true); assert.equal(t.itemsTotal, null); assert.equal(t.packPrice, null); assert.equal(t.shippingFee, 0); assert.equal(t.total, 179);
+});
+test("soin sans prix → refus", () => {
+  assert.equal(computeTotals({ extras: [{ unitPrice: null, qty: 1 }], shipping: { fee: 0, freeFrom: null } }).ok, false);
+});

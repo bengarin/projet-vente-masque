@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 import mysql from "mysql2/promise";
 import { loadConfig, PROJECT_ROOT } from "../src/config.js";
 
-const FILES = ["fiches-produits.sql", "photos-produits.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
+const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
 
 /* Découpe le fichier en blocs « -- fiche: <clé> | <libellé> » + une requête UPDATE */
 async function blocks() {
@@ -30,9 +30,11 @@ export async function applyFiches(conn, { quiet = false } = {}) {
   const results = [];
   for (const b of await blocks()) {
     const [r] = await conn.query(b.sql);
-    if (b.key.startsWith("photo-")) {          // photo : ajoutée maintenant, ou déjà présente ?
-      const [[{ n: present }]] = await conn.query("SELECT COUNT(*) AS n FROM product_images WHERE url = ?", [b.url]);
-      results.push({ ...b, matched: present, changed: r.affectedRows });
+    if (b.url) {                               // création (photo, produit, catégorie) : ajoutée maintenant, ou déjà présente ?
+      const [sql, val] = b.url.startsWith("/") ? ["SELECT COUNT(*) AS n FROM product_images WHERE url = ?", b.url]
+        : [`SELECT COUNT(*) AS n FROM ${b.key.startsWith("categorie") ? "categories" : "products"} WHERE slug = ?`, b.url.replace(/^slug=/, "")];
+      const [[{ n: present }]] = await conn.query(sql, [val]);
+      results.push({ ...b, created: true, matched: present, changed: r.affectedRows });
       continue;
     }
     const matched = Number(/Rows matched:\s*(\d+)/i.exec(r.info || "")?.[1] ?? r.affectedRows);
@@ -40,10 +42,13 @@ export async function applyFiches(conn, { quiet = false } = {}) {
   }
   if (!quiet) {
     console.log("\nFiches produit :");
+    let section = "";
     for (const r of results.filter(r => !r.key.includes("-mentions"))) {
-      if (r.key.startsWith("photo-") && r.key.endsWith("-1") && !results.some(x => x.key.startsWith("photo-") && results.indexOf(x) < results.indexOf(r))) console.log("\nPhotos d'ambiance :");
+      const sec = r.key.startsWith("produit-") || r.key.startsWith("categorie") || r.key.startsWith("photo-orjena") || r.key.startsWith("photo-somebymi") ? "Soins à l'unité :"
+        : r.key.startsWith("photo-") ? "Photos d'ambiance :" : "";
+      if (sec && sec !== section) { console.log("\n" + sec); section = sec; }
       const state = r.matched === 0 ? "INTROUVABLE dans la base"
-        : r.key.startsWith("photo-") ? (r.changed ? "ajoutée" : "déjà présente")
+        : r.created ? (r.changed ? "ajoutée" : "déjà présente")
         : r.changed ? `complétée (${r.matched} produit(s))` : `déjà à jour (${r.matched} produit(s))`;
       console.log(`  ${r.matched ? "✔" : "✖"} ${r.label.padEnd(62)} ${state}`);
     }
@@ -56,7 +61,7 @@ export async function applyFiches(conn, { quiet = false } = {}) {
 
 /* Tableau : ce qui est rempli pour chaque produit, par langue */
 export async function report(conn) {
-  const rows = await conn.query(`SELECT id, slug, brand, name,
+  const rows = await conn.query(`SELECT id, slug, brand, name, sale_mode, price,
       description_fr, description_ar, description_en, product_type_fr, product_type_ar, product_type_en,
       content_fr, content_ar, content_en, highlights_fr, highlights_ar, highlights_en,
       usage_fr, usage_ar, usage_en, precautions_fr, precautions_ar, precautions_en, pack_mentions,
@@ -66,14 +71,14 @@ export async function report(conn) {
   const tri = (p, base) => ["fr", "ar", "en"].map(l => f(p[`${base}_${l}`])).join("/");
   console.log("\nContenu en base (FR/AR/EN) — « — » = vide, affiché « Information à confirmer » :");
   const W = 11;
-  console.log("  " + ["Produit (identifiant)".padEnd(46), "Description", "Type".padEnd(W), "Contenance".padEnd(W), "Points clés", "Texte imprimé", "Mode d'emploi", "Précautions", "Photos"].join(" | "));
+  console.log("  " + ["Produit (identifiant)".padEnd(46), "Description", "Type".padEnd(W), "Contenance".padEnd(W), "Points clés", "Texte imprimé", "Mode d'emploi", "Précautions", "Photos", "Vente / prix"].join(" | "));
   for (const p of rows) {
     const id = ` (${p.slug})`, full = `${p.brand} — ${p.name}`;
     const nm = (full.length + id.length > 46 ? full.slice(0, 45 - id.length) + "…" : full) + id;
     console.log("  " + [nm.padEnd(46), tri(p, "description").padEnd(W), tri(p, "product_type").padEnd(W), tri(p, "content").padEnd(W),
-      tri(p, "highlights").padEnd(W), f(p.pack_mentions).padEnd(13), tri(p, "usage").padEnd(13), tri(p, "precautions").padEnd(11), String(p.photos)].join(" | "));
+      tri(p, "highlights").padEnd(W), f(p.pack_mentions).padEnd(13), tri(p, "usage").padEnd(13), tri(p, "precautions").padEnd(11), String(p.photos).padEnd(6), `${p.sale_mode === "unit" ? "unité" : "pack"} / ${p.price == null ? "—" : p.price + " DH"}`].join(" | "));
   }
-  console.log("\nMode d'emploi et précautions : non visibles sur les photos des emballages → volontairement vides (rien n'est inventé).");
+  console.log("\n« — » : information non visible sur l'emballage ou non confirmée → volontairement vide (rien n'est inventé).");
 }
 
 /* Lancement direct : npm run db:fiches */

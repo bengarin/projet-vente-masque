@@ -11,7 +11,7 @@ import { CatalogGate, Header } from "../Chrome.jsx";
 import { PATHS, useShop } from "../ShopContext.jsx";
 import "../../styles/pg-pick.css";
 
-const P = {
+export const P = {
   fr: { title: <>Compose ton <span className="hl">pack</span> !</>, sub: "Choisis tes masques préférés", hint: "Tu peux choisir plusieurs fois le même masque.",
     add: "Ajouter", remove: "Retirer un", tbd: "Prix pas encore défini", details: "Voir la fiche", more: "Voir plus",
     prog: (n, t) => `${iso(n + "/" + t)} masques choisis`, left: k => (k === 0 ? "Pack complet ✓" : `Encore ${k} à choisir`),
@@ -148,7 +148,7 @@ function Dots({ p, size, onRemove, idPrefix, d, l }) {
 }
 
 function Picker({ p }) {
-  const { uiLang, t, products, packSize: N, count: n, order, qty, setQty, replace, byId, money, setCartOpen } = useShop();
+  const { uiLang, t, packProducts: products, unitProducts, packSize: N, count: n, order, qty, setQty, replace, byId, money, setCartOpen } = useShop();
   const { toast } = useOverlay();
   const [pmId, setPmId] = useState(null);
   const [swNew, setSwNew] = useState(null);
@@ -314,6 +314,7 @@ function Picker({ p }) {
           })}
         </ul>
         <div className="note"><Torn torn={4}><span>{p.hint}</span></Torn></div>
+        {unitProducts.length > 0 && <SoinsTeaser t={t} items={unitProducts} />}
       </main>
 
       <div className="bar"><div className="barin">
@@ -333,6 +334,17 @@ function Picker({ p }) {
         }} />}
       {pmId != null && byId(pmId) && <ProductModal p={p} x={byId(pmId)} lang={uiLang} closeLabel={t.close} qtyCtl={qtyCtl} money={money} onClose={() => setPmId(null)} />}
     </>
+  );
+}
+
+/* Encart « Découvre aussi nos soins » sous la grille des masques */
+export function SoinsTeaser({ t, items }) {
+  return (
+    <Link className="soins-teaser" to={PATHS.soins}>
+      <span className="st-imgs">{items.slice(0, 3).map(x => <img key={x.id} src={x.images[0]} alt="" />)}</span>
+      <span className="st-txt"><b>{t.soins}</b><span>{items.map(x => x.brand).filter((v, i, a) => a.indexOf(v) === i).join(" · ")}</span></span>
+      <span className="st-go">{t.seeSoins} <span aria-hidden="true">→</span></span>
+    </Link>
   );
 }
 
@@ -392,7 +404,7 @@ function SwapModal({ p, newId, onClose, onSwap }) {
 }
 
 /* ---------- Fiche produit ---------- */
-function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
+export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
   const [cur, setCur] = useState(0);
   const closeRef = useRef(null);
   const opener = useRef(document.activeElement);

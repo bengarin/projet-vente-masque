@@ -480,3 +480,6 @@ a.a-prod:hover b{color:var(--a-cob)}
   .a-table-products tbody tr{grid-template-columns:repeat(3,minmax(0,1fr))}
   .a-table-products td[data-label]{font-size:13.5px}
 }
+.a-mt{margin-top:14px}
+.a-tr-sec td{background:var(--a-butter-soft);font-weight:650;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--a-warn);padding:8px 14px!important}
+@media (max-width:760px){.a-table .a-tr-sec{display:block!important;padding:8px 14px!important}.a-table .a-tr-sec td{display:block}}

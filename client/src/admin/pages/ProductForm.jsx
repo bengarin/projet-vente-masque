@@ -6,7 +6,7 @@ import { Ic } from "../icons.jsx";
 
 const TAPES = [["ging", "Vichy jaune"], ["dots", "Pois lavande"], ["grid", "Quadrillé bleu"], ["ydots", "Pois jaunes"], ["checkl", "Damier lavande"], ["check", "Damier bleu"]];
 const LANGS = [["Fr", "Français"], ["Ar", "العربية"], ["En", "English"]];
-const EMPTY = { brand: "", name: "", slug: "", categoryId: "", price: "", stock: "", isActive: true, tape: "ging", videoUrl: "", sortOrder: 0,
+const EMPTY = { brand: "", name: "", slug: "", categoryId: "", price: "", stock: "", isActive: true, saleMode: "pack", tape: "ging", videoUrl: "", sortOrder: 0,
   descriptionFr: "", descriptionAr: "", descriptionEn: "", usageFr: "", usageAr: "", usageEn: "", packMentions: "",
   typeFr: "", typeAr: "", typeEn: "", contentFr: "", contentAr: "", contentEn: "",
   highlightsFr: "", highlightsAr: "", highlightsEn: "", precautionsFr: "", precautionsAr: "", precautionsEn: "" };
@@ -14,7 +14,7 @@ const SHEET_KEYS = ["type", "content", "highlights", "precautions"];
 
 const fromProduct = p => ({
   brand: p.brand, name: p.name, slug: p.slug, categoryId: p.categoryId ?? "", price: numStr(p.price), stock: numStr(p.stock),
-  isActive: p.isActive, tape: p.tape, videoUrl: p.raw.videoUrl || "", sortOrder: p.raw.sortOrder,
+  isActive: p.isActive, saleMode: p.saleMode || "pack", tape: p.tape, videoUrl: p.raw.videoUrl || "", sortOrder: p.raw.sortOrder,
   descriptionFr: p.raw.descriptionFr || "", descriptionAr: p.raw.descriptionAr || "", descriptionEn: p.raw.descriptionEn || "",
   usageFr: p.raw.usageFr || "", usageAr: p.raw.usageAr || "", usageEn: p.raw.usageEn || "", packMentions: p.raw.packMentions || "",
   ...Object.fromEntries(SHEET_KEYS.flatMap(k => ["Fr", "Ar", "En"].map(l => [k + l, p.raw[k + l] || ""]))),
@@ -133,6 +133,9 @@ export default function ProductForm() {
         <aside className="a-form-side">
           <Card title="Visibilité" icon="eye">
             <Switch checked={f.isActive} onChange={set("isActive")} label="Produit actif" hint={f.isActive ? "Visible dans la boutique" : "Caché de la boutique"} />
+            <Field label="Mode de vente" error={errs.saleMode} className="a-mt"
+              hint={f.saleMode === "unit" ? "Page « Soins » : acheté à l'unité, avec ou sans pack." : "Page des masques : choisi dans un pack de 3, 4 ou 6."}>
+              <select {...fp("saleMode")}><option value="pack">Masque — dans les packs</option><option value="unit">Soin — vendu à l'unité</option></select></Field>
           </Card>
 
           <Card title="Prix et stock" icon="money">

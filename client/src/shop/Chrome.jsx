@@ -8,7 +8,7 @@ import { useScrollLock } from "../ui/overlay.jsx";
 import { PATHS, useShop } from "./ShopContext.jsx";
 
 export function Header({ step, langMenu = false }) {
-  const { t, uiLang, lang, packSize, setLang, count, setCartOpen } = useShop();
+  const { t, uiLang, lang, packSize, setLang, cartCount: count, setCartOpen, unitProducts } = useShop();
   const [open, setOpen] = useState(false);
   useScrollLock(open);
   const can = i => i <= step || (i === 2 && lang) || (i === 3 && lang && packSize);
@@ -31,6 +31,7 @@ export function Header({ step, langMenu = false }) {
               {t.step(i)} · {t.steps[i - 1]}
             </Link>
           ))}
+          {unitProducts.length > 0 && <Link to={PATHS.soins} className="msoins" aria-current={step === "soins" ? "page" : undefined} onClick={() => setOpen(false)}>✦ {t.soins}</Link>}
           {langMenu && <>
             <p className="mlab">{t.lang}</p>
             <div className="mlangs">{LANGS.map(l => (
@@ -78,7 +79,7 @@ const TRASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 
 /* ---------- Panier latéral (même contenu sur toutes les pages) ---------- */
 function CartDrawer({ step }) {
-  const { t, cartOpen, setCartOpen, packSize: N, count: n, totals, qty, setQty, money, lang } = useShop();
+  const { t, cartOpen, setCartOpen, packSize: N, count: n, totals, qty, setQty, money, lang, extrasCount, setExtraQty, canCheckout } = useShop();
   const navigate = useNavigate();
   const closeRef = useRef(null);
   useScrollLock(cartOpen);
@@ -90,13 +91,15 @@ function CartDrawer({ step }) {
     return () => { document.removeEventListener("keydown", key); document.getElementById("cartBtn")?.focus(); };
   }, [cartOpen, setCartOpen]);
 
-  const { items, sum, pack, total } = totals;
+  const { items, extraItems, sum, pack, total } = totals;
+  const any = items.length + extraItems.length > 0;
   let msg, bad = false;
-  if (!N) { msg = t.choosePack; bad = true; }
-  else if (n < N) { msg = t.need(N - n); bad = true; }
-  else msg = t.ready;
-  const pickMode = step !== 3 && N && n < N && lang;
-  const goDisabled = !pickMode && (!N || n < N || step === 4);
+  if (n > 0 && N && n < N) { msg = t.need(N - n); bad = true; }          // pack commencé mais incomplet
+  else if (n > 0) msg = extrasCount ? t.readyAll : t.ready;
+  else if (extrasCount) msg = t.readyAll;
+  else { msg = N ? t.emptyHint : t.choosePack; bad = !N; }
+  const pickMode = step !== 3 && N && n > 0 && n < N && lang;
+  const goDisabled = !pickMode && (!canCheckout || step === 4);
   const go = () => { setCartOpen(false); navigate(pickMode ? PATHS[3] : PATHS[4]); };
   const row = (a, b, c = "") => <div className={c}><span>{a}</span><span dir="ltr">{b}</span></div>;
 
@@ -104,7 +107,7 @@ function CartDrawer({ step }) {
     <div className={`drawer${cartOpen ? " open" : ""}`} onClick={e => { if (e.target === e.currentTarget) setCartOpen(false); }}>
       {cartOpen && <aside className="dpanel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
         <header className="dhead">
-          <div><h2 id="cartTitle">{t.cartTitle}</h2><p>{N ? `${t.packOf(N)} · ${iso(n + "/" + N)}` : t.noPack}</p></div>
+          <div><h2 id="cartTitle">{t.cartTitle}</h2><p>{[N && n ? `${t.packOf(N)} · ${iso(n + "/" + N)}` : null, extrasCount ? t.nSoins(extrasCount) : null].filter(Boolean).join(" · ") || (N ? t.packOf(N) : t.noPack)}</p></div>
           <button className="x" type="button" ref={closeRef} aria-label={t.close} onClick={() => setCartOpen(false)}>×</button>
         </header>
         <div className="dbody"><ul className="lines">
@@ -121,12 +124,26 @@ function CartDrawer({ step }) {
               </div>
               {x.price != null && <div className="lt">{money(x.price * qty(x.id))}</div>}
             </li>
-          )) : <li className="emptyc"><Deco k="face" /><b>{t.empty}</b><span>{t.emptyHint}</span></li>}
+          )) : !extraItems.length && <li className="emptyc"><Deco k="face" /><b>{t.empty}</b><span>{t.emptyHint}</span></li>}
+          {extraItems.length > 0 && <li className="lsec">{t.mySoins}</li>}
+          {extraItems.map(({ x, q }) => (
+            <li className="line" key={"s" + x.id}>
+              <img src={x.images[0]} alt="" />
+              <div className="info"><small>{x.brand}</small><b>{x.name}</b>
+                <span>{t.unitLine(x.price == null ? null : money(x.price))}</span>
+                <div className="ctl"><div className="qty">
+                  <button className="mi" type="button" aria-label={`${t.minus} – ${x.name}`} onClick={() => setExtraQty(x.id, q - 1)}>−</button>
+                  <output>{q}</output>
+                  <button className="pl" type="button" aria-label={`${t.add} – ${x.name}`} onClick={() => setExtraQty(x.id, q + 1)}>+</button></div>
+                  <button className="rm" type="button" onClick={() => setExtraQty(x.id, 0)}><span style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: TRASH }} />{t.del}</button></div>
+              </div>
+              {x.price != null && <div className="lt">{money(x.price * q)}</div>}
+            </li>))}
         </ul></div>
         <footer className="dfoot">
           <div className="sum">
             {pack != null && <>{row(t.sumMasks, sum == null ? t.tbdTotal : money(sum))}{row(t.packPrice(N), money(pack))}</>}
-            {row(t.total, total == null || !items.length ? (items.length ? t.tbdTotal : money(0)) : money(total), "tot")}
+            {row(t.total, !any ? money(0) : total == null ? t.tbdTotal : money(total), "tot")}
           </div>
           <p className={`status${bad ? " bad" : ""}`}>{msg}</p>
           {step !== 4 && <button className="go" type="button" disabled={goDisabled} onClick={go}>{pickMode ? t.goPick : t.checkout}</button>}

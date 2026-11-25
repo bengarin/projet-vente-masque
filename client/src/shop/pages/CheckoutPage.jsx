@@ -1,6 +1,6 @@
 /* Commande (ancienne page checkout.html) : récap, livraison, mode de livraison/paiement, total.
    La commande est envoyée à l'API qui revérifie et recalcule tout avant de l'enregistrer dans MySQL. */
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../lib/api.js";
 import { MA_CITIES } from "../../lib/cities.js";
@@ -28,6 +28,7 @@ const P = {
     stockErr: "Un masque n'est plus disponible en quantité suffisante. Modifie ton pack.", changed: "Le catalogue a changé : vérifie ton pack et réessaie.",
     tooMany: "Trop de commandes envoyées. Réessaie dans quelques minutes.",
     emptyTxt: "Ton pack n'est pas encore complet.", emptyGo: "Compléter mon pack",
+    emptyCart: "Ton panier est vide.", goPack: "Composer un pack de masques", goSoins: "Voir les soins", s1b: "Ta commande", soinsT: "Soins à l'unité",
     okT: "Merci, ta commande est enregistrée !", okNum: "Numéro de commande", okNext: "Nous te contacterons pour la confirmer.",
     okWho: "Nom", okTel: "Téléphone", okAddr: "Adresse", okShip: "Livraison", okPay: "Paiement", okTot: "Total", okBack: "Retour à l'accueil" },
   ar: { tag: "الطلب", title: "كمّلي الطلب ديالك", s1: "الباك ديالك", s2: "التوصيل", s3: "التوصيل والأداء", s4: "المجموع",
@@ -45,6 +46,7 @@ const P = {
     stockErr: "شي ماسك ما بقاش متوفر بهاد الكمية. بدّلي الباك ديالك.", changed: "الكاتالوج تبدّل: راجعي الباك وعاودي.",
     tooMany: "صيفطتي بزاف ديال الطلبات. عاودي من بعد شي دقايق.",
     emptyTxt: "الباك ديالك ما زال ما كملش.", emptyGo: "كمّلي الباك ديالي",
+    emptyCart: "السلة خاوية.", goPack: "كوّني باك ديال الماسكات", goSoins: "شوفي منتجات العناية", s1b: "الطلب ديالك", soinsT: "منتجات العناية بالوحدة",
     okT: "شكراً، الطلب ديالك تسجّل!", okNum: "رقم الطلب", okNext: "غادي نتاصلو بيك باش نأكدوه.",
     okWho: "الاسم", okTel: "الهاتف", okAddr: "العنوان", okShip: "التوصيل", okPay: "الأداء", okTot: "المجموع", okBack: "رجوع للرئيسية" },
   en: { tag: "CHECKOUT", title: "Complete your order", s1: "Your pack", s2: "Delivery details", s3: "Delivery & payment", s4: "Total",
@@ -62,6 +64,7 @@ const P = {
     stockErr: "A mask is no longer available in that quantity. Please change your pack.", changed: "The catalogue changed: please check your pack and try again.",
     tooMany: "Too many orders sent. Please try again in a few minutes.",
     emptyTxt: "Your pack isn't complete yet.", emptyGo: "Complete my pack",
+    emptyCart: "Your cart is empty.", goPack: "Build a mask pack", goSoins: "See skincare", s1b: "Your order", soinsT: "Skincare (sold individually)",
     okT: "Thank you, your order is registered!", okNum: "Order number", okNext: "We will contact you to confirm it.",
     okWho: "Name", okTel: "Phone", okAddr: "Address", okShip: "Delivery", okPay: "Payment", okTot: "Total", okBack: "Back to home" },
 };
@@ -96,7 +99,7 @@ export default function CheckoutPage() {
 }
 
 function Checkout({ p }) {
-  const { uiLang: lang, catalog, packSize: N, count: n, totals, money, setCartOpen, clearOrder, loadCatalog } = useShop();
+  const { uiLang: lang, catalog, packSize: N, count: n, totals, money, setCartOpen, clearOrder, loadCatalog, canCheckout, packOk, unitProducts } = useShop();
   const { toast, hideToast } = useOverlay();
   const saved = useMemo(loadForm, []);
   const [f, setF] = useState({ name: saved.name || "", phone: saved.phone || "", address: saved.address || "", area: saved.area || "", cityOther: saved.cityOther || "" });
@@ -110,7 +113,7 @@ function Checkout({ p }) {
   const [done, setDone] = useState(null);
   const okRef = useRef(null);
 
-  const full = N && n === N;
+  const full = canCheckout;
   const cityName = c => (lang === "ar" ? c.ar : c.fr);
   const cityLabel = cityKey === "other" ? p.cityOtherOpt : (MA_CITIES.find(c => c.fr === cityKey) ? cityName(MA_CITIES.find(c => c.fr === cityKey)) : "");
   useEffect(() => { if (cityKey) setCityText(cityLabel); }, [cityKey, lang]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -161,8 +164,9 @@ function Checkout({ p }) {
     setBusy(true);
     try {
       const { order } = await api("/api/shop/orders", { method: "POST", body: {
-        lang, packSize: N,
+        lang, packSize: n ? N : null,
         items: totals.items.map(({ x, q }) => ({ productId: x.id, qty: q })),
+        extras: totals.extraItems.map(({ x, q }) => ({ productId: x.id, qty: q })),
         customer: { name: f.name.trim(), phone: f.phone.trim(), address: f.address.trim(),
           city: cityKey === "other" ? f.cityOther.trim() : cityKey, cityIsOther: cityKey === "other", area: f.area.trim() || null },
         shippingMethodId: ship, paymentMethodId: pay,
@@ -185,10 +189,16 @@ function Checkout({ p }) {
   if (done) return <Success p={p} o={done} money={money} okRef={okRef} />;
   if (!full) return (
     <main className="wrap"><section className="sec empty">
-      <Deco k="face" /><p>{p.emptyTxt}</p>
-      <Link className="btnp" to={PATHS[N ? 3 : 2]}>{p.emptyGo}</Link>
+      <Deco k="face" />
+      {!packOk ? <><p>{p.emptyTxt}</p><Link className="btnp" to={PATHS[3]}>{p.emptyGo}</Link></>
+        : <><p>{p.emptyCart}</p><div className="empty-go"><Link className="btnp" to={PATHS[N ? 3 : 2]}>{p.goPack}</Link>
+            {unitProducts.length > 0 && <Link className="btnp alt" to={PATHS.soins}>{p.goSoins}</Link>}</div></>}
     </section></main>
   );
+  const line = ({ x, q }) => (
+    <li key={x.id}><img src={x.images[0]} alt="" />
+      <div className="i"><small>{x.brand}</small><b>{x.name}</b><span className="u">{p.unit} : {x.price == null ? p.tbd : money(x.price)}</span></div>
+      <div className="r"><span className="q">×{q}</span>{x.price != null && <span className="lt">{money(x.price * q)}</span>}</div></li>);
 
   return (
     <>
@@ -196,13 +206,11 @@ function Checkout({ p }) {
         <form id="co" className="co" noValidate onSubmit={submit}>
           <section className="sec" aria-labelledby="h1s">
             <span className="tape ging" />
-            <h2 className="sh2" id="h1s"><span className="n">1</span><span>{p.s1}</span></h2>
-            <p className="note" style={{ margin: "-4px 2px 8px" }}>{p.packLine(n, N)}</p>
-            <ul className="rl">{totals.items.map(({ x, q }) => (
-              <li key={x.id}><img src={x.images[0]} alt="" />
-                <div className="i"><small>{x.brand}</small><b>{x.name}</b><span className="u">{p.unit} : {x.price == null ? p.tbd : money(x.price)}</span></div>
-                <div className="r"><span className="q">×{q}</span>{x.price != null && <span className="lt">{money(x.price * q)}</span>}</div></li>))}
-            </ul>
+            <h2 className="sh2" id="h1s"><span className="n">1</span><span>{n && !totals.extraItems.length ? p.s1 : p.s1b}</span></h2>
+            {n > 0 && <><p className="note" style={{ margin: "-4px 2px 8px" }}>{p.packLine(n, N)}</p>
+              <ul className="rl">{totals.items.map(line)}</ul></>}
+            {totals.extraItems.length > 0 && <><p className="note rl-sec">{p.soinsT}</p>
+              <ul className="rl">{totals.extraItems.map(line)}</ul></>}
             <button type="button" className="editc" onClick={() => setCartOpen(true)}>{svg(PEN)}<span>{p.edit}</span></button>
           </section>
 
@@ -365,9 +373,10 @@ function Success({ p, o, money, okRef }) {
         <p className="num">{p.okNum} : <b>{o.number}</b></p>
         <p className="num">{p.okNext}</p>
         <div className="okd">
-          <ul className="rl">{o.items.map(it => (
-            <li key={it.productId}>{it.image && <img src={it.image} alt="" />}<div className="i"><small>{it.brand}</small><b>{it.name}</b></div>
-              <div className="r"><span className="q">×{it.qty}</span>{it.lineTotal != null && <span className="lt">{money(it.lineTotal)}</span>}</div></li>))}</ul>
+          <ul className="rl">{o.items.map((it, i) => (<Fragment key={i}>
+            {!it.inPack && (i === 0 || o.items[i - 1].inPack) && <li className="rl-sec-li">{p.soinsT}</li>}
+            <li>{it.image && <img src={it.image} alt="" />}<div className="i"><small>{it.brand}</small><b>{it.name}</b></div>
+              <div className="r"><span className="q">×{it.qty}</span>{it.lineTotal != null && <span className="lt">{money(it.lineTotal)}</span>}</div></li></Fragment>))}</ul>
           <dl style={{ marginTop: 14 }}>{rows.map(([a, b], i) => <FragmentRow key={i} a={a} b={b} ltr={i === 1} />)}</dl>
         </div>
         <p style={{ marginTop: 18 }}><Link className="btnp" to="/">{p.okBack}</Link></p>

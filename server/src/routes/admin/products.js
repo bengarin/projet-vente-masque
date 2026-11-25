@@ -18,7 +18,7 @@ function toColumns(d) {
     content_fr: d.contentFr, content_ar: d.contentAr, content_en: d.contentEn,
     highlights_fr: d.highlightsFr, highlights_ar: d.highlightsAr, highlights_en: d.highlightsEn,
     precautions_fr: d.precautionsFr, precautions_ar: d.precautionsAr, precautions_en: d.precautionsEn,
-    pack_mentions: d.packMentions, price: d.price, stock: d.stock, is_active: d.isActive ? 1 : 0,
+    pack_mentions: d.packMentions, price: d.price, stock: d.stock, is_active: d.isActive ? 1 : 0, sale_mode: d.saleMode,
     tape: d.tape, video_url: d.videoUrl, sort_order: d.sortOrder,
   };
 }
@@ -55,14 +55,14 @@ export function productsRouter(cfg) {
     if (q) { where.push("(p.name LIKE ? OR p.brand LIKE ? OR p.slug LIKE ?)"); params.push(`%${q}%`, `%${q}%`, `%${q}%`); }
     if (status !== null) { where.push("p.is_active = ?"); params.push(status); }
     const rows = await query(
-      `SELECT p.id, p.slug, p.brand, p.name, p.price, p.stock, p.is_active, p.sort_order, p.category_id, c.name_fr AS category,
+      `SELECT p.id, p.slug, p.brand, p.name, p.price, p.stock, p.is_active, p.sale_mode, p.sort_order, p.category_id, c.name_fr AS category,
               (SELECT url FROM product_images i WHERE i.product_id = p.id ORDER BY sort_order, id LIMIT 1) AS image,
               (SELECT COUNT(*) FROM order_items oi WHERE oi.product_id = p.id) AS orderLines
          FROM products p LEFT JOIN categories c ON c.id = p.category_id
         ${where.length ? "WHERE " + where.join(" AND ") : ""}
         ORDER BY p.sort_order, p.id`, params);
     res.json({ products: rows.map(p => ({ id: p.id, slug: p.slug, brand: p.brand, name: p.name, price: p.price, stock: p.stock,
-      isActive: !!p.is_active, sortOrder: p.sort_order, categoryId: p.category_id, category: p.category, image: p.image,
+      isActive: !!p.is_active, saleMode: p.sale_mode, sortOrder: p.sort_order, categoryId: p.category_id, category: p.category, image: p.image,
       orderLines: p.orderLines })) });
   });
 

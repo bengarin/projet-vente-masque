@@ -26,6 +26,7 @@ export function mapProductRow(p, images = []) {
     id: p.id,
     slug: p.slug,
     categoryId: p.category_id,
+    saleMode: p.sale_mode || "pack",
     brand: p.brand,
     name: p.name,
     price: p.price,

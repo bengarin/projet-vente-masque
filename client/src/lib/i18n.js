@@ -17,7 +17,8 @@ export const T = {
     need: k => k === 1 ? "Ajoute encore 1 masque pour compléter ton pack." : `Ajoute encore ${k} masques pour compléter ton pack.`,
     choosePack: "Choisis d'abord la taille de ton pack.", ready: "Ton pack est complet ✓",
     keep: "Continuer mes achats", checkout: "Passer au checkout", full: t => `Ton pack contient déjà ${t} masques.`, goPick: "Choisir mes masques",
-    outStock: "Épuisé", noMoreStock: "Plus de stock disponible pour ce masque.",
+    outStock: "Épuisé", noMoreStock: "Plus de stock disponible pour ce produit.",
+    soins: "Soins à l'unité", soinsShort: "Soins", mySoins: "Mes soins", nSoins: n => `${n} soin${n > 1 ? "s" : ""}`, readyAll: "Ton panier est prêt ✓", seeSoins: "Voir les soins",
     loading: "Chargement…", loadErr: "La boutique n'a pas pu être chargée.", retry: "Réessayer",
   },
   ar: {
@@ -30,7 +31,8 @@ export const T = {
     need: k => k === 1 ? "زيدي ماسك واحد باش يكمل الباك." : `زيدي ${k} ماسكات باش يكمل الباك.`,
     choosePack: "اختاري أولاً حجم الباك.", ready: "الباك ديالك كامل ✓",
     keep: "كملي التسوق", checkout: "إتمام الطلب", full: t => `الباك فيه ${t} ماسكات.`, goPick: "اختاري الماسكات",
-    outStock: "نفد المخزون", noMoreStock: "ما بقاش المخزون ديال هاد الماسك.",
+    outStock: "نفد المخزون", noMoreStock: "ما بقاش المخزون ديال هاد المنتج.",
+    soins: "منتجات العناية بالوحدة", soinsShort: "العناية", mySoins: "منتجات العناية ديالي", nSoins: n => `${n} ${n > 1 ? "منتجات" : "منتج"} ديال العناية`, readyAll: "السلة ديالك واجدة ✓", seeSoins: "شوفي منتجات العناية",
     loading: "كيتحمّل…", loadErr: "ما تحمّلش المتجر.", retry: "عاودي",
   },
   en: {
@@ -43,7 +45,8 @@ export const T = {
     need: k => k === 1 ? "Add 1 more mask to complete your pack." : `Add ${k} more masks to complete your pack.`,
     choosePack: "Choose your pack size first.", ready: "Your pack is complete ✓",
     keep: "Continue shopping", checkout: "Go to checkout", full: t => `Your pack already has ${t} masks.`, goPick: "Pick my masks",
-    outStock: "Sold out", noMoreStock: "No more stock for this mask.",
+    outStock: "Sold out", noMoreStock: "No more stock for this product.",
+    soins: "Skincare (sold individually)", soinsShort: "Skincare", mySoins: "My skincare", nSoins: n => `${n} skincare item${n > 1 ? "s" : ""}`, readyAll: "Your cart is ready ✓", seeSoins: "See skincare",
     loading: "Loading…", loadErr: "The shop couldn't be loaded.", retry: "Try again",
   },
 };
