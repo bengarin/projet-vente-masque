@@ -423,7 +423,7 @@ function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
         <div className="pscroll">
           <div className="gwrap">
             <span className={`tape ${x.tape || "ging"}`} /><Deco k="sparks" className="dc gs1" /><Deco k="rays" className="dc gs2" />
-            <div className="sh frame-sh"><Paper torn={5} className="frame"><div className="gal" id="gal">
+            <div className="sh frame-sh"><Paper torn={5} className="frame"><div className="gal" id="gal" onScroll={e => { const g = e.currentTarget; const i = Math.round(Math.abs(g.scrollLeft) / g.clientWidth); if (i !== cur) setCur(i); }}>
               {imgs.map((src, i) => <figure key={i} id={"g" + i}><img src={src} alt={`${x.brand} – ${x.name} · ${p.photo(i + 1)}`} /></figure>)}
             </div></Paper></div>
           </div>

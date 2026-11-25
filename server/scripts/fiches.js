@@ -8,16 +8,20 @@ import { pathToFileURL } from "node:url";
 import mysql from "mysql2/promise";
 import { loadConfig, PROJECT_ROOT } from "../src/config.js";
 
-const FILE = path.join(PROJECT_ROOT, "database", "fiches-produits.sql");
+const FILES = ["fiches-produits.sql", "photos-produits.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
 
 /* Découpe le fichier en blocs « -- fiche: <clé> | <libellé> » + une requête UPDATE */
 async function blocks() {
-  const sql = (await fs.readFile(FILE, "utf8")).replace(/\r\n/g, "\n");   // fichiers Windows (CRLF) acceptés
-  return sql.split(/^-- fiche: /m).slice(1).map(b => {
-    const [head, ...rest] = b.split("\n");
-    const [key, label] = head.split(" | ");
-    return { key: key.trim(), label: (label || "").trim(), sql: rest.join("\n").trim() };
-  });
+  const all = [];
+  for (const file of FILES) {
+    const sql = (await fs.readFile(file, "utf8")).replace(/\r\n/g, "\n");   // fichiers Windows (CRLF) acceptés
+    all.push(...sql.split(/^-- fiche: /m).slice(1).map(b => {
+      const [head, ...rest] = b.split("\n");
+      const [key, label, url] = head.split(" | ");
+      return { key: key.trim(), label: (label || "").trim(), url: url?.trim(), sql: rest.join("\n").trim() };
+    }));
+  }
+  return all;
 }
 
 export async function applyFiches(conn, { quiet = false } = {}) {
@@ -26,13 +30,21 @@ export async function applyFiches(conn, { quiet = false } = {}) {
   const results = [];
   for (const b of await blocks()) {
     const [r] = await conn.query(b.sql);
+    if (b.key.startsWith("photo-")) {          // photo : ajoutée maintenant, ou déjà présente ?
+      const [[{ n: present }]] = await conn.query("SELECT COUNT(*) AS n FROM product_images WHERE url = ?", [b.url]);
+      results.push({ ...b, matched: present, changed: r.affectedRows });
+      continue;
+    }
     const matched = Number(/Rows matched:\s*(\d+)/i.exec(r.info || "")?.[1] ?? r.affectedRows);
     results.push({ ...b, matched, changed: r.changedRows ?? r.affectedRows });
   }
   if (!quiet) {
     console.log("\nFiches produit :");
     for (const r of results.filter(r => !r.key.includes("-mentions"))) {
-      const state = r.matched === 0 ? "INTROUVABLE dans la base" : r.changed ? `complétée (${r.matched} produit(s))` : `déjà à jour (${r.matched} produit(s))`;
+      if (r.key.startsWith("photo-") && r.key.endsWith("-1") && !results.some(x => x.key.startsWith("photo-") && results.indexOf(x) < results.indexOf(r))) console.log("\nPhotos d'ambiance :");
+      const state = r.matched === 0 ? "INTROUVABLE dans la base"
+        : r.key.startsWith("photo-") ? (r.changed ? "ajoutée" : "déjà présente")
+        : r.changed ? `complétée (${r.matched} produit(s))` : `déjà à jour (${r.matched} produit(s))`;
       console.log(`  ${r.matched ? "✔" : "✖"} ${r.label.padEnd(62)} ${state}`);
     }
     if (results.some(r => !r.matched && !r.key.includes("-mentions"))) {
@@ -47,18 +59,19 @@ export async function report(conn) {
   const rows = await conn.query(`SELECT id, slug, brand, name,
       description_fr, description_ar, description_en, product_type_fr, product_type_ar, product_type_en,
       content_fr, content_ar, content_en, highlights_fr, highlights_ar, highlights_en,
-      usage_fr, usage_ar, usage_en, precautions_fr, precautions_ar, precautions_en, pack_mentions
+      usage_fr, usage_ar, usage_en, precautions_fr, precautions_ar, precautions_en, pack_mentions,
+      (SELECT COUNT(*) FROM product_images i WHERE i.product_id = products.id) AS photos
     FROM products ORDER BY sort_order, id`).then(r => r[0]);
   const f = v => (v && String(v).trim() ? "oui" : "—");
   const tri = (p, base) => ["fr", "ar", "en"].map(l => f(p[`${base}_${l}`])).join("/");
   console.log("\nContenu en base (FR/AR/EN) — « — » = vide, affiché « Information à confirmer » :");
   const W = 11;
-  console.log("  " + ["Produit (identifiant)".padEnd(46), "Description", "Type".padEnd(W), "Contenance".padEnd(W), "Points clés", "Texte imprimé", "Mode d'emploi", "Précautions"].join(" | "));
+  console.log("  " + ["Produit (identifiant)".padEnd(46), "Description", "Type".padEnd(W), "Contenance".padEnd(W), "Points clés", "Texte imprimé", "Mode d'emploi", "Précautions", "Photos"].join(" | "));
   for (const p of rows) {
     const id = ` (${p.slug})`, full = `${p.brand} — ${p.name}`;
     const nm = (full.length + id.length > 46 ? full.slice(0, 45 - id.length) + "…" : full) + id;
     console.log("  " + [nm.padEnd(46), tri(p, "description").padEnd(W), tri(p, "product_type").padEnd(W), tri(p, "content").padEnd(W),
-      tri(p, "highlights").padEnd(W), f(p.pack_mentions).padEnd(13), tri(p, "usage").padEnd(13), tri(p, "precautions")].join(" | "));
+      tri(p, "highlights").padEnd(W), f(p.pack_mentions).padEnd(13), tri(p, "usage").padEnd(13), tri(p, "precautions").padEnd(11), String(p.photos)].join(" | "));
   }
   console.log("\nMode d'emploi et précautions : non visibles sur les photos des emballages → volontairement vides (rien n'est inventé).");
 }
