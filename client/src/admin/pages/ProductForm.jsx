@@ -101,7 +101,7 @@ export default function ProductForm() {
 
           <Card title="Description" icon="note" actions={<Tabs small label="Langue de la description" tabs={langTabs("description")} value={descLang} onChange={setDescLang} />}>
             {LANGS.map(([k, l]) => k === descLang && (
-              <Field key={k} label={`Description — ${l}`} error={errs["description" + k]} hint="Laisse vide si l'information n'est pas vérifiée : la boutique affichera « Information non fournie ».">
+              <Field key={k} label={`Description — ${l}`} error={errs["description" + k]} hint="Laisse vide si l'information n'est pas vérifiée : la boutique affichera « Information à confirmer ».">
                 <textarea rows={6} dir={k === "Ar" ? "rtl" : undefined} {...fp("description" + k)} /></Field>))}
           </Card>
 
@@ -136,7 +136,7 @@ export default function ProductForm() {
           </Card>
 
           <Card title="Prix et stock" icon="money">
-            <Field label="Prix unitaire" error={errs.price} hint="Vide = « Prix à renseigner » (non commandable sans prix de pack fixe).">
+            <Field label="Prix unitaire" error={errs.price} hint="Vide = « Prix pas encore défini » (non commandable sans prix de pack fixe).">
               <span className="a-input-wrap a-has-suffix"><input inputMode="decimal" {...fp("price")} placeholder="ex. 25,50" /><span className="a-suffix">{cur}</span></span></Field>
             <Field label="Stock" error={errs.stock} hint="Vide = non suivi (pas de limite). Un nombre = décompté à chaque commande.">
               <input inputMode="numeric" {...fp("stock")} placeholder="Non suivi" /></Field>

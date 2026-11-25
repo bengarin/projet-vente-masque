@@ -11,6 +11,7 @@
     "db:migrate": "npm run db:migrate --prefix server",
     "db:seed": "npm run db:seed --prefix server",
     "create-admin": "npm run create-admin --prefix server",
-    "test": "npm test --prefix server"
+    "test": "npm test --prefix server",
+    "db:fiches": "npm run db:fiches --prefix server"
   }
 }

@@ -4,7 +4,7 @@ Rédigées **uniquement** à partir des textes lisibles sur les photos des embal
 Les phrases de la marque sont citées entre « » et attribuées (« selon la marque », « texte de la marque »). Aucune promesse médicale, aucun résultat garanti.
 Prix, stock et photos : **non modifiés**.
 
-Source des textes : `database/fiches-produits.sql` (appliqué par `npm run db:seed`, ne remplit que les champs vides).
+Source des textes : `database/fiches-produits.sql`, appliqué automatiquement par `npm run db:migrate` et `npm run db:seed`, et à la demande par `npm run db:fiches` (avec compte rendu). Ne remplit que les champs vides ; reconnaît le produit par identifiant, marque + nom, ou photo d'origine.
 Modifiable ensuite dans l'admin : **Produits → fiche → « Fiche détaillée »** (onglets FR / AR / EN).
 
 ## Les 6 produits traités
