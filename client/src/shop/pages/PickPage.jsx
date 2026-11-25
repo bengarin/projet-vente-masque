@@ -13,7 +13,7 @@ import "../../styles/pg-pick.css";
 
 const P = {
   fr: { title: <>Compose ton <span className="hl">pack</span> !</>, sub: "Choisis tes masques préférés", hint: "Tu peux choisir plusieurs fois le même masque.",
-    add: "Ajouter", remove: "Retirer un", tbd: "Prix à renseigner", details: "Voir la fiche", more: "Voir plus",
+    add: "Ajouter", remove: "Retirer un", tbd: "Prix pas encore défini", details: "Voir la fiche", more: "Voir plus",
     prog: (n, t) => `${iso(n + "/" + t)} masques choisis`, left: k => (k === 0 ? "Pack complet ✓" : `Encore ${k} à choisir`),
     mine: (n, t) => `Mon pack : ${iso(n + "/" + t)}`, cta: "Ajouter au panier", toastFull: "Ton pack est complet !",
     empty: "Vide", removeOne: "Retirer ce masque", sheetTag: "Fiche produit", photo: n => `Photo ${n}`,
@@ -24,7 +24,7 @@ const P = {
     swapGo: "Remplacer ce masque", swapPick: "Touche un masque ci-dessus", swapped: (a, b) => `${a} remplacé par ${b}`, swapAria: n => `Remplacer un masque par ${n}`,
     noProducts: "Aucun masque n'est disponible pour le moment." },
   ar: { title: <>كوّني <span className="hl">الباك</span> ديالك!</>, sub: "اختاري الماسكات المفضلة عندك", hint: "تقدري تختاري نفس الماسك أكثر من مرة.",
-    add: "إضافة", remove: "نقص واحد", tbd: "الثمن: يُحدَّد", details: "شوفي التفاصيل", more: "شوفي المزيد",
+    add: "إضافة", remove: "نقص واحد", tbd: "الثمن ما زال ما تحدّدش", details: "شوفي التفاصيل", more: "شوفي المزيد",
     prog: (n, t) => `${iso(n + "/" + t)} ماسكات مختارة`, left: k => (k === 0 ? "الباك كامل ✓" : `باقي ${k} للاختيار`),
     mine: (n, t) => `الباك ديالي: ${iso(n + "/" + t)}`, cta: "أضيفي للسلة", toastFull: "الباك ديالك كامل!",
     empty: "فارغ", removeOne: "حيدي هاد الماسك", sheetTag: "بطاقة المنتج", photo: n => `صورة ${n}`,
@@ -35,7 +35,7 @@ const P = {
     swapGo: "بدّلي هاد الماسك", swapPick: "اختاري ماسك من الفوق", swapped: (a, b) => `تبدّل ${a} بـ ${b}`, swapAria: n => `بدّلي ماسك بـ ${n}`,
     noProducts: "ما كاين حتى ماسك متوفر دابا." },
   en: { title: <>Build your <span className="hl">pack</span>!</>, sub: "Pick your favourite masks", hint: "You can pick the same mask more than once.",
-    add: "Add", remove: "Remove one", tbd: "Price to be set", details: "View details", more: "See more",
+    add: "Add", remove: "Remove one", tbd: "Price not set yet", details: "View details", more: "See more",
     prog: (n, t) => `${iso(n + "/" + t)} masks selected`, left: k => (k === 0 ? "Pack complete ✓" : `${k} more to pick`),
     mine: (n, t) => `My pack: ${iso(n + "/" + t)}`, cta: "Add to cart", toastFull: "Your pack is complete!",
     empty: "Empty", removeOne: "Remove this mask", sheetTag: "Product details", photo: n => `Photo ${n}`,
@@ -290,7 +290,7 @@ function Picker({ p }) {
                     <span className="brandp">{x.brand}</span>
                     <span className="name" title={x.name}>{x.name}</span>
                   </button>
-                  <div className={`price${x.price == null ? " tbd" : ""}`}>{x.price == null ? p.tbd : money(x.price)}</div>
+                  <div className="pricerow">{x.price == null ? <span className="price tbd">{p.tbd}</span> : <span className="price">{money(x.price)}</span>}</div>
                   <button className="vplus" type="button" aria-label={`${p.more} – ${x.brand} ${x.name}`} aria-haspopup="dialog" onClick={() => setPmId(x.id)}>
                     <span className="vtxt">{p.more}</span><span className="varr" aria-hidden="true">→</span><Deco k="sparks" className="dc vs" />
                   </button>
@@ -420,7 +420,7 @@ function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
             <h2 className="pname" id="pmName">{x.name}</h2>
             <div className={`pprice${x.price == null ? " tbd" : ""}`}>{x.price == null ? p.tbd : money(x.price)}</div>
           </section>
-          {info && card("pi", "info", p.info, <p className="ptext">{info}</p>)}
+          {card("pi", "info", p.info, info ? <p className="ptext">{info}</p> : <p className="missingf">{p.notGiven}</p>)}
           {x.pack?.length > 0 && card("pk", "pack", p.packText, <><ul className="checks">{x.pack.map((l, i) => <li key={i}>{l}</li>)}</ul><p className="orig">{p.packNote}</p></>)}
           {card("pu", "use", p.usage, usage ? <p className="ptext">{usage}</p> : <p className="missingf">{p.notGiven}</p>)}
           {x.video && card("pv", "video", p.video, isFile
