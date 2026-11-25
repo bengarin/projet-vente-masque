@@ -3,7 +3,12 @@ import { query } from "../db.js";
 
 export const LANGS = ["fr", "ar", "en"];
 const tr = (row, base) => ({ fr: row[`${base}_fr`] || null, ar: row[`${base}_ar`] || null, en: row[`${base}_en`] || null });
-const anyTr = o => (o.fr || o.ar || o.en ? o : null);
+const anyTr = o => {
+  const has = v => (Array.isArray(v) ? v.length > 0 : !!v);
+  return has(o.fr) || has(o.ar) || has(o.en) ? o : null;
+};
+/* « un élément par ligne » → liste (vide = null) */
+const lines = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, v ? v.split("\n").map(x => x.trim()).filter(Boolean) : null]));
 
 export async function getSettings(q = query) {
   const rows = await q("SELECT `key`, `value` FROM settings");
@@ -30,6 +35,10 @@ export function mapProductRow(p, images = []) {
     video: p.video_url || null,
     info: anyTr(tr(p, "description")),
     usage: anyTr(tr(p, "usage")),
+    type: anyTr(tr(p, "product_type")),
+    content: anyTr(tr(p, "content")),
+    highlights: anyTr(lines(tr(p, "highlights"))),
+    precautions: anyTr(tr(p, "precautions")),
     pack: p.pack_mentions ? p.pack_mentions.split("\n").map(s => s.trim()).filter(Boolean) : [],
     images,
   };

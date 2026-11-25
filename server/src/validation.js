@@ -45,6 +45,10 @@ export const productInput = z.object({
   name: text(255, 1),
   descriptionFr: optText(5000), descriptionAr: optText(5000), descriptionEn: optText(5000),
   usageFr: optText(5000), usageAr: optText(5000), usageEn: optText(5000),
+  typeFr: optText(200), typeAr: optText(200), typeEn: optText(200),
+  contentFr: optText(200), contentAr: optText(200), contentEn: optText(200),
+  highlightsFr: optText(5000), highlightsAr: optText(5000), highlightsEn: optText(5000),
+  precautionsFr: optText(5000), precautionsAr: optText(5000), precautionsEn: optText(5000),
   packMentions: optText(5000),
   price: optMoney,
   // null/"" testés EN PREMIER : sinon z.coerce transforme null en 0 (stock « épuisé » au lieu de « non suivi »)

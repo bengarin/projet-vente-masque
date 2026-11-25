@@ -7,13 +7,17 @@ import { Ic } from "../icons.jsx";
 const TAPES = [["ging", "Vichy jaune"], ["dots", "Pois lavande"], ["grid", "Quadrillé bleu"], ["ydots", "Pois jaunes"], ["checkl", "Damier lavande"], ["check", "Damier bleu"]];
 const LANGS = [["Fr", "Français"], ["Ar", "العربية"], ["En", "English"]];
 const EMPTY = { brand: "", name: "", slug: "", categoryId: "", price: "", stock: "", isActive: true, tape: "ging", videoUrl: "", sortOrder: 0,
-  descriptionFr: "", descriptionAr: "", descriptionEn: "", usageFr: "", usageAr: "", usageEn: "", packMentions: "" };
+  descriptionFr: "", descriptionAr: "", descriptionEn: "", usageFr: "", usageAr: "", usageEn: "", packMentions: "",
+  typeFr: "", typeAr: "", typeEn: "", contentFr: "", contentAr: "", contentEn: "",
+  highlightsFr: "", highlightsAr: "", highlightsEn: "", precautionsFr: "", precautionsAr: "", precautionsEn: "" };
+const SHEET_KEYS = ["type", "content", "highlights", "precautions"];
 
 const fromProduct = p => ({
   brand: p.brand, name: p.name, slug: p.slug, categoryId: p.categoryId ?? "", price: numStr(p.price), stock: numStr(p.stock),
   isActive: p.isActive, tape: p.tape, videoUrl: p.raw.videoUrl || "", sortOrder: p.raw.sortOrder,
   descriptionFr: p.raw.descriptionFr || "", descriptionAr: p.raw.descriptionAr || "", descriptionEn: p.raw.descriptionEn || "",
   usageFr: p.raw.usageFr || "", usageAr: p.raw.usageAr || "", usageEn: p.raw.usageEn || "", packMentions: p.raw.packMentions || "",
+  ...Object.fromEntries(SHEET_KEYS.flatMap(k => ["Fr", "Ar", "En"].map(l => [k + l, p.raw[k + l] || ""]))),
 });
 
 /* Vérification rapide côté navigateur (le serveur revérifie tout) */
@@ -43,6 +47,7 @@ export default function ProductForm() {
   const [flash, setFlash] = useFlash();
   const [descLang, setDescLang] = useState("Fr");
   const [useLang, setUseLang] = useState("Fr");
+  const [sheetLang, setSheetLang] = useState("Fr");
   const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
@@ -98,6 +103,20 @@ export default function ProductForm() {
             {LANGS.map(([k, l]) => k === descLang && (
               <Field key={k} label={`Description — ${l}`} error={errs["description" + k]} hint="Laisse vide si l'information n'est pas vérifiée : la boutique affichera « Information non fournie ».">
                 <textarea rows={6} dir={k === "Ar" ? "rtl" : undefined} {...fp("description" + k)} /></Field>))}
+          </Card>
+
+          <Card title="Fiche détaillée" icon="info" actions={<Tabs small label="Langue de la fiche" value={sheetLang} onChange={setSheetLang}
+            tabs={LANGS.map(([k, l]) => ({ id: k, label: l, dot: SHEET_KEYS.some(b => f[b + k].trim()), error: SHEET_KEYS.some(b => errs[b + k]) }))} />}>
+            <p className="a-help"><Ic n="info" size={15} />Uniquement des informations lisibles sur l'emballage. Laisse vide si ce n'est pas confirmé : la boutique affichera « Information à confirmer ».</p>
+            {LANGS.map(([k, l]) => k === sheetLang && (
+              <div key={k}>
+                <div className="a-fgrid">
+                  <Field label={`Type de produit — ${l}`} error={errs["type" + k]} hint="Ex. Masque en tissu"><input dir={k === "Ar" ? "rtl" : undefined} maxLength={200} {...fp("type" + k)} /></Field>
+                  <Field label={`Contenance — ${l}`} error={errs["content" + k]} hint="Telle qu'imprimée, ex. 22 g / 0.73 fl.oz"><input dir={k === "Ar" ? "rtl" : undefined} maxLength={200} {...fp("content" + k)} /></Field>
+                </div>
+                <Field label={`Points clés — ${l}`} error={errs["highlights" + k]} hint="Un point par ligne. Cite les phrases de la marque entre « »."><textarea rows={5} dir={k === "Ar" ? "rtl" : undefined} {...fp("highlights" + k)} /></Field>
+                <Field label={`Précautions — ${l}`} error={errs["precautions" + k]} hint="Seulement si elles sont imprimées sur l'emballage."><textarea rows={3} dir={k === "Ar" ? "rtl" : undefined} {...fp("precautions" + k)} /></Field>
+              </div>))}
           </Card>
 
           <Card title="Mode d'emploi" icon="layers" actions={<Tabs small label="Langue du mode d'emploi" tabs={langTabs("usage")} value={useLang} onChange={setUseLang} />}>

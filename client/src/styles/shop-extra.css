@@ -7,3 +7,36 @@
 .pg-pick .cursel,.pg-pack .cursel{margin:18px auto 0;width:max-content;max-width:100%;text-align:center;background:var(--grain),#fff;padding:6px 14px 8px;border-radius:10px;font-size:15px;color:var(--navy);box-shadow:0 3px 0 var(--lav2)}
 /* Marques affichées dans leur orthographe exacte partout (panier, commande, fiche, remplacement) */
 .line .info small,.pg-co .rl small,.pg-pick .swn small,.pbrand{text-transform:none!important;letter-spacing:.1px}
+
+/* ===== Fiche produit détaillée ===== */
+.pmodal .ptype{margin:0;font-size:15px;font-weight:700;color:var(--muted);line-height:1.35;unicode-bidi:plaintext;text-align:start}
+[dir=rtl] .pmodal .ptype{text-align:right}
+.pmodal .pcontent{font-weight:600;white-space:nowrap}
+.pmodal .phl{background:var(--grain),#FFFBEA;box-shadow:0 3px 0 var(--yel2)}
+.pmodal .phl h3 .ico{background:var(--yel)}
+.hlist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.hlist li{position:relative;padding-inline-start:30px;font-size:15.5px;font-weight:600;line-height:1.45;color:var(--navy);unicode-bidi:plaintext;text-align:start}
+[dir=rtl] .hlist li{text-align:right}
+.hlist li::before{content:"";position:absolute;inset-inline-start:0;top:2px;width:20px;height:20px;border-radius:50%;
+  background:var(--cob) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E") center/12px no-repeat}
+.pmodal .ptext{font-size:15.5px;line-height:1.6;color:var(--ink);font-weight:500}
+.specs{display:grid;grid-template-columns:minmax(90px,auto) minmax(0,1fr);gap:0;margin:0}
+.specs dt,.specs dd{padding:9px 0;border-bottom:1.5px dashed var(--lav);margin:0;font-size:14.5px;line-height:1.35}
+.specs dt{font-weight:800;color:var(--lav3);padding-inline-end:12px}
+.specs dd{font-weight:700;color:var(--navy);overflow-wrap:anywhere;unicode-bidi:plaintext;text-align:start}
+[dir=rtl] .specs dd{text-align:right}
+.specs dt:nth-last-of-type(1),.specs dd:last-child{border-bottom:0}
+.specs dd.tbc{color:var(--muted);font-weight:600;font-style:italic}
+[dir=rtl] .specs dd.tbc{font-style:normal}
+.pmodal .missingf{display:flex;align-items:center;gap:8px;margin:0}
+.pmodal .missingf::before{content:"?";flex:0 0 auto;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--lav);color:var(--lav3);font-weight:800;font-size:13px}
+details.pk{padding:0}
+details.pk>summary{display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;list-style:none;font-weight:800;color:var(--navy);font-size:16px}
+details.pk>summary::-webkit-details-marker{display:none}
+details.pk>summary::after{content:"";margin-inline-start:auto;width:10px;height:10px;border-right:2.5px solid var(--cob);border-bottom:2.5px solid var(--cob);transform:rotate(45deg);transition:transform .2s}
+details.pk[open]>summary::after{transform:rotate(-135deg)}
+details.pk>summary .ico{flex:0 0 auto;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--yel);color:var(--navy)}
+details.pk>summary .ico svg{width:20px;height:20px}
+details.pk>ul,details.pk>.orig{padding:0 14px}
+details.pk>.orig{padding-bottom:12px}
+.pdisclaimer{margin:16px 4px 0;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.45}

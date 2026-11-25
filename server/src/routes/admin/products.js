@@ -14,6 +14,10 @@ function toColumns(d) {
     category_id: d.categoryId, brand: d.brand, name: d.name,
     description_fr: d.descriptionFr, description_ar: d.descriptionAr, description_en: d.descriptionEn,
     usage_fr: d.usageFr, usage_ar: d.usageAr, usage_en: d.usageEn,
+    product_type_fr: d.typeFr, product_type_ar: d.typeAr, product_type_en: d.typeEn,
+    content_fr: d.contentFr, content_ar: d.contentAr, content_en: d.contentEn,
+    highlights_fr: d.highlightsFr, highlights_ar: d.highlightsAr, highlights_en: d.highlightsEn,
+    precautions_fr: d.precautionsFr, precautions_ar: d.precautionsAr, precautions_en: d.precautionsEn,
     pack_mentions: d.packMentions, price: d.price, stock: d.stock, is_active: d.isActive ? 1 : 0,
     tape: d.tape, video_url: d.videoUrl, sort_order: d.sortOrder,
   };
@@ -33,6 +37,10 @@ async function getProduct(id) {
   return { ...p, raw: {
     descriptionFr: row.description_fr, descriptionAr: row.description_ar, descriptionEn: row.description_en,
     usageFr: row.usage_fr, usageAr: row.usage_ar, usageEn: row.usage_en, packMentions: row.pack_mentions,
+    typeFr: row.product_type_fr, typeAr: row.product_type_ar, typeEn: row.product_type_en,
+    contentFr: row.content_fr, contentAr: row.content_ar, contentEn: row.content_en,
+    highlightsFr: row.highlights_fr, highlightsAr: row.highlights_ar, highlightsEn: row.highlights_en,
+    precautionsFr: row.precautions_fr, precautionsAr: row.precautions_ar, precautionsEn: row.precautions_en,
     sortOrder: row.sort_order, videoUrl: row.video_url,
   }, createdAt: row.created_at, updatedAt: row.updated_at };
 }

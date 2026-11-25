@@ -67,7 +67,7 @@ npm run db:seed
 ```
 
 - `db:migrate` crée toutes les tables (fichiers `database/migrations/*.sql`, suivis dans la table `schema_migrations` : on peut le relancer sans risque).
-- `db:seed` ajoute les 6 masques de l'ancienne version (marque, nom, mentions d'emballage, photo), la catégorie « Masques en tissu » et les tailles de pack 3 / 4 / 6 — **sans prix ni stock**.
+- `db:seed` ajoute les 6 masques de l'ancienne version (marque, nom, mentions d'emballage, photo), la catégorie « Masques en tissu » et les tailles de pack 3 / 4 / 6 — **sans prix ni stock** — puis complète leurs fiches détaillées FR / AR / EN (`database/fiches-produits.sql`, voir `docs/fiches-produits.md`). Relancer `db:seed` ne crée aucun doublon et n'écrase jamais un champ déjà rempli.
 
 ## 6. Créer le premier compte administrateur
 

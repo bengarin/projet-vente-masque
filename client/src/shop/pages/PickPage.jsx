@@ -18,7 +18,10 @@ const P = {
     mine: (n, t) => `Mon pack : ${iso(n + "/" + t)}`, cta: "Ajouter au panier", toastFull: "Ton pack est complet !",
     empty: "Vide", removeOne: "Retirer ce masque", sheetTag: "Fiche produit", photo: n => `Photo ${n}`,
     packText: "Mentions imprimées sur l'emballage", packNote: "Recopiées telles quelles, dans la langue de l'emballage.",
-    info: "Description", usage: "Mode d'emploi", video: "Vidéo", notGiven: "Information non fournie pour l'instant.",
+    info: "Description", usage: "Mode d'emploi", video: "Vidéo", notGiven: "Information à confirmer",
+    hl: "Ce qu'indique l'emballage", hlNote: "Les phrases de la marque sont citées telles qu'imprimées.", specs: "Fiche technique",
+    sBrand: "Marque", sName: "Nom du produit", sType: "Type", sContent: "Contenance", precautions: "Précautions",
+    packMore: "Voir le texte original de l'emballage", disclaimer: "Informations reprises de l'emballage du produit. En cas de différence, l'emballage fait foi.",
     backTo: "Retour à mon pack", edit: "Modifier le pack", added: "Pack ajouté au panier ✓", addedBtn: "Ajouté",
     swapT: "Ton pack est complet !", swap: "Tu veux ajouter :", swapWhich: "Choisis le masque à remplacer :", swapCancel: "Annuler",
     swapGo: "Remplacer ce masque", swapPick: "Touche un masque ci-dessus", swapped: (a, b) => `${a} remplacé par ${b}`, swapAria: n => `Remplacer un masque par ${n}`,
@@ -29,7 +32,10 @@ const P = {
     mine: (n, t) => `الباك ديالي: ${iso(n + "/" + t)}`, cta: "أضيفي للسلة", toastFull: "الباك ديالك كامل!",
     empty: "فارغ", removeOne: "حيدي هاد الماسك", sheetTag: "بطاقة المنتج", photo: n => `صورة ${n}`,
     packText: "المكتوب على العلبة", packNote: "منقول كما هو، بلغة العلبة.",
-    info: "الوصف", usage: "طريقة الاستعمال", video: "فيديو", notGiven: "المعلومة ما زال ما تعطاتش.",
+    info: "الوصف", usage: "طريقة الاستعمال", video: "فيديو", notGiven: "معلومة في انتظار التأكيد",
+    hl: "ما يذكره الغلاف", hlNote: "عبارات العلامة منقولة كما هي مطبوعة.", specs: "البطاقة التقنية",
+    sBrand: "العلامة", sName: "اسم المنتج", sType: "النوع", sContent: "الكمية", precautions: "احتياطات الاستعمال",
+    packMore: "عرض النص الأصلي للغلاف", disclaimer: "المعلومات مأخوذة من غلاف المنتج. في حال وجود أي اختلاف، يُعتمد ما هو مكتوب على الغلاف.",
     backTo: "رجوع للباك ديالي", edit: "بدّلي الباك", added: "الباك تزاد للسلة ✓", addedBtn: "تزاد",
     swapT: "الباك ديالك كامل!", swap: "بغيتي تزيدي:", swapWhich: "اختاري الماسك اللي غادي تبدّلي:", swapCancel: "إلغاء",
     swapGo: "بدّلي هاد الماسك", swapPick: "اختاري ماسك من الفوق", swapped: (a, b) => `تبدّل ${a} بـ ${b}`, swapAria: n => `بدّلي ماسك بـ ${n}`,
@@ -40,7 +46,10 @@ const P = {
     mine: (n, t) => `My pack: ${iso(n + "/" + t)}`, cta: "Add to cart", toastFull: "Your pack is complete!",
     empty: "Empty", removeOne: "Remove this mask", sheetTag: "Product details", photo: n => `Photo ${n}`,
     packText: "Printed on the packaging", packNote: "Copied as printed, in the packaging's language.",
-    info: "Description", usage: "How to use", video: "Video", notGiven: "Not provided yet.",
+    info: "Description", usage: "How to use", video: "Video", notGiven: "Information to be confirmed",
+    hl: "What the packaging says", hlNote: "Brand phrases are quoted as printed.", specs: "Product details",
+    sBrand: "Brand", sName: "Product name", sType: "Type", sContent: "Contents", precautions: "Precautions",
+    packMore: "See the original packaging text", disclaimer: "Information taken from the product packaging. If anything differs, the packaging prevails.",
     backTo: "Back to my pack", edit: "Change pack", added: "Pack added to cart ✓", addedBtn: "Added",
     swapT: "Your pack is complete!", swap: "You want to add:", swapWhich: "Choose the mask to replace:", swapCancel: "Cancel",
     swapGo: "Replace this mask", swapPick: "Tap a mask above", swapped: (a, b) => `${a} replaced with ${b}`, swapAria: n => `Replace a mask with ${n}`,
@@ -55,6 +64,9 @@ const IC = {
   use: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></svg>',
   info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
   video: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.5 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>',
+  spec: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M8 8.5h8M8 12.5h8M8 16.5h5"/></svg>',
+  warn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.3v.2"/></svg>',
 };
 const svg = html => <span style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: html }} />;
 
@@ -392,7 +404,11 @@ function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
     const o = opener.current;
     return () => { document.removeEventListener("keydown", key); if (o && document.contains(o)) o.focus(); };
   }, [onClose]);
-  const info = tr(x.info, lang) || null, usage = tr(x.usage, lang) || null;
+  const info = tr(x.info, lang) || null, usage = tr(x.usage, lang) || null, precautions = tr(x.precautions, lang) || null;
+  const type = tr(x.type, lang) || null, content = tr(x.content, lang) || null;
+  const highlights = (x.highlights && (x.highlights[lang] || x.highlights.fr)) || [];
+  const missing = <p className="missingf">{p.notGiven}</p>;
+  const val = v => (v ? <dd>{v}</dd> : <dd className="tbc">{p.notGiven}</dd>);
   const card = (cls, ico, title, body) => <section className={`pcard ${cls}`}><h3><span className="ico">{svg(IC[ico])}</span>{title}</h3>{body}</section>;
   const isFile = x.video && /\.(mp4|webm|mov)(\?|$)/i.test(x.video);
   const imgs = x.images.length ? x.images : ["/images/deco/visage-masque.webp"];
@@ -418,14 +434,25 @@ function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
           <section className="pid">
             <span className="pbrand">{x.brand}</span>
             <h2 className="pname" id="pmName">{x.name}</h2>
+            {type && <p className="ptype">{type}{content && <span className="pcontent"> · {content}</span>}</p>}
             <div className={`pprice${x.price == null ? " tbd" : ""}`}>{x.price == null ? p.tbd : money(x.price)}</div>
           </section>
-          {card("pi", "info", p.info, info ? <p className="ptext">{info}</p> : <p className="missingf">{p.notGiven}</p>)}
-          {x.pack?.length > 0 && card("pk", "pack", p.packText, <><ul className="checks">{x.pack.map((l, i) => <li key={i}>{l}</li>)}</ul><p className="orig">{p.packNote}</p></>)}
-          {card("pu", "use", p.usage, usage ? <p className="ptext">{usage}</p> : <p className="missingf">{p.notGiven}</p>)}
+          {highlights.length > 0 && card("phl", "star", p.hl, <><ul className="hlist">{highlights.map((l, i) => <li key={i}>{l}</li>)}</ul><p className="orig">{p.hlNote}</p></>)}
+          {card("pi", "info", p.info, info ? <p className="ptext">{info}</p> : missing)}
+          {card("pspec", "spec", p.specs, <dl className="specs">
+            <dt>{p.sBrand}</dt><dd className="latin">{x.brand}</dd>
+            <dt>{p.sName}</dt><dd className="latin">{x.name}</dd>
+            <dt>{p.sType}</dt>{val(type)}
+            <dt>{p.sContent}</dt>{val(content)}
+          </dl>)}
+          {card("pu", "use", p.usage, usage ? <p className="ptext">{usage}</p> : missing)}
+          {card("pw", "warn", p.precautions, precautions ? <p className="ptext">{precautions}</p> : missing)}
+          {x.pack?.length > 0 && <details className="pcard pk"><summary><span className="ico">{svg(IC.pack)}</span>{p.packMore}</summary>
+            <ul className="checks" lang="mul">{x.pack.map((l, i) => <li key={i}>{l}</li>)}</ul><p className="orig">{p.packNote}</p></details>}
           {x.video && card("pv", "video", p.video, isFile
             ? <video className="pvideo" src={x.video} controls playsInline preload="metadata" />
             : <a className="more" href={x.video} target="_blank" rel="noopener noreferrer">{p.video} ↗</a>)}
+          <p className="pdisclaimer">{p.disclaimer}</p>
         </div>
         <div className="pfoot">
           <Paper torn={6} sides="t" className="bg lav" />
