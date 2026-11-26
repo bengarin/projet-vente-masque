@@ -5,3 +5,130 @@
 .outst{position:absolute;bottom:6px;inset-inline-start:6px;padding:2px 10px;border-radius:999px;background:#B3261E;color:#fff;font-size:12.5px;font-weight:800}
 .ptext{white-space:pre-line}
 .pg-pick .cursel,.pg-pack .cursel{margin:18px auto 0;width:max-content;max-width:100%;text-align:center;background:var(--grain),#fff;padding:6px 14px 8px;border-radius:10px;font-size:15px;color:var(--navy);box-shadow:0 3px 0 var(--lav2)}
+/* Marques affichées dans leur orthographe exacte partout (panier, commande, fiche, remplacement) */
+.line .info small,.pg-co .rl small,.pg-pick .swn small,.pbrand{text-transform:none!important;letter-spacing:.1px}
+
+/* ===== Fiche produit détaillée ===== */
+.pmodal .ptype{margin:0;font-size:15px;font-weight:700;color:var(--muted);line-height:1.35;unicode-bidi:plaintext;text-align:start}
+[dir=rtl] .pmodal .ptype{text-align:right}
+.pmodal .pcontent{font-weight:600;white-space:nowrap}
+.pmodal .phl{background:var(--grain),#FFFBEA;box-shadow:0 3px 0 var(--yel2)}
+.pmodal .phl h3 .ico{background:var(--yel)}
+.hlist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.hlist li{position:relative;padding-inline-start:30px;font-size:15.5px;font-weight:600;line-height:1.45;color:var(--navy);unicode-bidi:plaintext;text-align:start}
+[dir=rtl] .hlist li{text-align:right}
+.hlist li::before{content:"";position:absolute;inset-inline-start:0;top:2px;width:20px;height:20px;border-radius:50%;
+  background:var(--cob) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4L18 8'/%3E%3C/svg%3E") center/12px no-repeat}
+.pmodal .ptext{font-size:15.5px;line-height:1.6;color:var(--ink);font-weight:500}
+.specs{display:grid;grid-template-columns:minmax(90px,auto) minmax(0,1fr);gap:0;margin:0}
+.specs dt,.specs dd{padding:9px 0;border-bottom:1.5px dashed var(--lav);margin:0;font-size:14.5px;line-height:1.35}
+.specs dt{font-weight:800;color:var(--lav3);padding-inline-end:12px}
+.specs dd{font-weight:700;color:var(--navy);overflow-wrap:anywhere;unicode-bidi:plaintext;text-align:start}
+[dir=rtl] .specs dd{text-align:right}
+.specs dt:nth-last-of-type(1),.specs dd:last-child{border-bottom:0}
+.specs dd.tbc{color:var(--muted);font-weight:600;font-style:italic}
+[dir=rtl] .specs dd.tbc{font-style:normal}
+.pmodal .missingf{display:flex;align-items:center;gap:8px;margin:0}
+.pmodal .missingf::before{content:"?";flex:0 0 auto;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--lav);color:var(--lav3);font-weight:800;font-size:13px}
+details.pk{padding:0}
+details.pk>summary{display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;list-style:none;font-weight:800;color:var(--navy);font-size:16px}
+details.pk>summary::-webkit-details-marker{display:none}
+details.pk>summary::after{content:"";margin-inline-start:auto;width:10px;height:10px;border-right:2.5px solid var(--cob);border-bottom:2.5px solid var(--cob);transform:rotate(45deg);transition:transform .2s}
+details.pk[open]>summary::after{transform:rotate(-135deg)}
+details.pk>summary .ico{flex:0 0 auto;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--yel);color:var(--navy)}
+details.pk>summary .ico svg{width:20px;height:20px}
+details.pk>ul,details.pk>.orig{padding:0 14px}
+details.pk>.orig{padding-bottom:12px}
+
+/* ===== Soins à l'unité ===== */
+.lines .lsec{margin:14px 0 2px;padding:4px 10px;width:max-content;border-radius:8px;background:var(--yel);font-weight:800;font-size:14px;color:var(--navy)}
+.menu nav a.msoins{background:var(--grain),var(--yel);font-weight:800}
+/* ===== Carte promotionnelle « Soins à l'unité » (page des masques) ===== */
+.soins-promo{display:block;position:relative;max-width:620px;margin:30px auto 8px;padding:8px 6px 4px;text-decoration:none;color:var(--navy);
+  -webkit-tap-highlight-color:transparent;border-radius:22px}
+.soins-promo:focus-visible{outline:3px solid var(--cob);outline-offset:4px}
+.sp-sh{display:block;position:relative;filter:drop-shadow(0 4px 2px rgba(60,30,110,.14)) drop-shadow(0 10px 18px rgba(60,30,110,.12));transition:transform .25s cubic-bezier(.3,.8,.3,1)}
+.sp-paper{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"head head" "pics sub" "cta cta";align-items:center;gap:12px 14px;
+  padding:22px 18px 20px;background:var(--grain),linear-gradient(135deg,#FFF3B8 0%,var(--yel) 55%,#F8D96A 100%);transform:rotate(-.6deg)}
+.sp-tape{width:96px;top:-6px;left:50%;margin-left:-48px;transform:rotate(-4deg);z-index:4}
+.sp-star{width:36px;top:-12px;inset-inline-end:14px;transform:rotate(12deg);z-index:4}
+/* polaroïds des soins */
+.sp-pics{grid-area:pics;position:relative;display:flex;align-items:flex-end;padding:4px 6px 0}
+.sp-pol{position:relative;display:flex;flex-direction:column;width:96px;padding:5px 5px 6px;background:#fff;border-radius:4px;
+  box-shadow:0 2px 0 rgba(22,35,138,.12),0 6px 12px rgba(60,30,110,.18);transition:transform .3s cubic-bezier(.3,.8,.3,1)}
+.sp-pol img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:2px;background:#fff}
+.sp-pol-1{transform:rotate(-7deg);z-index:2}
+.sp-pol-2{transform:rotate(6deg) translateY(-8px);margin-inline-start:-8px;z-index:1}
+[dir=rtl] .sp-pol-1{transform:rotate(7deg)}
+[dir=rtl] .sp-pol-2{transform:rotate(-6deg) translateY(-8px)}
+.sp-cap{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px;line-height:1.1}
+.sp-brand{font-size:10.5px;font-weight:800;color:var(--lav3);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.sp-price{font-size:12.5px;font-weight:800;color:var(--navy);padding:1px 7px 2px;background:url("/images/deco/papier-jaune.webp") center/100% 100% no-repeat;white-space:nowrap;direction:ltr}
+.sp-spark{width:26px;top:-6px;inset-inline-start:-4px;z-index:3}
+/* texte */
+.sp-head{grid-area:head;display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;padding-inline-end:30px}
+.sp-tag{display:inline-block;padding:2px 10px 3px;border-radius:999px;background:#fff;color:var(--lav3);font-size:12.5px;font-weight:800;box-shadow:0 2px 0 var(--lav2)}
+.sp-title{font-size:21px;font-weight:800;line-height:1.15;color:var(--navy);text-wrap:balance}
+.sp-sub{grid-area:sub;font-size:14.5px;font-weight:600;line-height:1.4;color:var(--navy);opacity:.85;align-self:center}
+[dir=rtl] .sp-title{line-height:1.35}
+/* bouton (visuel : toute la carte est le lien) */
+.sp-cta{grid-area:cta;justify-self:stretch;display:flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 22px;border-radius:26px;
+  background:var(--cob);color:#fff;font-weight:800;font-size:17px;box-shadow:0 3px 0 var(--navy);transition:background-color .2s,transform .15s}
+.sp-arr{display:inline-block;font-size:20px;transition:transform .25s}
+[dir=rtl] .sp-arr{transform:scaleX(-1)}
+/* survol / appui */
+@media (hover:hover){
+  .soins-promo:hover .sp-sh{transform:translateY(-3px)}
+  .soins-promo:hover .sp-pol-1{transform:rotate(-10deg) translateX(-4px)}
+  .soins-promo:hover .sp-pol-2{transform:rotate(9deg) translate(4px,-12px)}
+  .soins-promo:hover .sp-cta{background:var(--navy)}
+  .soins-promo:hover .sp-arr{transform:translateX(4px)}
+  [dir=rtl] .soins-promo:hover .sp-arr{transform:scaleX(-1) translateX(4px)}
+}
+.soins-promo:active .sp-cta{transform:translateY(2px);box-shadow:0 1px 0 var(--navy)}
+/* ordinateur : photos à gauche, texte et bouton à droite */
+@media (min-width:720px){
+  .sp-paper{grid-template-areas:"pics head" "pics sub" "pics cta";grid-template-columns:auto minmax(0,1fr);padding:26px 30px 26px 26px;gap:8px 26px}
+  .sp-head{padding-inline-end:0}
+  .sp-sub{align-self:start}
+  .sp-pol{width:128px}
+  .sp-title{font-size:25px}
+  .sp-cta{justify-self:start;min-width:250px}
+}
+@media (max-width:370px){.sp-pol{width:78px}.sp-title{font-size:19px}.sp-sub{font-size:13.5px}.sp-paper{padding:20px 14px 18px;gap:10px}}
+/* Apparition douce — uniquement si l'utilisatrice n'a pas demandé moins d'animations */
+@media (prefers-reduced-motion:no-preference){
+  .soins-promo:not(.is-in) .sp-sh{opacity:0;transform:translateY(22px)}
+  .soins-promo:not(.is-in) .sp-pol-1{transform:rotate(-16deg) translate(-14px,10px);opacity:0}
+  .soins-promo:not(.is-in) .sp-pol-2{transform:rotate(16deg) translate(14px,10px);opacity:0}
+  .soins-promo:not(.is-in) .sp-star,.soins-promo:not(.is-in) .sp-spark{transform:scale(.2) rotate(-40deg);opacity:0}
+  .soins-promo.is-in .sp-sh{animation:sp-rise .6s cubic-bezier(.2,.8,.25,1) backwards}
+  .soins-promo.is-in .sp-pol{transition:transform .65s cubic-bezier(.25,1.3,.4,1) .18s,opacity .4s ease .18s}
+  .soins-promo.is-in .sp-pol-2{transition-delay:.3s}
+  .soins-promo.is-in .sp-star{animation:sp-pop .5s cubic-bezier(.3,1.5,.5,1) .45s backwards}
+  .soins-promo.is-in .sp-spark{animation:sp-pop .5s cubic-bezier(.3,1.5,.5,1) .6s backwards}
+  .soins-promo.is-in .sp-cta{animation:sp-nudge .7s ease-out 1s 1}
+}
+@keyframes sp-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes sp-pop{from{opacity:0;transform:scale(.2) rotate(-40deg)}}
+@keyframes sp-nudge{0%,100%{box-shadow:0 3px 0 var(--navy)}45%{box-shadow:0 3px 0 var(--navy),0 0 0 8px rgba(21,48,200,.18)}}
+.soins-back{text-align:center;margin:16px 0 0}
+.soins-back a{font-weight:800;color:var(--cob);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+/* Pack : lien discret vers les soins */
+.pg-pack .soins-link{display:block;width:max-content;max-width:100%;margin:16px auto 0;padding:8px 16px;border-radius:999px;background:#fff;color:var(--cob);font-weight:800;text-decoration:none;box-shadow:0 3px 0 var(--lav2)}
+.pg-co .rl-sec{margin:12px 2px 4px!important;font-weight:800;color:var(--navy)}
+.pg-co .rl-sec-li{display:block!important;border:0!important;padding:12px 0 2px!important;font-weight:800;color:var(--navy);font-size:14px}
+.pg-co .empty-go{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.pg-co .btnp.alt{background:var(--yel);color:var(--navy);box-shadow:0 3px 0 var(--yel2)}
+
+/* ===== « Les points forts » : titre en gras + phrase courte ===== */
+.pmodal .phl .hlist{gap:0}
+.pmodal .phl .hlist li{display:flex;flex-direction:column;gap:2px;padding:11px 0 11px;padding-inline-start:34px;border-bottom:1.5px dashed rgba(243,207,69,.7)}
+.pmodal .phl .hlist li:last-child{border-bottom:0;padding-bottom:2px}
+.pmodal .phl .hlist li:first-child{padding-top:2px}
+.pmodal .phl .hlist li::before{top:13px;width:22px;height:22px;background-size:13px}
+.pmodal .phl .hlist li:first-child::before{top:4px}
+.hl-t{font-size:15.5px;font-weight:800;color:var(--navy);line-height:1.3;unicode-bidi:plaintext}
+.hl-d{font-size:14.5px;font-weight:600;color:var(--ink);opacity:.82;line-height:1.45;unicode-bidi:plaintext}
+[dir=rtl] .hl-t,[dir=rtl] .hl-d{text-align:right}
+.hl-d::first-letter{text-transform:uppercase}

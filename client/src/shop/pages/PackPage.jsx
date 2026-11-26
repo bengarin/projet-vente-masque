@@ -1,5 +1,5 @@
 /* Étape 2 — taille du pack : 3, 4 ou 6 masques (ancienne page etape-2.html). Tailles et prix viennent de l'admin. */
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Deco, ICON, MaskStack, Paper, Torn } from "../../ui/decor.jsx";
 import { useBodyClass, useOverlay } from "../../ui/overlay.jsx";
 import { CatalogGate, Header, StepDots } from "../Chrome.jsx";
@@ -56,7 +56,7 @@ export default function PackPage() {
 }
 
 function PackOptions({ p }) {
-  const { catalog, packSize, setPackSize, order, count, byId, money } = useShop();
+  const { catalog, packSize, setPackSize, order, count, byId, money, unitProducts, t } = useShop();
   const { dialog, toast } = useOverlay();
   const sizes = catalog.packSizes;
 
@@ -93,6 +93,7 @@ function PackOptions({ p }) {
         ))}
       </form>
       {count > 0 && <p className="cursel">{p.cur(count)}</p>}
+      {unitProducts.length > 0 && <Link className="soins-link" to={PATHS.soins}>✦ {t.soins} →</Link>}
     </>
   );
 }

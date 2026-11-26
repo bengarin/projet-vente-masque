@@ -54,7 +54,7 @@ export default function ProductsList() {
                 <td className="a-cell-main">
                   <Link to={`/admin/produits/${p.id}`} className="a-prod">
                     {p.image ? <img className="a-thumb" src={p.image} alt="" /> : <span className="a-thumb a-thumb-empty"><Ic n="image" size={18} /></span>}
-                    <span className="a-prod-txt"><small>{p.brand}</small><b>{p.name}</b>{p.category && <span className="a-muted a-xs">{p.category}</span>}</span>
+                    <span className="a-prod-txt"><small>{p.brand}</small><b>{p.name}</b><span className="a-muted a-xs">{p.saleMode === "unit" ? <Badge tone="warn">Soin à l'unité</Badge> : "Masque · packs"}{p.category ? ` · ${p.category}` : ""}</span></span>
                   </Link>
                 </td>
                 <td data-label="Prix" className="a-r a-num">{p.price == null ? <Badge tone="warn">À renseigner</Badge> : <b>{money(p.price, cur)}</b>}</td>

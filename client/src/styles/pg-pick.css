@@ -127,3 +127,42 @@ body.pickpage{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
 .swgo:disabled{background:#C9C2DE;box-shadow:none;cursor:not-allowed}
 @media(max-width:600px){.swm{align-items:flex-end;padding:0}.swbox{width:100%;max-height:92dvh;border-radius:22px 22px 0 0;animation-name:slideup}}
 }
+
+/* =====================================================================
+   CARTE PRODUIT UNIFORME (v2) — même gabarit pour tous les produits
+   photo carrée cadrée · marque exacte · nom complet (4 lignes réservées) · prix · Voir plus · −/+
+   ===================================================================== */
+.pg-pick{
+  .grid{grid-auto-rows:1fr}
+  .item .sh{height:100%}
+  .card{display:grid;grid-template-rows:auto 34px 44px 48px;row-gap:0;height:100%;padding:10px 10px 12px}
+  .open-p{display:flex;flex-direction:column;width:100%;padding:0;text-align:start;border-radius:12px}
+  /* photo : cadre papier blanc, produit centré, jamais déformé */
+  .ph{width:100%;aspect-ratio:1/1;border-radius:12px;background:#fff;border:2px solid var(--lav);
+    box-shadow:0 2px 0 var(--lav2);overflow:hidden;cursor:pointer}
+  .ph img{width:100%;height:100%;object-fit:contain;padding:3%;display:block;transition:transform .25s}
+  .open-p:hover .ph img{transform:scale(1.03)}
+  /* marque : orthographe exacte (aucune mise en majuscules forcée) */
+  .brandp{margin:10px 2px 0;height:18px;line-height:18px;font-size:13px;font-weight:800;color:var(--lav3);
+    text-transform:none;letter-spacing:.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+  .name{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden;height:auto;margin:2px 2px 0;
+    font-size:15px;line-height:1.25;height:calc(15px*1.25*4);font-weight:800;color:var(--navy);overflow-wrap:break-word;cursor:pointer}
+  .brandp,.name{unicode-bidi:plaintext;text-align:start}
+  [dir=rtl] & .brandp,[dir=rtl] & .name{text-align:right}
+  /* prix : étiquette papier jaune, ou mention claire si non défini */
+  .pricerow{display:flex;align-items:center;min-width:0;margin:4px 0 0}
+  .price{display:inline-flex;align-items:center;height:28px;margin:0;padding:0 12px 1px;font-weight:800;font-size:16.5px;color:var(--navy);
+    white-space:nowrap;background:url("/images/deco/papier-jaune.webp") center/100% 100% no-repeat;border:0;direction:ltr}
+  .price.tbd{height:26px;padding:0 9px;font-size:12.5px;font-weight:700;color:var(--muted);background:#fff;border:1.5px dashed var(--lav3);
+    border-radius:8px;direction:inherit;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  .vplus{height:42px;margin-top:2px;align-self:end}
+  .item .qty{height:44px;margin-top:6px;align-self:end;justify-content:space-between;border-radius:14px}
+  .item .pl,.item .mi{width:40px;height:40px;border-radius:11px}
+  .outst{inset-inline-start:8px;bottom:8px}
+  .qbadge{top:8px;inset-inline-end:8px}
+  @media(max-width:370px){
+    .card{grid-template-rows:auto 34px 42px 46px;padding:8px 8px 10px}
+    .name{font-size:14px;height:calc(14px*1.25*4)}
+    .vplus{height:40px}
+  }
+}

@@ -1,5 +1,5 @@
 /* Détail d'une commande : produits, quantités, prix, livraison, total, statut, historique, note interne */
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fmtDate } from "../../lib/format.js";
 import { Card, Loader, money, PageHeader, STATUSES, StatusBadge, statusLabel, useAdminApi, useConfirm, useFlash, useLoad } from "../common.jsx";
@@ -18,7 +18,7 @@ export default function OrderDetail() {
     <>
       <PageHeader back={{ to: "/admin/commandes", label: "Commandes" }}
         title={o ? <>Commande <span className="a-mono">{o.number}</span></> : "Commande"}
-        subtitle={o ? `Passée le ${fmtDate(o.createdAt)} · pack de ${o.packSize} · langue ${o.lang.toUpperCase()}` : " "}
+        subtitle={o ? `Passée le ${fmtDate(o.createdAt)} · ${o.packSize ? `pack de ${o.packSize}` : "sans pack"} · langue ${o.lang.toUpperCase()}` : " "}
         actions={o && <StatusBadge s={o.status} />} />
       <Loader state={st} rows={6}>{d => <Detail o={d.order} reload={st.reload} />}</Loader>
     </>
@@ -62,11 +62,12 @@ function Detail({ o, reload }) {
 
       <div className="a-detail">
         <div className="a-detail-main">
-          <Card title={`Produits — pack de ${o.packSize}`} icon="products" pad={false}>
+          <Card title={o.packSize ? `Produits — pack de ${o.packSize}${o.items.some(i => !i.inPack) ? " + soins" : ""}` : "Produits — soins à l'unité"} icon="products" pad={false}>
             <table className="a-table a-table-items">
               <thead><tr><th>Produit</th><th className="a-r">Prix unitaire</th><th className="a-r">Qté</th><th className="a-r">Total</th></tr></thead>
-              <tbody>{o.items.map(it => (
-                <tr key={it.id}>
+              <tbody>{o.items.map((it, i) => (<Fragment key={it.id}>
+                {o.packSize && !it.inPack && (i === 0 || o.items[i - 1].inPack) && <tr className="a-tr-sec"><td colSpan={4}>Soins à l'unité</td></tr>}
+                <tr>
                   <td className="a-cell-main"><div className="a-prod">
                     {it.image ? <img className="a-thumb" src={it.image} alt="" /> : <span className="a-thumb a-thumb-empty"><Ic n="image" size={18} /></span>}
                     <span className="a-prod-txt"><small>{it.brand}</small>
@@ -75,11 +76,12 @@ function Detail({ o, reload }) {
                   <td data-label="Prix unitaire" className="a-r a-num">{money(it.unitPrice, cur)}</td>
                   <td data-label="Quantité" className="a-r a-num">× {it.qty}</td>
                   <td data-label="Total ligne" className="a-r a-num"><b>{money(it.lineTotal, cur)}</b></td>
-                </tr>))}</tbody>
+                </tr></Fragment>))}</tbody>
             </table>
             <dl className="a-totals">
               {o.itemsTotal != null && <><dt>Total des masques</dt><dd>{money(o.itemsTotal, cur)}</dd></>}
               {o.packPrice != null && <><dt>Prix fixe du pack</dt><dd>{money(o.packPrice, cur)}</dd></>}
+              {o.extrasTotal != null && <><dt>Soins à l'unité</dt><dd>{money(o.extrasTotal, cur)}</dd></>}
               <dt>Produits facturés</dt><dd>{money(o.productsTotal, cur)}</dd>
               <dt>Livraison</dt><dd>{o.shipping.fee === 0 ? "Gratuite" : money(o.shipping.fee, cur)}</dd>
               <dt className="a-total-big">Total</dt><dd className="a-total-big">{money(o.total, cur)}</dd>

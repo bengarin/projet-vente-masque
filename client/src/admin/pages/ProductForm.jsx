@@ -6,14 +6,18 @@ import { Ic } from "../icons.jsx";
 
 const TAPES = [["ging", "Vichy jaune"], ["dots", "Pois lavande"], ["grid", "Quadrillé bleu"], ["ydots", "Pois jaunes"], ["checkl", "Damier lavande"], ["check", "Damier bleu"]];
 const LANGS = [["Fr", "Français"], ["Ar", "العربية"], ["En", "English"]];
-const EMPTY = { brand: "", name: "", slug: "", categoryId: "", price: "", stock: "", isActive: true, tape: "ging", videoUrl: "", sortOrder: 0,
-  descriptionFr: "", descriptionAr: "", descriptionEn: "", usageFr: "", usageAr: "", usageEn: "", packMentions: "" };
+const EMPTY = { brand: "", name: "", slug: "", categoryId: "", price: "", stock: "", isActive: true, saleMode: "pack", tape: "ging", videoUrl: "", sortOrder: 0,
+  descriptionFr: "", descriptionAr: "", descriptionEn: "", usageFr: "", usageAr: "", usageEn: "", packMentions: "",
+  typeFr: "", typeAr: "", typeEn: "", contentFr: "", contentAr: "", contentEn: "",
+  highlightsFr: "", highlightsAr: "", highlightsEn: "", precautionsFr: "", precautionsAr: "", precautionsEn: "" };
+const SHEET_KEYS = ["type", "content", "highlights", "precautions"];
 
 const fromProduct = p => ({
   brand: p.brand, name: p.name, slug: p.slug, categoryId: p.categoryId ?? "", price: numStr(p.price), stock: numStr(p.stock),
-  isActive: p.isActive, tape: p.tape, videoUrl: p.raw.videoUrl || "", sortOrder: p.raw.sortOrder,
+  isActive: p.isActive, saleMode: p.saleMode || "pack", tape: p.tape, videoUrl: p.raw.videoUrl || "", sortOrder: p.raw.sortOrder,
   descriptionFr: p.raw.descriptionFr || "", descriptionAr: p.raw.descriptionAr || "", descriptionEn: p.raw.descriptionEn || "",
   usageFr: p.raw.usageFr || "", usageAr: p.raw.usageAr || "", usageEn: p.raw.usageEn || "", packMentions: p.raw.packMentions || "",
+  ...Object.fromEntries(SHEET_KEYS.flatMap(k => ["Fr", "Ar", "En"].map(l => [k + l, p.raw[k + l] || ""]))),
 });
 
 /* Vérification rapide côté navigateur (le serveur revérifie tout) */
@@ -43,6 +47,7 @@ export default function ProductForm() {
   const [flash, setFlash] = useFlash();
   const [descLang, setDescLang] = useState("Fr");
   const [useLang, setUseLang] = useState("Fr");
+  const [sheetLang, setSheetLang] = useState("Fr");
   const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
@@ -96,8 +101,22 @@ export default function ProductForm() {
 
           <Card title="Description" icon="note" actions={<Tabs small label="Langue de la description" tabs={langTabs("description")} value={descLang} onChange={setDescLang} />}>
             {LANGS.map(([k, l]) => k === descLang && (
-              <Field key={k} label={`Description — ${l}`} error={errs["description" + k]} hint="Laisse vide si l'information n'est pas vérifiée : la boutique affichera « Information non fournie ».">
+              <Field key={k} label={`Description — ${l}`} error={errs["description" + k]} hint="Laisse vide si l'information n'est pas vérifiée : la boutique affichera « Information à confirmer ».">
                 <textarea rows={6} dir={k === "Ar" ? "rtl" : undefined} {...fp("description" + k)} /></Field>))}
+          </Card>
+
+          <Card title="Fiche détaillée" icon="info" actions={<Tabs small label="Langue de la fiche" value={sheetLang} onChange={setSheetLang}
+            tabs={LANGS.map(([k, l]) => ({ id: k, label: l, dot: SHEET_KEYS.some(b => f[b + k].trim()), error: SHEET_KEYS.some(b => errs[b + k]) }))} />}>
+            <p className="a-help"><Ic n="info" size={15} />Uniquement des informations lisibles sur l'emballage. Laisse vide si ce n'est pas confirmé : la boutique affichera « Information à confirmer ».</p>
+            {LANGS.map(([k, l]) => k === sheetLang && (
+              <div key={k}>
+                <div className="a-fgrid">
+                  <Field label={`Type de produit — ${l}`} error={errs["type" + k]} hint="Ex. Masque en tissu"><input dir={k === "Ar" ? "rtl" : undefined} maxLength={200} {...fp("type" + k)} /></Field>
+                  <Field label={`Contenance — ${l}`} error={errs["content" + k]} hint="Telle qu'imprimée, ex. 22 g / 0.73 fl.oz"><input dir={k === "Ar" ? "rtl" : undefined} maxLength={200} {...fp("content" + k)} /></Field>
+                </div>
+                <Field label={`Points forts — ${l}`} error={errs["highlights" + k]} hint="Un point par ligne, au format « Titre : phrase courte ». Uniquement des caractéristiques vérifiées, sans promesse de résultat."><textarea rows={5} dir={k === "Ar" ? "rtl" : undefined} {...fp("highlights" + k)} /></Field>
+                <Field label={`Précautions — ${l}`} error={errs["precautions" + k]} hint="Seulement si elles sont imprimées sur l'emballage."><textarea rows={3} dir={k === "Ar" ? "rtl" : undefined} {...fp("precautions" + k)} /></Field>
+              </div>))}
           </Card>
 
           <Card title="Mode d'emploi" icon="layers" actions={<Tabs small label="Langue du mode d'emploi" tabs={langTabs("usage")} value={useLang} onChange={setUseLang} />}>
@@ -114,10 +133,13 @@ export default function ProductForm() {
         <aside className="a-form-side">
           <Card title="Visibilité" icon="eye">
             <Switch checked={f.isActive} onChange={set("isActive")} label="Produit actif" hint={f.isActive ? "Visible dans la boutique" : "Caché de la boutique"} />
+            <Field label="Mode de vente" error={errs.saleMode} className="a-mt"
+              hint={f.saleMode === "unit" ? "Page « Soins » : acheté à l'unité, avec ou sans pack." : "Page des masques : choisi dans un pack de 3, 4 ou 6."}>
+              <select {...fp("saleMode")}><option value="pack">Masque — dans les packs</option><option value="unit">Soin — vendu à l'unité</option></select></Field>
           </Card>
 
           <Card title="Prix et stock" icon="money">
-            <Field label="Prix unitaire" error={errs.price} hint="Vide = « Prix à renseigner » (non commandable sans prix de pack fixe).">
+            <Field label="Prix unitaire" error={errs.price} hint="Vide = « Prix pas encore défini » (non commandable sans prix de pack fixe).">
               <span className="a-input-wrap a-has-suffix"><input inputMode="decimal" {...fp("price")} placeholder="ex. 25,50" /><span className="a-suffix">{cur}</span></span></Field>
             <Field label="Stock" error={errs.stock} hint="Vide = non suivi (pas de limite). Un nombre = décompté à chaque commande.">
               <input inputMode="numeric" {...fp("stock")} placeholder="Non suivi" /></Field>

@@ -67,7 +67,14 @@ npm run db:seed
 ```
 
 - `db:migrate` crée toutes les tables (fichiers `database/migrations/*.sql`, suivis dans la table `schema_migrations` : on peut le relancer sans risque).
-- `db:seed` ajoute les 6 masques de l'ancienne version (marque, nom, mentions d'emballage, photo), la catégorie « Masques en tissu » et les tailles de pack 3 / 4 / 6 — **sans prix ni stock**.
+- `db:seed` ajoute les 6 masques de l'ancienne version (marque, nom, mentions d'emballage, photo), la catégorie « Masques en tissu » et les tailles de pack 3 / 4 / 6 — **sans prix ni stock** — puis complète leurs fiches détaillées FR / AR / EN (`database/fiches-produits.sql`, voir `docs/fiches-produits.md`). Relancer `db:seed` ne crée aucun doublon et n'écrase jamais un champ déjà rempli.
+- `db:migrate` complète aussi automatiquement les fiches des produits déjà présents, et ajoute les soins vendus à l'unité (`database/produits-soins.sql`, voir `docs/produits-soins.md`), puis met à jour les descriptions et les points forts (`database/descriptions-v2.sql`, `database/points-forts-v2.sql`, sans écraser un texte modifié dans l'admin). Pour voir ce qui est rempli produit par produit (FR/AR/EN) :
+
+```bash
+npm run db:fiches
+```
+
+Les produits sont reconnus par leur identifiant d'origine, **ou** leur marque + nom officiels, **ou** leur photo d'origine : un identifiant modifié (ex. `hazel1`) ne bloque donc pas la mise à jour.
 
 ## 6. Créer le premier compte administrateur
 
@@ -76,6 +83,20 @@ npm run create-admin
 ```
 
 Le script demande l'e-mail et le mot de passe (12 caractères minimum, masqué à la saisie). Relancer la commande avec le même e-mail **réinitialise** le mot de passe.
+
+### Mettre à jour une installation existante (Windows, PowerShell)
+
+Arrête d'abord les serveurs (Ctrl+C), puis depuis le dossier du projet :
+
+```powershell
+git pull origin claude/wizardly-faraday-lo4vvm
+npm run install:all
+npm run db:migrate
+npm run db:fiches
+```
+
+Relance ensuite l'API et le site (étape 7) et recharge la page avec **Ctrl+F5**. En mode production, refais `npm run build` avant `npm start`.
+Si PowerShell refuse `npm` (« l'exécution de scripts est désactivée »), utilise `npm.cmd` à la place de `npm`, ou l'Invite de commandes (cmd).
 
 ## 7. Lancer en développement (2 terminaux)
 

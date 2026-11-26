@@ -17,8 +17,10 @@ const bool = z.union([z.boolean(), z.literal(0), z.literal(1)]).transform(Boolea
 /* ---------- Commande publique ---------- */
 export const orderInput = z.object({
   lang: z.enum(["fr", "ar", "en"]).default("fr"),
-  packSize: z.coerce.number().int().min(1).max(12),
-  items: z.array(z.object({ productId: id, qty: z.coerce.number().int().min(1).max(12) })).min(1).max(12),
+  // packSize = null / absent : commande sans pack (seulement des soins à l'unité)
+  packSize: z.union([z.null(), z.coerce.number().int().min(1).max(12)]).optional().transform(v => v ?? null),
+  items: z.array(z.object({ productId: id, qty: z.coerce.number().int().min(1).max(12) })).max(12).default([]),
+  extras: z.array(z.object({ productId: id, qty: z.coerce.number().int().min(1, "Quantité invalide.").max(20, "20 maximum par soin.") })).max(20).default([]),
   customer: z.object({
     name: text(120, 2),
     phone: z.string().transform(normalizePhone).refine(v => PHONE_RE.test(v), "Numéro invalide : 10 chiffres (06…, 07…, 05…) ou +212…"),
@@ -29,7 +31,8 @@ export const orderInput = z.object({
   }),
   shippingMethodId: id,
   paymentMethodId: id,
-});
+}).refine(d => d.items.length || d.extras.length, { message: "Le panier est vide.", path: ["items"] })
+  .refine(d => !d.items.length || d.packSize, { message: "Taille de pack manquante.", path: ["packSize"] });
 
 /* ---------- Admin ---------- */
 export const loginInput = z.object({
@@ -45,12 +48,17 @@ export const productInput = z.object({
   name: text(255, 1),
   descriptionFr: optText(5000), descriptionAr: optText(5000), descriptionEn: optText(5000),
   usageFr: optText(5000), usageAr: optText(5000), usageEn: optText(5000),
+  typeFr: optText(200), typeAr: optText(200), typeEn: optText(200),
+  contentFr: optText(200), contentAr: optText(200), contentEn: optText(200),
+  highlightsFr: optText(5000), highlightsAr: optText(5000), highlightsEn: optText(5000),
+  precautionsFr: optText(5000), precautionsAr: optText(5000), precautionsEn: optText(5000),
   packMentions: optText(5000),
   price: optMoney,
   // null/"" testés EN PREMIER : sinon z.coerce transforme null en 0 (stock « épuisé » au lieu de « non suivi »)
   stock: z.union([z.null(), z.literal(""), z.coerce.number().int("Nombre entier.").min(0, "Doit être positif.").max(1_000_000)])
     .optional().transform(v => (v === "" || v === undefined ? null : v)),
   isActive: bool.default(true),
+  saleMode: z.enum(["pack", "unit"], { error: "Mode de vente invalide." }).default("pack"),
   tape: z.enum(TAPES).default("ging"),
   videoUrl: optText(500).refine(v => v == null || /^(https:\/\/|\/)/.test(v), "Lien https:// ou chemin /… uniquement."),
   sortOrder: z.coerce.number().int().min(-100000).max(100000).default(0),

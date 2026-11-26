@@ -13,7 +13,8 @@
     "db:migrate": "node scripts/migrate.js",
     "db:seed": "node scripts/seed.js",
     "create-admin": "node scripts/create-admin.js",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "db:fiches": "node scripts/fiches.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

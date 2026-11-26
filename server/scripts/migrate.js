@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import mysql from "mysql2/promise";
 import { loadConfig, PROJECT_ROOT } from "../src/config.js";
+import { applyFiches } from "./fiches.js";
 
 const cfg = loadConfig({ needJwt: false });
 const dir = path.join(PROJECT_ROOT, "database", "migrations");
@@ -27,6 +28,8 @@ try {
     n++;
   }
   console.log(n ? `✔ ${n} migration(s) appliquée(s).` : "✔ Base déjà à jour.");
+  // Complète les fiches produit (champs vides uniquement) — rien si les produits ne sont pas encore créés
+  await applyFiches(conn);
 } catch (e) {
   console.error("✖ Migration échouée :", e.message);
   process.exitCode = 1;

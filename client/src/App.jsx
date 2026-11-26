@@ -6,6 +6,7 @@ import LangPage from "./shop/pages/LangPage.jsx";
 import PackPage from "./shop/pages/PackPage.jsx";
 import PickPage from "./shop/pages/PickPage.jsx";
 import CheckoutPage from "./shop/pages/CheckoutPage.jsx";
+import SoinsPage from "./shop/pages/SoinsPage.jsx";
 
 // L'admin est chargé à part : les clientes ne téléchargent pas son code
 const AdminApp = lazy(() => import("./admin/AdminApp.jsx"));
@@ -19,6 +20,7 @@ function Shop() {
           <Route path="pack" element={<PackPage />} />
           <Route path="masques" element={<PickPage />} />
           <Route path="commande" element={<CheckoutPage />} />
+          <Route path="soins" element={<SoinsPage />} />
           {/* anciennes adresses du site statique */}
           <Route path="index.html" element={<Navigate to="/" replace />} />
           <Route path="etape-2.html" element={<Navigate to="/pack" replace />} />

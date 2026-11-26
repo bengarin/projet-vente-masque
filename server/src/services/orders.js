@@ -22,26 +22,34 @@ export async function createOrder(input) {
     const settings = await getSettings(q);
     if (!settings.ordersEnabled) throw conflict("orders_closed", "Les commandes sont fermées pour le moment.");
 
-    const [pack] = await q("SELECT size, price FROM pack_sizes WHERE size = ? AND is_active = 1", [input.packSize]);
-    if (!pack) throw badRequest("Cette taille de pack n'est pas disponible.");
+    // Regroupe les lignes d'un même produit (pack et soins séparément)
+    const group = list => { const m = new Map(); for (const it of list) m.set(it.productId, (m.get(it.productId) || 0) + it.qty); return m; };
+    const packQty = group(input.items), extraQty = group(input.extras);
+    if (!packQty.size && !extraQty.size) throw badRequest("Le panier est vide.");
 
-    // Regroupe les lignes d'un même produit
-    const qtyById = new Map();
-    for (const it of input.items) qtyById.set(it.productId, (qtyById.get(it.productId) || 0) + it.qty);
-    const count = [...qtyById.values()].reduce((a, b) => a + b, 0);
-    if (count !== pack.size) throw conflict("pack_incomplete", `Le pack doit contenir exactement ${pack.size} masques.`);
+    // Pack (facultatif) : taille active et nombre exact de masques
+    let pack = null;
+    if (packQty.size) {
+      [pack] = await q("SELECT size, price FROM pack_sizes WHERE size = ? AND is_active = 1", [input.packSize]);
+      if (!pack) throw badRequest("Cette taille de pack n'est pas disponible.");
+      const count = [...packQty.values()].reduce((a, b) => a + b, 0);
+      if (count !== pack.size) throw conflict("pack_incomplete", `Le pack doit contenir exactement ${pack.size} masques.`);
+    }
 
     // Verrouille les produits pour décompter le stock sans conflit
-    const ids = [...qtyById.keys()];
+    const ids = [...new Set([...packQty.keys(), ...extraQty.keys()])];
     const products = await q(
-      `SELECT p.id, p.brand, p.name, p.price, p.stock,
+      `SELECT p.id, p.brand, p.name, p.price, p.stock, p.sale_mode,
               (SELECT url FROM product_images i WHERE i.product_id = p.id ORDER BY sort_order, id LIMIT 1) AS image
          FROM products p WHERE p.id IN (?) AND p.is_active = 1 FOR UPDATE`, [ids]);
-    if (products.length !== ids.length) {
-      const found = new Set(products.map(p => p.id));
-      throw conflict("product_unavailable", "Un produit n'est plus disponible.", { productIds: ids.filter(i => !found.has(i)) });
+    const byId = new Map(products.map(p => [p.id, p]));
+    const wrong = [...[...packQty.keys()].filter(i => byId.get(i)?.sale_mode !== "pack"),
+                   ...[...extraQty.keys()].filter(i => byId.get(i)?.sale_mode !== "unit")];
+    if (products.length !== ids.length || wrong.length) {
+      throw conflict("product_unavailable", "Un produit n'est plus disponible.", { productIds: [...new Set(ids.filter(i => !byId.has(i)).concat(wrong))] });
     }
-    const out = products.filter(p => p.stock != null && p.stock < qtyById.get(p.id));
+    const totalQty = id => (packQty.get(id) || 0) + (extraQty.get(id) || 0);
+    const out = products.filter(p => p.stock != null && p.stock < totalQty(p.id));
     if (out.length) {
       throw conflict("out_of_stock", "Stock insuffisant pour un ou plusieurs produits.",
         { products: out.map(p => ({ productId: p.id, available: p.stock })) });
@@ -52,8 +60,9 @@ export async function createOrder(input) {
     const [pay] = await q("SELECT * FROM payment_methods WHERE id = ? AND is_active = 1", [input.paymentMethodId]);
     if (!pay) throw conflict("payment_unavailable", "Ce mode de paiement n'est pas disponible.");
 
-    const lines = products.map(p => ({ product: p, unitPrice: p.price, qty: qtyById.get(p.id) }));
-    const totals = computeTotals({ lines, packPrice: pack.price, shipping: { fee: ship.fee, freeFrom: ship.free_from } });
+    const toLines = m => [...m].map(([id, qty]) => ({ product: byId.get(id), unitPrice: byId.get(id).price, qty }));
+    const totals = computeTotals({ lines: toLines(packQty), packPrice: pack?.price ?? null, extras: toLines(extraQty),
+      shipping: { fee: ship.fee, freeFrom: ship.free_from } });
     if (!totals.ok) throw conflict("price_missing", "Un prix n'est pas encore renseigné : commande impossible pour le moment.");
 
     const c = input.customer;
@@ -64,11 +73,11 @@ export async function createOrder(input) {
         const r = await q(
           `INSERT INTO orders (number, status, lang, pack_size, customer_name, customer_phone, address, city, city_is_other, area,
              shipping_method_id, shipping_label, shipping_fee, payment_method_id, payment_label,
-             items_total, pack_price, products_total, total, currency)
-           VALUES (?, 'nouvelle', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          [number, input.lang, pack.size, c.name, c.phone, c.address, c.city, c.cityIsOther ? 1 : 0, c.area,
+             items_total, pack_price, extras_total, products_total, total, currency)
+           VALUES (?, 'nouvelle', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [number, input.lang, pack?.size ?? null, c.name, c.phone, c.address, c.city, c.cityIsOther ? 1 : 0, c.area,
            ship.id, pick(ship, "label", "fr"), totals.shippingFee, pay.id, pick(pay, "label", "fr"),
-           totals.itemsTotal, totals.packPrice, totals.productsTotal, totals.total, settings.currency]);
+           totals.itemsTotal, totals.packPrice, totals.extrasTotal, totals.productsTotal, totals.total, settings.currency]);
         orderId = r.insertId;
         break;
       } catch (e) {
@@ -76,11 +85,12 @@ export async function createOrder(input) {
       }
     }
 
-    for (const l of totals.lines) {
+    const all = [...totals.lines.map(l => ({ ...l, inPack: 1 })), ...totals.extras.map(l => ({ ...l, inPack: 0 }))];
+    for (const l of all) {
       await q(
-        `INSERT INTO order_items (order_id, product_id, brand, name, image_url, unit_price, quantity, line_total)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-        [orderId, l.product.id, l.product.brand, l.product.name, l.product.image, l.unitPrice, l.qty, l.lineTotal]);
+        `INSERT INTO order_items (order_id, product_id, in_pack, brand, name, image_url, unit_price, quantity, line_total)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [orderId, l.product.id, l.inPack, l.product.brand, l.product.name, l.product.image, l.unitPrice, l.qty, l.lineTotal]);
       if (l.product.stock != null) {
         await q("UPDATE products SET stock = stock - ? WHERE id = ?", [l.qty, l.product.id]);
       }
@@ -90,13 +100,13 @@ export async function createOrder(input) {
     return {
       number,
       status: "nouvelle",
-      packSize: pack.size,
-      items: totals.lines.map(l => ({ productId: l.product.id, brand: l.product.brand, name: l.product.name, image: l.product.image,
+      packSize: pack?.size ?? null,
+      items: all.map(l => ({ productId: l.product.id, inPack: !!l.inPack, brand: l.product.brand, name: l.product.name, image: l.product.image,
         unitPrice: l.unitPrice, qty: l.qty, lineTotal: l.lineTotal })),
       customer: { name: c.name, phone: c.phone, address: c.address, city: c.city, area: c.area },
       shipping: { id: ship.id, label: pick(ship, "label", input.lang), fee: totals.shippingFee },
       payment: { id: pay.id, label: pick(pay, "label", input.lang) },
-      itemsTotal: totals.itemsTotal, packPrice: totals.packPrice, productsTotal: totals.productsTotal,
+      itemsTotal: totals.itemsTotal, packPrice: totals.packPrice, extrasTotal: totals.extrasTotal, productsTotal: totals.productsTotal,
       total: totals.total, currency: settings.currency,
     };
   });

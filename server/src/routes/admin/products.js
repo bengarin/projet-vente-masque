@@ -14,7 +14,11 @@ function toColumns(d) {
     category_id: d.categoryId, brand: d.brand, name: d.name,
     description_fr: d.descriptionFr, description_ar: d.descriptionAr, description_en: d.descriptionEn,
     usage_fr: d.usageFr, usage_ar: d.usageAr, usage_en: d.usageEn,
-    pack_mentions: d.packMentions, price: d.price, stock: d.stock, is_active: d.isActive ? 1 : 0,
+    product_type_fr: d.typeFr, product_type_ar: d.typeAr, product_type_en: d.typeEn,
+    content_fr: d.contentFr, content_ar: d.contentAr, content_en: d.contentEn,
+    highlights_fr: d.highlightsFr, highlights_ar: d.highlightsAr, highlights_en: d.highlightsEn,
+    precautions_fr: d.precautionsFr, precautions_ar: d.precautionsAr, precautions_en: d.precautionsEn,
+    pack_mentions: d.packMentions, price: d.price, stock: d.stock, is_active: d.isActive ? 1 : 0, sale_mode: d.saleMode,
     tape: d.tape, video_url: d.videoUrl, sort_order: d.sortOrder,
   };
 }
@@ -33,6 +37,10 @@ async function getProduct(id) {
   return { ...p, raw: {
     descriptionFr: row.description_fr, descriptionAr: row.description_ar, descriptionEn: row.description_en,
     usageFr: row.usage_fr, usageAr: row.usage_ar, usageEn: row.usage_en, packMentions: row.pack_mentions,
+    typeFr: row.product_type_fr, typeAr: row.product_type_ar, typeEn: row.product_type_en,
+    contentFr: row.content_fr, contentAr: row.content_ar, contentEn: row.content_en,
+    highlightsFr: row.highlights_fr, highlightsAr: row.highlights_ar, highlightsEn: row.highlights_en,
+    precautionsFr: row.precautions_fr, precautionsAr: row.precautions_ar, precautionsEn: row.precautions_en,
     sortOrder: row.sort_order, videoUrl: row.video_url,
   }, createdAt: row.created_at, updatedAt: row.updated_at };
 }
@@ -47,14 +55,14 @@ export function productsRouter(cfg) {
     if (q) { where.push("(p.name LIKE ? OR p.brand LIKE ? OR p.slug LIKE ?)"); params.push(`%${q}%`, `%${q}%`, `%${q}%`); }
     if (status !== null) { where.push("p.is_active = ?"); params.push(status); }
     const rows = await query(
-      `SELECT p.id, p.slug, p.brand, p.name, p.price, p.stock, p.is_active, p.sort_order, p.category_id, c.name_fr AS category,
+      `SELECT p.id, p.slug, p.brand, p.name, p.price, p.stock, p.is_active, p.sale_mode, p.sort_order, p.category_id, c.name_fr AS category,
               (SELECT url FROM product_images i WHERE i.product_id = p.id ORDER BY sort_order, id LIMIT 1) AS image,
               (SELECT COUNT(*) FROM order_items oi WHERE oi.product_id = p.id) AS orderLines
          FROM products p LEFT JOIN categories c ON c.id = p.category_id
         ${where.length ? "WHERE " + where.join(" AND ") : ""}
         ORDER BY p.sort_order, p.id`, params);
     res.json({ products: rows.map(p => ({ id: p.id, slug: p.slug, brand: p.brand, name: p.name, price: p.price, stock: p.stock,
-      isActive: !!p.is_active, sortOrder: p.sort_order, categoryId: p.category_id, category: p.category, image: p.image,
+      isActive: !!p.is_active, saleMode: p.sale_mode, sortOrder: p.sort_order, categoryId: p.category_id, category: p.category, image: p.image,
       orderLines: p.orderLines })) });
   });
 

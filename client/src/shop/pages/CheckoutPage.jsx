@@ -1,6 +1,6 @@
 /* Commande (ancienne page checkout.html) : récap, livraison, mode de livraison/paiement, total.
    La commande est envoyée à l'API qui revérifie et recalcule tout avant de l'enregistrer dans MySQL. */
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../lib/api.js";
 import { MA_CITIES } from "../../lib/cities.js";
@@ -14,11 +14,11 @@ import "../../styles/pg-co.css";
 
 const P = {
   fr: { tag: "COMMANDE", title: "Finalise ta commande", s1: "Ton pack", s2: "Livraison", s3: "Livraison et paiement", s4: "Total",
-    edit: "Modifier mon panier", packLine: (n, t) => `Pack de ${t} masques · ${iso(n + "/" + t)}`, unit: "Prix unitaire", tbd: "à renseigner",
+    edit: "Modifier mon panier", packLine: (n, t) => `Pack de ${t} masques · ${iso(n + "/" + t)}`, unit: "Prix unitaire", tbd: "pas encore défini",
     name: "Nom complet", phone: "Téléphone", phoneHint: "Ex. 06 12 34 56 78 ou +212 6 12 34 56 78", address: "Adresse", city: "Ville", cityOther: "Ta ville", cityPh: "Cherche ta ville…", cityTop: "Casablanca et environs", cityAll: "Autres villes", cityOtherOpt: "Autre ville (à saisir)", cityNone: "Aucune ville trouvée.", cityPick: "Choisis ta ville dans la liste, ou « Autre ville ».", area: "Quartier ou code postal", optional: "(facultatif)",
     ship: "Mode de livraison", pay: "Mode de paiement", free: "Gratuit", freeFrom: v => `Gratuit dès ${v} d'achat`,
     noShip: "Aucun mode de livraison n'est encore configuré sur le site.", noPay: "Aucun mode de paiement n'est encore configuré sur le site.",
-    products: "Produits", delivery: "Livraison", total: "Total à payer", toSet: "À renseigner", chooseShip: "À choisir",
+    products: "Produits", delivery: "Livraison", total: "Total à payer", toSet: "Non défini", chooseShip: "À choisir",
     confirm: "Confirmer la commande", sending: "Envoi…",
     req: "Ce champ est obligatoire.", badPhone: "Numéro invalide : 10 chiffres (06…, 07…, 05…) ou +212…", short: "Merci de préciser davantage.",
     pickShip: "Choisis un mode de livraison.", pickPay: "Choisis un mode de paiement.", fix: "Vérifie les champs en rouge.",
@@ -28,14 +28,15 @@ const P = {
     stockErr: "Un masque n'est plus disponible en quantité suffisante. Modifie ton pack.", changed: "Le catalogue a changé : vérifie ton pack et réessaie.",
     tooMany: "Trop de commandes envoyées. Réessaie dans quelques minutes.",
     emptyTxt: "Ton pack n'est pas encore complet.", emptyGo: "Compléter mon pack",
+    emptyCart: "Ton panier est vide.", goPack: "Composer un pack de masques", goSoins: "Voir les soins", s1b: "Ta commande", soinsT: "Soins à l'unité",
     okT: "Merci, ta commande est enregistrée !", okNum: "Numéro de commande", okNext: "Nous te contacterons pour la confirmer.",
     okWho: "Nom", okTel: "Téléphone", okAddr: "Adresse", okShip: "Livraison", okPay: "Paiement", okTot: "Total", okBack: "Retour à l'accueil" },
   ar: { tag: "الطلب", title: "كمّلي الطلب ديالك", s1: "الباك ديالك", s2: "التوصيل", s3: "التوصيل والأداء", s4: "المجموع",
-    edit: "بدّلي السلة", packLine: (n, t) => `باك ديال ${t} ماسكات · ${iso(n + "/" + t)}`, unit: "ثمن الوحدة", tbd: "يُحدَّد",
+    edit: "بدّلي السلة", packLine: (n, t) => `باك ديال ${t} ماسكات · ${iso(n + "/" + t)}`, unit: "ثمن الوحدة", tbd: "ما زال ما تحدّدش",
     name: "الاسم الكامل", phone: "الهاتف", phoneHint: "مثال: 06 12 34 56 78 أو +212 6 12 34 56 78", address: "العنوان", city: "المدينة", cityOther: "المدينة ديالك", cityPh: "قلّبي على المدينة…", cityTop: "الدار البيضاء والنواحي", cityAll: "مدن أخرى", cityOtherOpt: "مدينة أخرى (كتبيها)", cityNone: "ما لقيناش هاد المدينة.", cityPick: "اختاري المدينة من اللائحة، ولا «مدينة أخرى».", area: "الحي أو الرمز البريدي", optional: "(اختياري)",
     ship: "طريقة التوصيل", pay: "طريقة الأداء", free: "مجاني", freeFrom: v => `مجاني ابتداءً من ${v}`,
     noShip: "ما زال ما تزادت حتى طريقة توصيل فالموقع.", noPay: "ما زال ما تزادت حتى طريقة أداء فالموقع.",
-    products: "المنتجات", delivery: "التوصيل", total: "المجموع للأداء", toSet: "يُحدَّد", chooseShip: "اختاري",
+    products: "المنتجات", delivery: "التوصيل", total: "المجموع للأداء", toSet: "ما محدّدش", chooseShip: "اختاري",
     confirm: "أكّدي الطلب", sending: "كيتصيفط…",
     req: "هاد الخانة ضرورية.", badPhone: "رقم غير صحيح: 10 أرقام (06…، 07…، 05…) أو +212…", short: "عافاك وضّحي أكثر.",
     pickShip: "اختاري طريقة التوصيل.", pickPay: "اختاري طريقة الأداء.", fix: "راجعي الخانات اللي بالأحمر.",
@@ -45,14 +46,15 @@ const P = {
     stockErr: "شي ماسك ما بقاش متوفر بهاد الكمية. بدّلي الباك ديالك.", changed: "الكاتالوج تبدّل: راجعي الباك وعاودي.",
     tooMany: "صيفطتي بزاف ديال الطلبات. عاودي من بعد شي دقايق.",
     emptyTxt: "الباك ديالك ما زال ما كملش.", emptyGo: "كمّلي الباك ديالي",
+    emptyCart: "السلة خاوية.", goPack: "كوّني باك ديال الماسكات", goSoins: "شوفي منتجات العناية", s1b: "الطلب ديالك", soinsT: "منتجات العناية بالوحدة",
     okT: "شكراً، الطلب ديالك تسجّل!", okNum: "رقم الطلب", okNext: "غادي نتاصلو بيك باش نأكدوه.",
     okWho: "الاسم", okTel: "الهاتف", okAddr: "العنوان", okShip: "التوصيل", okPay: "الأداء", okTot: "المجموع", okBack: "رجوع للرئيسية" },
   en: { tag: "CHECKOUT", title: "Complete your order", s1: "Your pack", s2: "Delivery details", s3: "Delivery & payment", s4: "Total",
-    edit: "Edit my cart", packLine: (n, t) => `Pack of ${t} masks · ${iso(n + "/" + t)}`, unit: "Unit price", tbd: "to be set",
+    edit: "Edit my cart", packLine: (n, t) => `Pack of ${t} masks · ${iso(n + "/" + t)}`, unit: "Unit price", tbd: "not set yet",
     name: "Full name", phone: "Phone", phoneHint: "e.g. 06 12 34 56 78 or +212 6 12 34 56 78", address: "Address", city: "City", cityOther: "Your city", cityPh: "Search your city…", cityTop: "Casablanca & surroundings", cityAll: "Other cities", cityOtherOpt: "Other city (type it)", cityNone: "No city found.", cityPick: "Pick your city from the list, or “Other city”.", area: "Neighbourhood or postcode", optional: "(optional)",
     ship: "Delivery method", pay: "Payment method", free: "Free", freeFrom: v => `Free from ${v}`,
     noShip: "No delivery method has been set up on the site yet.", noPay: "No payment method has been set up on the site yet.",
-    products: "Products", delivery: "Delivery", total: "Total to pay", toSet: "To be set", chooseShip: "To choose",
+    products: "Products", delivery: "Delivery", total: "Total to pay", toSet: "Not set", chooseShip: "To choose",
     confirm: "Confirm order", sending: "Sending…",
     req: "This field is required.", badPhone: "Invalid number: 10 digits (06…, 07…, 05…) or +212…", short: "Please add more detail.",
     pickShip: "Choose a delivery method.", pickPay: "Choose a payment method.", fix: "Please check the fields in red.",
@@ -62,6 +64,7 @@ const P = {
     stockErr: "A mask is no longer available in that quantity. Please change your pack.", changed: "The catalogue changed: please check your pack and try again.",
     tooMany: "Too many orders sent. Please try again in a few minutes.",
     emptyTxt: "Your pack isn't complete yet.", emptyGo: "Complete my pack",
+    emptyCart: "Your cart is empty.", goPack: "Build a mask pack", goSoins: "See skincare", s1b: "Your order", soinsT: "Skincare (sold individually)",
     okT: "Thank you, your order is registered!", okNum: "Order number", okNext: "We will contact you to confirm it.",
     okWho: "Name", okTel: "Phone", okAddr: "Address", okShip: "Delivery", okPay: "Payment", okTot: "Total", okBack: "Back to home" },
 };
@@ -96,7 +99,7 @@ export default function CheckoutPage() {
 }
 
 function Checkout({ p }) {
-  const { uiLang: lang, catalog, packSize: N, count: n, totals, money, setCartOpen, clearOrder, loadCatalog } = useShop();
+  const { uiLang: lang, catalog, packSize: N, count: n, totals, money, setCartOpen, clearOrder, loadCatalog, canCheckout, packOk, unitProducts } = useShop();
   const { toast, hideToast } = useOverlay();
   const saved = useMemo(loadForm, []);
   const [f, setF] = useState({ name: saved.name || "", phone: saved.phone || "", address: saved.address || "", area: saved.area || "", cityOther: saved.cityOther || "" });
@@ -110,7 +113,7 @@ function Checkout({ p }) {
   const [done, setDone] = useState(null);
   const okRef = useRef(null);
 
-  const full = N && n === N;
+  const full = canCheckout;
   const cityName = c => (lang === "ar" ? c.ar : c.fr);
   const cityLabel = cityKey === "other" ? p.cityOtherOpt : (MA_CITIES.find(c => c.fr === cityKey) ? cityName(MA_CITIES.find(c => c.fr === cityKey)) : "");
   useEffect(() => { if (cityKey) setCityText(cityLabel); }, [cityKey, lang]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -161,8 +164,9 @@ function Checkout({ p }) {
     setBusy(true);
     try {
       const { order } = await api("/api/shop/orders", { method: "POST", body: {
-        lang, packSize: N,
+        lang, packSize: n ? N : null,
         items: totals.items.map(({ x, q }) => ({ productId: x.id, qty: q })),
+        extras: totals.extraItems.map(({ x, q }) => ({ productId: x.id, qty: q })),
         customer: { name: f.name.trim(), phone: f.phone.trim(), address: f.address.trim(),
           city: cityKey === "other" ? f.cityOther.trim() : cityKey, cityIsOther: cityKey === "other", area: f.area.trim() || null },
         shippingMethodId: ship, paymentMethodId: pay,
@@ -185,10 +189,16 @@ function Checkout({ p }) {
   if (done) return <Success p={p} o={done} money={money} okRef={okRef} />;
   if (!full) return (
     <main className="wrap"><section className="sec empty">
-      <Deco k="face" /><p>{p.emptyTxt}</p>
-      <Link className="btnp" to={PATHS[N ? 3 : 2]}>{p.emptyGo}</Link>
+      <Deco k="face" />
+      {!packOk ? <><p>{p.emptyTxt}</p><Link className="btnp" to={PATHS[3]}>{p.emptyGo}</Link></>
+        : <><p>{p.emptyCart}</p><div className="empty-go"><Link className="btnp" to={PATHS[N ? 3 : 2]}>{p.goPack}</Link>
+            {unitProducts.length > 0 && <Link className="btnp alt" to={PATHS.soins}>{p.goSoins}</Link>}</div></>}
     </section></main>
   );
+  const line = ({ x, q }) => (
+    <li key={x.id}><img src={x.images[0]} alt="" />
+      <div className="i"><small>{x.brand}</small><b>{x.name}</b><span className="u">{p.unit} : {x.price == null ? p.tbd : money(x.price)}</span></div>
+      <div className="r"><span className="q">×{q}</span>{x.price != null && <span className="lt">{money(x.price * q)}</span>}</div></li>);
 
   return (
     <>
@@ -196,13 +206,11 @@ function Checkout({ p }) {
         <form id="co" className="co" noValidate onSubmit={submit}>
           <section className="sec" aria-labelledby="h1s">
             <span className="tape ging" />
-            <h2 className="sh2" id="h1s"><span className="n">1</span><span>{p.s1}</span></h2>
-            <p className="note" style={{ margin: "-4px 2px 8px" }}>{p.packLine(n, N)}</p>
-            <ul className="rl">{totals.items.map(({ x, q }) => (
-              <li key={x.id}><img src={x.images[0]} alt="" />
-                <div className="i"><small>{x.brand}</small><b>{x.name}</b><span className="u">{p.unit} : {x.price == null ? p.tbd : money(x.price)}</span></div>
-                <div className="r"><span className="q">×{q}</span>{x.price != null && <span className="lt">{money(x.price * q)}</span>}</div></li>))}
-            </ul>
+            <h2 className="sh2" id="h1s"><span className="n">1</span><span>{n && !totals.extraItems.length ? p.s1 : p.s1b}</span></h2>
+            {n > 0 && <><p className="note" style={{ margin: "-4px 2px 8px" }}>{p.packLine(n, N)}</p>
+              <ul className="rl">{totals.items.map(line)}</ul></>}
+            {totals.extraItems.length > 0 && <><p className="note rl-sec">{p.soinsT}</p>
+              <ul className="rl">{totals.extraItems.map(line)}</ul></>}
             <button type="button" className="editc" onClick={() => setCartOpen(true)}>{svg(PEN)}<span>{p.edit}</span></button>
           </section>
 
@@ -365,9 +373,10 @@ function Success({ p, o, money, okRef }) {
         <p className="num">{p.okNum} : <b>{o.number}</b></p>
         <p className="num">{p.okNext}</p>
         <div className="okd">
-          <ul className="rl">{o.items.map(it => (
-            <li key={it.productId}>{it.image && <img src={it.image} alt="" />}<div className="i"><small>{it.brand}</small><b>{it.name}</b></div>
-              <div className="r"><span className="q">×{it.qty}</span>{it.lineTotal != null && <span className="lt">{money(it.lineTotal)}</span>}</div></li>))}</ul>
+          <ul className="rl">{o.items.map((it, i) => (<Fragment key={i}>
+            {!it.inPack && (i === 0 || o.items[i - 1].inPack) && <li className="rl-sec-li">{p.soinsT}</li>}
+            <li>{it.image && <img src={it.image} alt="" />}<div className="i"><small>{it.brand}</small><b>{it.name}</b></div>
+              <div className="r"><span className="q">×{it.qty}</span>{it.lineTotal != null && <span className="lt">{money(it.lineTotal)}</span>}</div></li></Fragment>))}</ul>
           <dl style={{ marginTop: 14 }}>{rows.map(([a, b], i) => <FragmentRow key={i} a={a} b={b} ltr={i === 1} />)}</dl>
         </div>
         <p style={{ marginTop: 18 }}><Link className="btnp" to="/">{p.okBack}</Link></p>

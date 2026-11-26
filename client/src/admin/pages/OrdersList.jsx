@@ -61,13 +61,13 @@ export default function OrdersList() {
           <>
             <div className="a-card a-table-card">
               <table className="a-table a-table-orders a-table-click">
-                <thead><tr><th>Commande</th><th>Cliente</th><th>Ville</th><th>Pack</th><th>Statut</th><th className="a-r">Total</th></tr></thead>
+                <thead><tr><th>Commande</th><th>Cliente</th><th>Ville</th><th>Contenu</th><th>Statut</th><th className="a-r">Total</th></tr></thead>
                 <tbody>{d.orders.map(o => (
                   <tr key={o.id} onClick={e => { if (!e.target.closest("a")) navigate(`/admin/commandes/${o.id}`); }}>
                     <td className="a-cell-main"><Link className="a-strong-link" to={`/admin/commandes/${o.id}`}>{o.number}</Link><small className="a-muted a-block">{fmtDate(o.createdAt)}</small></td>
                     <td data-label="Cliente"><span dir="auto" className="a-block">{o.customer.name}</span><small className="a-muted a-block" dir="ltr">{o.customer.phone}</small></td>
                     <td data-label="Ville" dir="auto">{o.customer.city}</td>
-                    <td data-label="Pack">{o.packSize} masques</td>
+                    <td data-label="Contenu">{o.packSize ? `Pack de ${o.packSize}` : "—"}{o.extrasCount > 0 && <small className="a-muted a-block">+ {o.extrasCount} soin{o.extrasCount > 1 ? "s" : ""}</small>}</td>
                     <td data-label="Statut"><StatusBadge s={o.status} /></td>
                     <td data-label="Total" className="a-r a-num"><b>{money(o.total, o.currency)}</b></td>
                   </tr>))}</tbody>

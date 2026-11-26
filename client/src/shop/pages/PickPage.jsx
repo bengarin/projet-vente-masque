@@ -11,36 +11,45 @@ import { CatalogGate, Header } from "../Chrome.jsx";
 import { PATHS, useShop } from "../ShopContext.jsx";
 import "../../styles/pg-pick.css";
 
-const P = {
+export const P = {
   fr: { title: <>Compose ton <span className="hl">pack</span> !</>, sub: "Choisis tes masques préférés", hint: "Tu peux choisir plusieurs fois le même masque.",
-    add: "Ajouter", remove: "Retirer un", tbd: "Prix à renseigner", details: "Voir la fiche", more: "Voir plus",
+    add: "Ajouter", remove: "Retirer un", tbd: "Prix pas encore défini", details: "Voir la fiche", more: "Voir plus",
     prog: (n, t) => `${iso(n + "/" + t)} masques choisis`, left: k => (k === 0 ? "Pack complet ✓" : `Encore ${k} à choisir`),
     mine: (n, t) => `Mon pack : ${iso(n + "/" + t)}`, cta: "Ajouter au panier", toastFull: "Ton pack est complet !",
     empty: "Vide", removeOne: "Retirer ce masque", sheetTag: "Fiche produit", photo: n => `Photo ${n}`,
     packText: "Mentions imprimées sur l'emballage", packNote: "Recopiées telles quelles, dans la langue de l'emballage.",
-    info: "Description", usage: "Mode d'emploi", video: "Vidéo", notGiven: "Information non fournie pour l'instant.",
+    info: "Description", usage: "Mode d'emploi", video: "Vidéo", notGiven: "Information à confirmer",
+    hl: "Les points forts", specs: "Fiche technique",
+    sBrand: "Marque", sName: "Nom du produit", sType: "Type", sContent: "Contenance", precautions: "Précautions",
+    packMore: "Voir le texte original de l'emballage",
     backTo: "Retour à mon pack", edit: "Modifier le pack", added: "Pack ajouté au panier ✓", addedBtn: "Ajouté",
     swapT: "Ton pack est complet !", swap: "Tu veux ajouter :", swapWhich: "Choisis le masque à remplacer :", swapCancel: "Annuler",
     swapGo: "Remplacer ce masque", swapPick: "Touche un masque ci-dessus", swapped: (a, b) => `${a} remplacé par ${b}`, swapAria: n => `Remplacer un masque par ${n}`,
     noProducts: "Aucun masque n'est disponible pour le moment." },
   ar: { title: <>كوّني <span className="hl">الباك</span> ديالك!</>, sub: "اختاري الماسكات المفضلة عندك", hint: "تقدري تختاري نفس الماسك أكثر من مرة.",
-    add: "إضافة", remove: "نقص واحد", tbd: "الثمن: يُحدَّد", details: "شوفي التفاصيل", more: "شوفي المزيد",
+    add: "إضافة", remove: "نقص واحد", tbd: "الثمن ما زال ما تحدّدش", details: "شوفي التفاصيل", more: "شوفي المزيد",
     prog: (n, t) => `${iso(n + "/" + t)} ماسكات مختارة`, left: k => (k === 0 ? "الباك كامل ✓" : `باقي ${k} للاختيار`),
     mine: (n, t) => `الباك ديالي: ${iso(n + "/" + t)}`, cta: "أضيفي للسلة", toastFull: "الباك ديالك كامل!",
     empty: "فارغ", removeOne: "حيدي هاد الماسك", sheetTag: "بطاقة المنتج", photo: n => `صورة ${n}`,
     packText: "المكتوب على العلبة", packNote: "منقول كما هو، بلغة العلبة.",
-    info: "الوصف", usage: "طريقة الاستعمال", video: "فيديو", notGiven: "المعلومة ما زال ما تعطاتش.",
+    info: "الوصف", usage: "طريقة الاستعمال", video: "فيديو", notGiven: "معلومة في انتظار التأكيد",
+    hl: "أبرز المميزات", specs: "البطاقة التقنية",
+    sBrand: "العلامة", sName: "اسم المنتج", sType: "النوع", sContent: "الكمية", precautions: "احتياطات الاستعمال",
+    packMore: "عرض النص الأصلي للغلاف",
     backTo: "رجوع للباك ديالي", edit: "بدّلي الباك", added: "الباك تزاد للسلة ✓", addedBtn: "تزاد",
     swapT: "الباك ديالك كامل!", swap: "بغيتي تزيدي:", swapWhich: "اختاري الماسك اللي غادي تبدّلي:", swapCancel: "إلغاء",
     swapGo: "بدّلي هاد الماسك", swapPick: "اختاري ماسك من الفوق", swapped: (a, b) => `تبدّل ${a} بـ ${b}`, swapAria: n => `بدّلي ماسك بـ ${n}`,
     noProducts: "ما كاين حتى ماسك متوفر دابا." },
   en: { title: <>Build your <span className="hl">pack</span>!</>, sub: "Pick your favourite masks", hint: "You can pick the same mask more than once.",
-    add: "Add", remove: "Remove one", tbd: "Price to be set", details: "View details", more: "See more",
+    add: "Add", remove: "Remove one", tbd: "Price not set yet", details: "View details", more: "See more",
     prog: (n, t) => `${iso(n + "/" + t)} masks selected`, left: k => (k === 0 ? "Pack complete ✓" : `${k} more to pick`),
     mine: (n, t) => `My pack: ${iso(n + "/" + t)}`, cta: "Add to cart", toastFull: "Your pack is complete!",
     empty: "Empty", removeOne: "Remove this mask", sheetTag: "Product details", photo: n => `Photo ${n}`,
     packText: "Printed on the packaging", packNote: "Copied as printed, in the packaging's language.",
-    info: "Description", usage: "How to use", video: "Video", notGiven: "Not provided yet.",
+    info: "Description", usage: "How to use", video: "Video", notGiven: "Information to be confirmed",
+    hl: "Key highlights", specs: "Product details",
+    sBrand: "Brand", sName: "Product name", sType: "Type", sContent: "Contents", precautions: "Precautions",
+    packMore: "See the original packaging text",
     backTo: "Back to my pack", edit: "Change pack", added: "Pack added to cart ✓", addedBtn: "Added",
     swapT: "Your pack is complete!", swap: "You want to add:", swapWhich: "Choose the mask to replace:", swapCancel: "Cancel",
     swapGo: "Replace this mask", swapPick: "Tap a mask above", swapped: (a, b) => `${a} replaced with ${b}`, swapAria: n => `Replace a mask with ${n}`,
@@ -55,6 +64,9 @@ const IC = {
   use: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></svg>',
   info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
   video: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.5 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>',
+  spec: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M8 8.5h8M8 12.5h8M8 16.5h5"/></svg>',
+  warn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.3v.2"/></svg>',
 };
 const svg = html => <span style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: html }} />;
 
@@ -136,7 +148,7 @@ function Dots({ p, size, onRemove, idPrefix, d, l }) {
 }
 
 function Picker({ p }) {
-  const { uiLang, t, products, packSize: N, count: n, order, qty, setQty, replace, byId, money, setCartOpen } = useShop();
+  const { uiLang, t, packProducts: products, unitProducts, packSize: N, count: n, order, qty, setQty, replace, byId, money, setCartOpen } = useShop();
   const { toast } = useOverlay();
   const [pmId, setPmId] = useState(null);
   const [swNew, setSwNew] = useState(null);
@@ -290,7 +302,7 @@ function Picker({ p }) {
                     <span className="brandp">{x.brand}</span>
                     <span className="name" title={x.name}>{x.name}</span>
                   </button>
-                  <div className={`price${x.price == null ? " tbd" : ""}`}>{x.price == null ? p.tbd : money(x.price)}</div>
+                  <div className="pricerow">{x.price == null ? <span className="price tbd">{p.tbd}</span> : <span className="price">{money(x.price)}</span>}</div>
                   <button className="vplus" type="button" aria-label={`${p.more} – ${x.brand} ${x.name}`} aria-haspopup="dialog" onClick={() => setPmId(x.id)}>
                     <span className="vtxt">{p.more}</span><span className="varr" aria-hidden="true">→</span><Deco k="sparks" className="dc vs" />
                   </button>
@@ -302,6 +314,7 @@ function Picker({ p }) {
           })}
         </ul>
         <div className="note"><Torn torn={4}><span>{p.hint}</span></Torn></div>
+        {unitProducts.length > 0 && <SoinsTeaser t={t} items={unitProducts} />}
       </main>
 
       <div className="bar"><div className="barin">
@@ -321,6 +334,47 @@ function Picker({ p }) {
         }} />}
       {pmId != null && byId(pmId) && <ProductModal p={p} x={byId(pmId)} lang={uiLang} closeLabel={t.close} qtyCtl={qtyCtl} money={money} onClose={() => setPmId(null)} />}
     </>
+  );
+}
+
+/* Carte promotionnelle « Soins à l'unité » sous la grille des masques.
+   Toute la carte est un seul lien vers /soins (aucun bouton imbriqué) ; apparition douce quand elle entre à l'écran. */
+export function SoinsTeaser({ t, items }) {
+  const { money } = useShop();
+  const ref = useRef(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || RM() || !("IntersectionObserver" in window)) { setShown(true); return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setShown(true); io.disconnect(); } }, { threshold: 0.25 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const pics = items.slice(0, 2);
+  const label = `${t.promoTitle} ${t.promoCta} : ${items.map(x => `${x.brand} ${x.name}`).join(", ")}`;
+  return (
+    <Link ref={ref} className={`soins-promo${shown ? " is-in" : ""}`} to={PATHS.soins} aria-label={label}>
+      <span className="sh sp-sh">
+        <Paper as="span" torn={7} className="sp-paper">
+          <span className="sp-pics" aria-hidden="true">
+            {pics.map((x, i) => (
+              <span key={x.id} className={`sp-pol sp-pol-${i + 1}`}>
+                <img src={x.images[0]} alt="" loading="lazy" width="200" height="200" />
+                <span className="sp-cap"><span className="sp-brand">{x.brand}</span>{x.price != null && <span className="sp-price">{money(x.price)}</span>}</span>
+              </span>))}
+            <Deco k="sparks" className="dc sp-spark" />
+          </span>
+          <span className="sp-head">
+            <span className="sp-tag">{t.promoTag}</span>
+            <span className="sp-title">{t.promoTitle}</span>
+          </span>
+          <span className="sp-sub">{t.promoSub}</span>
+          <span className="sp-cta" aria-hidden="true">{t.promoCta}<span className="sp-arr">→</span></span>
+        </Paper>
+        <span className="tape check sp-tape" aria-hidden="true" />
+        <Deco k="star" className="dc sp-star" />
+      </span>
+    </Link>
   );
 }
 
@@ -380,7 +434,7 @@ function SwapModal({ p, newId, onClose, onSwap }) {
 }
 
 /* ---------- Fiche produit ---------- */
-function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
+export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
   const [cur, setCur] = useState(0);
   const closeRef = useRef(null);
   const opener = useRef(document.activeElement);
@@ -392,7 +446,11 @@ function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
     const o = opener.current;
     return () => { document.removeEventListener("keydown", key); if (o && document.contains(o)) o.focus(); };
   }, [onClose]);
-  const info = tr(x.info, lang) || null, usage = tr(x.usage, lang) || null;
+  const info = tr(x.info, lang) || null, usage = tr(x.usage, lang) || null, precautions = tr(x.precautions, lang) || null;
+  const type = tr(x.type, lang) || null, content = tr(x.content, lang) || null;
+  const highlights = (x.highlights && (x.highlights[lang] || x.highlights.fr)) || [];
+  const missing = <p className="missingf">{p.notGiven}</p>;
+  const val = v => (v ? <dd>{v}</dd> : <dd className="tbc">{p.notGiven}</dd>);
   const card = (cls, ico, title, body) => <section className={`pcard ${cls}`}><h3><span className="ico">{svg(IC[ico])}</span>{title}</h3>{body}</section>;
   const isFile = x.video && /\.(mp4|webm|mov)(\?|$)/i.test(x.video);
   const imgs = x.images.length ? x.images : ["/images/deco/visage-masque.webp"];
@@ -407,7 +465,7 @@ function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
         <div className="pscroll">
           <div className="gwrap">
             <span className={`tape ${x.tape || "ging"}`} /><Deco k="sparks" className="dc gs1" /><Deco k="rays" className="dc gs2" />
-            <div className="sh frame-sh"><Paper torn={5} className="frame"><div className="gal" id="gal">
+            <div className="sh frame-sh"><Paper torn={5} className="frame"><div className="gal" id="gal" onScroll={e => { const g = e.currentTarget; const i = Math.round(Math.abs(g.scrollLeft) / g.clientWidth); if (i !== cur) setCur(i); }}>
               {imgs.map((src, i) => <figure key={i} id={"g" + i}><img src={src} alt={`${x.brand} – ${x.name} · ${p.photo(i + 1)}`} /></figure>)}
             </div></Paper></div>
           </div>
@@ -418,11 +476,25 @@ function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money }) {
           <section className="pid">
             <span className="pbrand">{x.brand}</span>
             <h2 className="pname" id="pmName">{x.name}</h2>
+            {type && <p className="ptype">{type}{content && <span className="pcontent"> · {content}</span>}</p>}
             <div className={`pprice${x.price == null ? " tbd" : ""}`}>{x.price == null ? p.tbd : money(x.price)}</div>
           </section>
-          {info && card("pi", "info", p.info, <p className="ptext">{info}</p>)}
-          {x.pack?.length > 0 && card("pk", "pack", p.packText, <><ul className="checks">{x.pack.map((l, i) => <li key={i}>{l}</li>)}</ul><p className="orig">{p.packNote}</p></>)}
-          {card("pu", "use", p.usage, usage ? <p className="ptext">{usage}</p> : <p className="missingf">{p.notGiven}</p>)}
+          {highlights.length > 0 && card("phl", "star", p.hl, <ul className="hlist">{highlights.map((l, i) => {
+            // « Titre : phrase courte » → titre en gras + phrase ; sinon la ligne telle quelle
+            const m = /^(.{2,48}?)\s*[:：]\s+(.+)$/.exec(l);
+            return <li key={i}>{m ? <><b className="hl-t">{m[1]}</b><span className="hl-d">{m[2]}</span></> : <span className="hl-d">{l}</span>}</li>;
+          })}</ul>)}
+          {card("pi", "info", p.info, info ? <p className="ptext">{info}</p> : missing)}
+          {card("pspec", "spec", p.specs, <dl className="specs">
+            <dt>{p.sBrand}</dt><dd className="latin">{x.brand}</dd>
+            <dt>{p.sName}</dt><dd className="latin">{x.name}</dd>
+            <dt>{p.sType}</dt>{val(type)}
+            <dt>{p.sContent}</dt>{val(content)}
+          </dl>)}
+          {/* Mode d'emploi : affiché seulement s'il est confirmé (jamais de bloc « à confirmer ») */}
+          {usage && card("pu", "use", p.usage, <p className="ptext">{usage}</p>)}
+          {/* Précautions : affichées seulement si elles sont renseignées dans l'admin (jamais de bloc « à confirmer ») */}
+          {precautions && card("pw", "warn", p.precautions, <p className="ptext">{precautions}</p>)}
           {x.video && card("pv", "video", p.video, isFile
             ? <video className="pvideo" src={x.video} controls playsInline preload="metadata" />
             : <a className="more" href={x.video} target="_blank" rel="noopener noreferrer">{p.video} ↗</a>)}
