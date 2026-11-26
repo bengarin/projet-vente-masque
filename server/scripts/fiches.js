@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 import mysql from "mysql2/promise";
 import { loadConfig, PROJECT_ROOT } from "../src/config.js";
 
-const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql", "descriptions-v2.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
+const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql", "descriptions-v2.sql", "points-forts-v2.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
 
 /* Découpe le fichier en blocs « -- fiche: <clé> | <libellé> » + une requête UPDATE */
 async function blocks() {
@@ -45,12 +45,13 @@ export async function applyFiches(conn, { quiet = false } = {}) {
     let section = "";
     for (const r of results.filter(r => !r.key.includes("-mentions"))) {
       const sec = r.key.startsWith("desc-") ? "Descriptions (nouvelle version) :"
+        : r.key.startsWith("pf-") ? "Points forts (nouvelle version) :"
         : r.key.startsWith("produit-") || r.key.startsWith("categorie") || r.key.startsWith("photo-orjena") || r.key.startsWith("photo-somebymi") ? "Soins à l'unité :"
         : r.key.startsWith("photo-") ? "Photos d'ambiance :" : "";
       if (sec && sec !== section) { console.log("\n" + sec); section = sec; }
       const state = r.matched === 0 ? "INTROUVABLE dans la base"
         : r.created ? (r.changed ? "ajoutée" : "déjà présente")
-        : r.key.startsWith("desc-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
+        : r.key.startsWith("desc-") || r.key.startsWith("pf-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
         : r.changed ? `complétée (${r.matched} produit(s))` : `déjà à jour (${r.matched} produit(s))`;
       console.log(`  ${r.matched ? "✔" : "✖"} ${r.label.padEnd(62)} ${state}`);
     }

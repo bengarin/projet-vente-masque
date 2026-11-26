@@ -19,7 +19,7 @@ export const P = {
     empty: "Vide", removeOne: "Retirer ce masque", sheetTag: "Fiche produit", photo: n => `Photo ${n}`,
     packText: "Mentions imprimées sur l'emballage", packNote: "Recopiées telles quelles, dans la langue de l'emballage.",
     info: "Description", usage: "Mode d'emploi", video: "Vidéo", notGiven: "Information à confirmer",
-    hl: "Ce qu'indique l'emballage", hlNote: "Les phrases de la marque sont citées telles qu'imprimées.", specs: "Fiche technique",
+    hl: "Les points forts", specs: "Fiche technique",
     sBrand: "Marque", sName: "Nom du produit", sType: "Type", sContent: "Contenance", precautions: "Précautions",
     packMore: "Voir le texte original de l'emballage", disclaimer: "Informations reprises de l'emballage du produit. En cas de différence, l'emballage fait foi.",
     backTo: "Retour à mon pack", edit: "Modifier le pack", added: "Pack ajouté au panier ✓", addedBtn: "Ajouté",
@@ -33,7 +33,7 @@ export const P = {
     empty: "فارغ", removeOne: "حيدي هاد الماسك", sheetTag: "بطاقة المنتج", photo: n => `صورة ${n}`,
     packText: "المكتوب على العلبة", packNote: "منقول كما هو، بلغة العلبة.",
     info: "الوصف", usage: "طريقة الاستعمال", video: "فيديو", notGiven: "معلومة في انتظار التأكيد",
-    hl: "ما يذكره الغلاف", hlNote: "عبارات العلامة منقولة كما هي مطبوعة.", specs: "البطاقة التقنية",
+    hl: "أبرز المميزات", specs: "البطاقة التقنية",
     sBrand: "العلامة", sName: "اسم المنتج", sType: "النوع", sContent: "الكمية", precautions: "احتياطات الاستعمال",
     packMore: "عرض النص الأصلي للغلاف", disclaimer: "المعلومات مأخوذة من غلاف المنتج. في حال وجود أي اختلاف، يُعتمد ما هو مكتوب على الغلاف.",
     backTo: "رجوع للباك ديالي", edit: "بدّلي الباك", added: "الباك تزاد للسلة ✓", addedBtn: "تزاد",
@@ -47,7 +47,7 @@ export const P = {
     empty: "Empty", removeOne: "Remove this mask", sheetTag: "Product details", photo: n => `Photo ${n}`,
     packText: "Printed on the packaging", packNote: "Copied as printed, in the packaging's language.",
     info: "Description", usage: "How to use", video: "Video", notGiven: "Information to be confirmed",
-    hl: "What the packaging says", hlNote: "Brand phrases are quoted as printed.", specs: "Product details",
+    hl: "Key highlights", specs: "Product details",
     sBrand: "Brand", sName: "Product name", sType: "Type", sContent: "Contents", precautions: "Precautions",
     packMore: "See the original packaging text", disclaimer: "Information taken from the product packaging. If anything differs, the packaging prevails.",
     backTo: "Back to my pack", edit: "Change pack", added: "Pack added to cart ✓", addedBtn: "Added",
@@ -479,7 +479,11 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
             {type && <p className="ptype">{type}{content && <span className="pcontent"> · {content}</span>}</p>}
             <div className={`pprice${x.price == null ? " tbd" : ""}`}>{x.price == null ? p.tbd : money(x.price)}</div>
           </section>
-          {highlights.length > 0 && card("phl", "star", p.hl, <><ul className="hlist">{highlights.map((l, i) => <li key={i}>{l}</li>)}</ul><p className="orig">{p.hlNote}</p></>)}
+          {highlights.length > 0 && card("phl", "star", p.hl, <ul className="hlist">{highlights.map((l, i) => {
+            // « Titre : phrase courte » → titre en gras + phrase ; sinon la ligne telle quelle
+            const m = /^(.{2,48}?)\s*[:：]\s+(.+)$/.exec(l);
+            return <li key={i}>{m ? <><b className="hl-t">{m[1]}</b><span className="hl-d">{m[2]}</span></> : <span className="hl-d">{l}</span>}</li>;
+          })}</ul>)}
           {card("pi", "info", p.info, info ? <p className="ptext">{info}</p> : missing)}
           {card("pspec", "spec", p.specs, <dl className="specs">
             <dt>{p.sBrand}</dt><dd className="latin">{x.brand}</dd>
@@ -491,8 +495,6 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
           {usage && card("pu", "use", p.usage, <p className="ptext">{usage}</p>)}
           {/* Précautions : affichées seulement si elles sont renseignées dans l'admin (jamais de bloc « à confirmer ») */}
           {precautions && card("pw", "warn", p.precautions, <p className="ptext">{precautions}</p>)}
-          {x.pack?.length > 0 && <details className="pcard pk"><summary><span className="ico">{svg(IC.pack)}</span>{p.packMore}</summary>
-            <ul className="checks" lang="mul">{x.pack.map((l, i) => <li key={i}>{l}</li>)}</ul><p className="orig">{p.packNote}</p></details>}
           {x.video && card("pv", "video", p.video, isFile
             ? <video className="pvideo" src={x.video} controls playsInline preload="metadata" />
             : <a className="more" href={x.video} target="_blank" rel="noopener noreferrer">{p.video} ↗</a>)}

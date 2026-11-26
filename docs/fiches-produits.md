@@ -18,7 +18,10 @@ Modifiable ensuite dans l'admin : **Produits → fiche → « Fiche détaillée 
 | 5 | SOME BY MI | Real Glutathione Brightening Care Mask | Masque en tissu — feuille 100 % végétale et biodégradable | Net 20 g – 0.70 oz |
 | 6 | masque BAR | Rose Gold Foil Sheet Mask | Masque en tissu | 1 masque complet — 30 ml / 1.01 US fl oz |
 
-Chaque fiche contient : points clés relevés sur l'emballage, description, fiche technique (marque, nom, type, contenance), texte original de l'emballage.
+Chaque fiche contient : **Les points forts** (phrases courtes « Titre : phrase », reformulées), description, fiche technique (marque, nom, type, contenance).
+Le texte brut de l'emballage n'est plus affiché aux clientes (il reste consultable dans l'admin, champ « Mentions de l'emballage »).
+
+**Points forts v2 (26/11/2026)** : uniquement des caractéristiques vérifiées (ingrédients nommés, format, matière, labels). Écartés : allégations de la marque (Anti-Fatigue, Revitalizing & Soothing, Skin Elasticity / Nutrition / Refresh, « nettoie les pores », « aide à nourrir et hydrater »…) et mentions à astérisque non lisible (5 %* de 7th Heaven, Non-Comedogenic Tested(*)). Mise à jour des bases existantes : `database/points-forts-v2.sql` (un texte modifié dans l'admin est conservé).
 Les sections **Mode d'emploi** et **Précautions** ne s'affichent que si elles sont confirmées (aucun texte provisoire).
 
 **Descriptions v2 (26/11/2026)** : réécrites dans un style simple, chaleureux et vendeur, avec uniquement des faits de l'emballage (ingrédients nommés, format, sachet, mentions) — aucun résultat promis. Mise à jour des bases existantes : `database/descriptions-v2.sql` (ne remplace que l'ancienne version exacte ; un texte modifié dans l'admin est conservé).

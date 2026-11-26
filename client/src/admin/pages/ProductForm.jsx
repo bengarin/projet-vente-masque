@@ -114,7 +114,7 @@ export default function ProductForm() {
                   <Field label={`Type de produit — ${l}`} error={errs["type" + k]} hint="Ex. Masque en tissu"><input dir={k === "Ar" ? "rtl" : undefined} maxLength={200} {...fp("type" + k)} /></Field>
                   <Field label={`Contenance — ${l}`} error={errs["content" + k]} hint="Telle qu'imprimée, ex. 22 g / 0.73 fl.oz"><input dir={k === "Ar" ? "rtl" : undefined} maxLength={200} {...fp("content" + k)} /></Field>
                 </div>
-                <Field label={`Points clés — ${l}`} error={errs["highlights" + k]} hint="Un point par ligne. Cite les phrases de la marque entre « »."><textarea rows={5} dir={k === "Ar" ? "rtl" : undefined} {...fp("highlights" + k)} /></Field>
+                <Field label={`Points forts — ${l}`} error={errs["highlights" + k]} hint="Un point par ligne, au format « Titre : phrase courte ». Uniquement des caractéristiques vérifiées, sans promesse de résultat."><textarea rows={5} dir={k === "Ar" ? "rtl" : undefined} {...fp("highlights" + k)} /></Field>
                 <Field label={`Précautions — ${l}`} error={errs["precautions" + k]} hint="Seulement si elles sont imprimées sur l'emballage."><textarea rows={3} dir={k === "Ar" ? "rtl" : undefined} {...fp("precautions" + k)} /></Field>
               </div>))}
           </Card>
