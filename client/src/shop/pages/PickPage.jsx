@@ -19,7 +19,7 @@ export const P = {
     empty: "Vide", removeOne: "Retirer ce masque", sheetTag: "Fiche produit", photo: n => `Photo ${n}`,
     packText: "Mentions imprimées sur l'emballage", packNote: "Recopiées telles quelles, dans la langue de l'emballage.",
     info: "Description", usage: "Mode d'emploi", video: "Vidéo", notGiven: "Information à confirmer",
-    hl: "Les points forts", specs: "Fiche technique",
+    hl: "Pourquoi le choisir ?", specs: "Fiche technique",
     sBrand: "Marque", sName: "Nom du produit", sType: "Type", sContent: "Contenance", precautions: "Précautions",
     packMore: "Voir le texte original de l'emballage",
     backTo: "Retour à mon pack", edit: "Modifier le pack", added: "Pack ajouté au panier ✓", addedBtn: "Ajouté",
@@ -33,7 +33,7 @@ export const P = {
     empty: "فارغ", removeOne: "حيدي هاد الماسك", sheetTag: "بطاقة المنتج", photo: n => `صورة ${n}`,
     packText: "المكتوب على العلبة", packNote: "منقول كما هو، بلغة العلبة.",
     info: "الوصف", usage: "طريقة الاستعمال", video: "فيديو", notGiven: "معلومة في انتظار التأكيد",
-    hl: "أبرز المميزات", specs: "البطاقة التقنية",
+    hl: "لماذا تختارينه؟", specs: "البطاقة التقنية",
     sBrand: "العلامة", sName: "اسم المنتج", sType: "النوع", sContent: "الكمية", precautions: "احتياطات الاستعمال",
     packMore: "عرض النص الأصلي للغلاف",
     backTo: "رجوع للباك ديالي", edit: "بدّلي الباك", added: "الباك تزاد للسلة ✓", addedBtn: "تزاد",
@@ -47,7 +47,7 @@ export const P = {
     empty: "Empty", removeOne: "Remove this mask", sheetTag: "Product details", photo: n => `Photo ${n}`,
     packText: "Printed on the packaging", packNote: "Copied as printed, in the packaging's language.",
     info: "Description", usage: "How to use", video: "Video", notGiven: "Information to be confirmed",
-    hl: "Key highlights", specs: "Product details",
+    hl: "Why choose it?", specs: "Product details",
     sBrand: "Brand", sName: "Product name", sType: "Type", sContent: "Contents", precautions: "Precautions",
     packMore: "See the original packaging text",
     backTo: "Back to my pack", edit: "Change pack", added: "Pack added to cart ✓", addedBtn: "Added",
@@ -450,7 +450,6 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
   const type = tr(x.type, lang) || null, content = tr(x.content, lang) || null;
   const highlights = (x.highlights && (x.highlights[lang] || x.highlights.fr)) || [];
   const missing = <p className="missingf">{p.notGiven}</p>;
-  const val = v => (v ? <dd>{v}</dd> : <dd className="tbc">{p.notGiven}</dd>);
   const card = (cls, ico, title, body) => <section className={`pcard ${cls}`}><h3><span className="ico">{svg(IC[ico])}</span>{title}</h3>{body}</section>;
   const isFile = x.video && /\.(mp4|webm|mov)(\?|$)/i.test(x.video);
   const imgs = x.images.length ? x.images : ["/images/deco/visage-masque.webp"];
@@ -488,8 +487,9 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
           {card("pspec", "spec", p.specs, <dl className="specs">
             <dt>{p.sBrand}</dt><dd className="latin">{x.brand}</dd>
             <dt>{p.sName}</dt><dd className="latin">{x.name}</dd>
-            <dt>{p.sType}</dt>{val(type)}
-            <dt>{p.sContent}</dt>{val(content)}
+            {/* Lignes affichées seulement si l'information est confirmée */}
+            {type && <><dt>{p.sType}</dt><dd>{type}</dd></>}
+            {content && <><dt>{p.sContent}</dt><dd>{content}</dd></>}
           </dl>)}
           {/* Mode d'emploi : affiché seulement s'il est confirmé (jamais de bloc « à confirmer ») */}
           {usage && card("pu", "use", p.usage, <p className="ptext">{usage}</p>)}

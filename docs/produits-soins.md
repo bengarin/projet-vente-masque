@@ -7,8 +7,8 @@ Le parcours des packs de masques (3 / 4 / 6) ne change pas : un soin ne peut pas
 
 | Produit | Prix | Type | Contenance | Source |
 |---|---|---|---|---|
-| ORJENA — Power Collagen Emulsion | 179 DH | Émulsion (soin du visage) | 100 ml / 3.38 fl oz | visuels fournis ; prix confirmé |
-| SOME BY MI — Yuja Niacin Anti Blemish Cream | 199 DH | Crème (soin du visage) | Net 60 g – 2.11 oz | visuels fournis ; prix confirmé |
+| ORJENA — Power Collagen Emulsion | 179 DH | Émulsion (soin du visage) | 100 ml (EN : 100 ml / 3.38 fl oz) | visuels fournis ; prix confirmé |
+| SOME BY MI — Yuja Niacin Anti Blemish Cream | 199 DH | Crème (soin du visage) | Poids net : 60 g (EN : Net 60 g – 2.11 oz) | visuels fournis ; prix confirmé |
 
 - **Mode d'emploi** : repris des visuels, confirmé par la propriétaire comme texte officiel de la marque.
 - **Points clés** : uniquement les mentions lisibles sur l'emballage (Skin Elasticity / Skin Nutrition / Refresh / For all skin types ; Niacinamide 5 % / Yuja Extract / Non-Comedogenic Tested(*) / Clinical Solution).

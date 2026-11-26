@@ -77,7 +77,11 @@ export function ShopProvider({ children }) {
   const unitProducts = useMemo(() => products.filter(p => p.saleMode === "unit"), [products]);
   const byId = useCallback(id => products.find(p => p.id === id), [products]);
   const currency = catalog?.store.currency || "";
-  const money = useCallback(v => fmt(v, currency), [currency]);
+  // En arabe : « درهم » au lieu de « DH » / « MAD » (montant isolé pour un affichage RTL correct)
+  const money = useCallback(v => {
+    if (lang === "ar" && /^(dh|mad|dhs)$/i.test(currency.trim())) { const m = fmt(v, ""); return m == null ? null : "\u2067" + m + " درهم\u2069"; }
+    return fmt(v, currency);
+  }, [currency, lang]);
 
   const qty = useCallback(id => order.filter(x => x === id).length, [order]);
 

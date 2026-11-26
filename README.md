@@ -68,7 +68,7 @@ npm run db:seed
 
 - `db:migrate` crée toutes les tables (fichiers `database/migrations/*.sql`, suivis dans la table `schema_migrations` : on peut le relancer sans risque).
 - `db:seed` ajoute les 6 masques de l'ancienne version (marque, nom, mentions d'emballage, photo), la catégorie « Masques en tissu » et les tailles de pack 3 / 4 / 6 — **sans prix ni stock** — puis complète leurs fiches détaillées FR / AR / EN (`database/fiches-produits.sql`, voir `docs/fiches-produits.md`). Relancer `db:seed` ne crée aucun doublon et n'écrase jamais un champ déjà rempli.
-- `db:migrate` complète aussi automatiquement les fiches des produits déjà présents, et ajoute les soins vendus à l'unité (`database/produits-soins.sql`, voir `docs/produits-soins.md`), puis met à jour les descriptions et les points forts (`database/descriptions-v2.sql`, `database/points-forts-v2.sql`, sans écraser un texte modifié dans l'admin). Pour voir ce qui est rempli produit par produit (FR/AR/EN) :
+- `db:migrate` complète aussi automatiquement les fiches des produits déjà présents, et ajoute les soins vendus à l'unité (`database/produits-soins.sql`, voir `docs/produits-soins.md`), puis met à jour les descriptions et les points forts (`database/descriptions-v2.sql`, `database/points-forts-v2.sql`, `database/contenu-v3.sql`, sans écraser un texte modifié dans l'admin). Pour voir ce qui est rempli produit par produit (FR/AR/EN) :
 
 ```bash
 npm run db:fiches

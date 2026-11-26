@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 import mysql from "mysql2/promise";
 import { loadConfig, PROJECT_ROOT } from "../src/config.js";
 
-const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql", "descriptions-v2.sql", "points-forts-v2.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
+const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql", "descriptions-v2.sql", "points-forts-v2.sql", "contenu-v3.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
 
 /* Découpe le fichier en blocs « -- fiche: <clé> | <libellé> » + une requête UPDATE */
 async function blocks() {
@@ -46,12 +46,13 @@ export async function applyFiches(conn, { quiet = false } = {}) {
     for (const r of results.filter(r => !r.key.includes("-mentions"))) {
       const sec = r.key.startsWith("desc-") ? "Descriptions (nouvelle version) :"
         : r.key.startsWith("pf-") ? "Points forts (nouvelle version) :"
+        : r.key.startsWith("v3-") ? "Fiches v3 — avantages d'abord, une langue par texte :"
         : r.key.startsWith("produit-") || r.key.startsWith("categorie") || r.key.startsWith("photo-orjena") || r.key.startsWith("photo-somebymi") ? "Soins à l'unité :"
         : r.key.startsWith("photo-") ? "Photos d'ambiance :" : "";
       if (sec && sec !== section) { console.log("\n" + sec); section = sec; }
       const state = r.matched === 0 ? "INTROUVABLE dans la base"
         : r.created ? (r.changed ? "ajoutée" : "déjà présente")
-        : r.key.startsWith("desc-") || r.key.startsWith("pf-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
+        : r.key.startsWith("desc-") || r.key.startsWith("pf-") || r.key.startsWith("v3-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
         : r.changed ? `complétée (${r.matched} produit(s))` : `déjà à jour (${r.matched} produit(s))`;
       console.log(`  ${r.matched ? "✔" : "✖"} ${r.label.padEnd(62)} ${state}`);
     }
@@ -72,7 +73,7 @@ export async function report(conn) {
     FROM products ORDER BY sort_order, id`).then(r => r[0]);
   const f = v => (v && String(v).trim() ? "oui" : "—");
   const tri = (p, base) => ["fr", "ar", "en"].map(l => f(p[`${base}_${l}`])).join("/");
-  console.log("\nContenu en base (FR/AR/EN) — « — » = vide, affiché « Information à confirmer » :");
+  console.log("\nContenu en base (FR/AR/EN) — « — » = vide (section ou ligne masquée sur la boutique) :");
   const W = 11;
   console.log("  " + ["Produit (identifiant)".padEnd(46), "Description", "Type".padEnd(W), "Contenance".padEnd(W), "Points clés", "Texte imprimé", "Mode d'emploi", "Précautions", "Photos", "Vente / prix"].join(" | "));
   for (const p of rows) {
