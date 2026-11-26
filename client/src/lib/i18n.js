@@ -19,6 +19,7 @@ export const T = {
     keep: "Continuer mes achats", checkout: "Passer au checkout", full: t => `Ton pack contient déjà ${t} masques.`, goPick: "Choisir mes masques",
     outStock: "Épuisé", noMoreStock: "Plus de stock disponible pour ce produit.",
     soins: "Soins à l'unité", soinsShort: "Soins", mySoins: "Mes soins", nSoins: n => `${n} soin${n > 1 ? "s" : ""}`, readyAll: "Ton panier est prêt ✓", seeSoins: "Voir les soins",
+    promoTag: "En plus de ton pack", promoTitle: "Envie d'un soin en plus ?", promoSub: "Nos soins à l'unité, à ajouter avec ou sans pack de masques.", promoCta: "Découvrir les soins",
     loading: "Chargement…", loadErr: "La boutique n'a pas pu être chargée.", retry: "Réessayer",
   },
   ar: {
@@ -33,6 +34,7 @@ export const T = {
     keep: "كملي التسوق", checkout: "إتمام الطلب", full: t => `الباك فيه ${t} ماسكات.`, goPick: "اختاري الماسكات",
     outStock: "نفد المخزون", noMoreStock: "ما بقاش المخزون ديال هاد المنتج.",
     soins: "منتجات العناية بالوحدة", soinsShort: "العناية", mySoins: "منتجات العناية ديالي", nSoins: n => `${n} ${n > 1 ? "منتجات" : "منتج"} ديال العناية`, readyAll: "السلة ديالك واجدة ✓", seeSoins: "شوفي منتجات العناية",
+    promoTag: "زيادة على الباك ديالك", promoTitle: "بغيتي شي عناية زايدة؟", promoSub: "منتجات العناية بالوحدة، زيديهم مع الباك ديال الماسكات ولا بلا بيه.", promoCta: "اكتشفي منتجات العناية",
     loading: "كيتحمّل…", loadErr: "ما تحمّلش المتجر.", retry: "عاودي",
   },
   en: {
@@ -47,6 +49,7 @@ export const T = {
     keep: "Continue shopping", checkout: "Go to checkout", full: t => `Your pack already has ${t} masks.`, goPick: "Pick my masks",
     outStock: "Sold out", noMoreStock: "No more stock for this product.",
     soins: "Skincare (sold individually)", soinsShort: "Skincare", mySoins: "My skincare", nSoins: n => `${n} skincare item${n > 1 ? "s" : ""}`, readyAll: "Your cart is ready ✓", seeSoins: "See skincare",
+    promoTag: "On top of your pack", promoTitle: "Fancy some extra skincare?", promoSub: "Our skincare sold individually, with or without a mask pack.", promoCta: "Discover skincare",
     loading: "Loading…", loadErr: "The shop couldn't be loaded.", retry: "Try again",
   },
 };

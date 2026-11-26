@@ -337,13 +337,43 @@ function Picker({ p }) {
   );
 }
 
-/* Encart « Découvre aussi nos soins » sous la grille des masques */
+/* Carte promotionnelle « Soins à l'unité » sous la grille des masques.
+   Toute la carte est un seul lien vers /soins (aucun bouton imbriqué) ; apparition douce quand elle entre à l'écran. */
 export function SoinsTeaser({ t, items }) {
+  const { money } = useShop();
+  const ref = useRef(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || RM() || !("IntersectionObserver" in window)) { setShown(true); return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setShown(true); io.disconnect(); } }, { threshold: 0.25 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const pics = items.slice(0, 2);
+  const label = `${t.promoTitle} ${t.promoCta} : ${items.map(x => `${x.brand} ${x.name}`).join(", ")}`;
   return (
-    <Link className="soins-teaser" to={PATHS.soins}>
-      <span className="st-imgs">{items.slice(0, 3).map(x => <img key={x.id} src={x.images[0]} alt="" />)}</span>
-      <span className="st-txt"><b>{t.soins}</b><span>{items.map(x => x.brand).filter((v, i, a) => a.indexOf(v) === i).join(" · ")}</span></span>
-      <span className="st-go">{t.seeSoins} <span aria-hidden="true">→</span></span>
+    <Link ref={ref} className={`soins-promo${shown ? " is-in" : ""}`} to={PATHS.soins} aria-label={label}>
+      <span className="sh sp-sh">
+        <Paper as="span" torn={7} className="sp-paper">
+          <span className="sp-pics" aria-hidden="true">
+            {pics.map((x, i) => (
+              <span key={x.id} className={`sp-pol sp-pol-${i + 1}`}>
+                <img src={x.images[0]} alt="" loading="lazy" width="200" height="200" />
+                <span className="sp-cap"><span className="sp-brand">{x.brand}</span>{x.price != null && <span className="sp-price">{money(x.price)}</span>}</span>
+              </span>))}
+            <Deco k="sparks" className="dc sp-spark" />
+          </span>
+          <span className="sp-head">
+            <span className="sp-tag">{t.promoTag}</span>
+            <span className="sp-title">{t.promoTitle}</span>
+          </span>
+          <span className="sp-sub">{t.promoSub}</span>
+          <span className="sp-cta" aria-hidden="true">{t.promoCta}<span className="sp-arr">→</span></span>
+        </Paper>
+        <span className="tape check sp-tape" aria-hidden="true" />
+        <Deco k="star" className="dc sp-star" />
+      </span>
     </Link>
   );
 }
