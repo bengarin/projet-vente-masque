@@ -21,7 +21,7 @@ export const P = {
     info: "Description", usage: "Mode d'emploi", video: "Vidéo", notGiven: "Information à confirmer",
     hl: "Les points forts", specs: "Fiche technique",
     sBrand: "Marque", sName: "Nom du produit", sType: "Type", sContent: "Contenance", precautions: "Précautions",
-    packMore: "Voir le texte original de l'emballage", disclaimer: "Informations reprises de l'emballage du produit. En cas de différence, l'emballage fait foi.",
+    packMore: "Voir le texte original de l'emballage",
     backTo: "Retour à mon pack", edit: "Modifier le pack", added: "Pack ajouté au panier ✓", addedBtn: "Ajouté",
     swapT: "Ton pack est complet !", swap: "Tu veux ajouter :", swapWhich: "Choisis le masque à remplacer :", swapCancel: "Annuler",
     swapGo: "Remplacer ce masque", swapPick: "Touche un masque ci-dessus", swapped: (a, b) => `${a} remplacé par ${b}`, swapAria: n => `Remplacer un masque par ${n}`,
@@ -35,7 +35,7 @@ export const P = {
     info: "الوصف", usage: "طريقة الاستعمال", video: "فيديو", notGiven: "معلومة في انتظار التأكيد",
     hl: "أبرز المميزات", specs: "البطاقة التقنية",
     sBrand: "العلامة", sName: "اسم المنتج", sType: "النوع", sContent: "الكمية", precautions: "احتياطات الاستعمال",
-    packMore: "عرض النص الأصلي للغلاف", disclaimer: "المعلومات مأخوذة من غلاف المنتج. في حال وجود أي اختلاف، يُعتمد ما هو مكتوب على الغلاف.",
+    packMore: "عرض النص الأصلي للغلاف",
     backTo: "رجوع للباك ديالي", edit: "بدّلي الباك", added: "الباك تزاد للسلة ✓", addedBtn: "تزاد",
     swapT: "الباك ديالك كامل!", swap: "بغيتي تزيدي:", swapWhich: "اختاري الماسك اللي غادي تبدّلي:", swapCancel: "إلغاء",
     swapGo: "بدّلي هاد الماسك", swapPick: "اختاري ماسك من الفوق", swapped: (a, b) => `تبدّل ${a} بـ ${b}`, swapAria: n => `بدّلي ماسك بـ ${n}`,
@@ -49,7 +49,7 @@ export const P = {
     info: "Description", usage: "How to use", video: "Video", notGiven: "Information to be confirmed",
     hl: "Key highlights", specs: "Product details",
     sBrand: "Brand", sName: "Product name", sType: "Type", sContent: "Contents", precautions: "Precautions",
-    packMore: "See the original packaging text", disclaimer: "Information taken from the product packaging. If anything differs, the packaging prevails.",
+    packMore: "See the original packaging text",
     backTo: "Back to my pack", edit: "Change pack", added: "Pack added to cart ✓", addedBtn: "Added",
     swapT: "Your pack is complete!", swap: "You want to add:", swapWhich: "Choose the mask to replace:", swapCancel: "Cancel",
     swapGo: "Replace this mask", swapPick: "Tap a mask above", swapped: (a, b) => `${a} replaced with ${b}`, swapAria: n => `Replace a mask with ${n}`,
@@ -498,7 +498,6 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
           {x.video && card("pv", "video", p.video, isFile
             ? <video className="pvideo" src={x.video} controls playsInline preload="metadata" />
             : <a className="more" href={x.video} target="_blank" rel="noopener noreferrer">{p.video} ↗</a>)}
-          <p className="pdisclaimer">{p.disclaimer}</p>
         </div>
         <div className="pfoot">
           <Paper torn={6} sides="t" className="bg lav" />
