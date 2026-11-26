@@ -488,7 +488,8 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
             <dt>{p.sContent}</dt>{val(content)}
           </dl>)}
           {card("pu", "use", p.usage, usage ? <p className="ptext">{usage}</p> : missing)}
-          {card("pw", "warn", p.precautions, precautions ? <p className="ptext">{precautions}</p> : missing)}
+          {/* Précautions : affichées seulement si elles sont renseignées dans l'admin (jamais de bloc « à confirmer ») */}
+          {precautions && card("pw", "warn", p.precautions, <p className="ptext">{precautions}</p>)}
           {x.pack?.length > 0 && <details className="pcard pk"><summary><span className="ico">{svg(IC.pack)}</span>{p.packMore}</summary>
             <ul className="checks" lang="mul">{x.pack.map((l, i) => <li key={i}>{l}</li>)}</ul><p className="orig">{p.packNote}</p></details>}
           {x.video && card("pv", "video", p.video, isFile
