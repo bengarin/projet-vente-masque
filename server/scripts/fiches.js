@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 import mysql from "mysql2/promise";
 import { loadConfig, PROJECT_ROOT } from "../src/config.js";
 
-const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
+const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql", "descriptions-v2.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
 
 /* Découpe le fichier en blocs « -- fiche: <clé> | <libellé> » + une requête UPDATE */
 async function blocks() {
@@ -17,8 +17,8 @@ async function blocks() {
     const sql = (await fs.readFile(file, "utf8")).replace(/\r\n/g, "\n");   // fichiers Windows (CRLF) acceptés
     all.push(...sql.split(/^-- fiche: /m).slice(1).map(b => {
       const [head, ...rest] = b.split("\n");
-      const [key, label, url] = head.split(" | ");
-      return { key: key.trim(), label: (label || "").trim(), url: url?.trim(), sql: rest.join("\n").trim() };
+      const [key, label, url] = head.split(" | ");  // url vide = simple mise à jour
+      return { key: key.trim(), label: (label || "").trim(), url: url?.trim() || undefined, sql: rest.join("\n").trim() };
     }));
   }
   return all;
@@ -44,11 +44,13 @@ export async function applyFiches(conn, { quiet = false } = {}) {
     console.log("\nFiches produit :");
     let section = "";
     for (const r of results.filter(r => !r.key.includes("-mentions"))) {
-      const sec = r.key.startsWith("produit-") || r.key.startsWith("categorie") || r.key.startsWith("photo-orjena") || r.key.startsWith("photo-somebymi") ? "Soins à l'unité :"
+      const sec = r.key.startsWith("desc-") ? "Descriptions (nouvelle version) :"
+        : r.key.startsWith("produit-") || r.key.startsWith("categorie") || r.key.startsWith("photo-orjena") || r.key.startsWith("photo-somebymi") ? "Soins à l'unité :"
         : r.key.startsWith("photo-") ? "Photos d'ambiance :" : "";
       if (sec && sec !== section) { console.log("\n" + sec); section = sec; }
       const state = r.matched === 0 ? "INTROUVABLE dans la base"
         : r.created ? (r.changed ? "ajoutée" : "déjà présente")
+        : r.key.startsWith("desc-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
         : r.changed ? `complétée (${r.matched} produit(s))` : `déjà à jour (${r.matched} produit(s))`;
       console.log(`  ${r.matched ? "✔" : "✖"} ${r.label.padEnd(62)} ${state}`);
     }

@@ -18,9 +18,12 @@ Modifiable ensuite dans l'admin : **Produits → fiche → « Fiche détaillée 
 | 5 | SOME BY MI | Real Glutathione Brightening Care Mask | Masque en tissu — feuille 100 % végétale et biodégradable | Net 20 g – 0.70 oz |
 | 6 | masque BAR | Rose Gold Foil Sheet Mask | Masque en tissu | 1 masque complet — 30 ml / 1.01 US fl oz |
 
-Chaque fiche contient : points clés relevés sur l'emballage, description, fiche technique (marque, nom, type, contenance), mode d'emploi, précautions, texte original de l'emballage.
+Chaque fiche contient : points clés relevés sur l'emballage, description, fiche technique (marque, nom, type, contenance), texte original de l'emballage.
+Les sections **Mode d'emploi** et **Précautions** ne s'affichent que si elles sont confirmées (aucun texte provisoire).
 
-## Informations manquantes (affichées « Information à confirmer »)
+**Descriptions v2 (26/11/2026)** : réécrites dans un style simple, chaleureux et vendeur, avec uniquement des faits de l'emballage (ingrédients nommés, format, sachet, mentions) — aucun résultat promis. Mise à jour des bases existantes : `database/descriptions-v2.sql` (ne remplace que l'ancienne version exacte ; un texte modifié dans l'admin est conservé).
+
+## Informations manquantes (sections masquées tant qu'elles ne sont pas confirmées)
 
 | Information | Produits concernés | Ce qu'il faut fournir |
 |---|---|---|

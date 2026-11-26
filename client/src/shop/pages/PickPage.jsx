@@ -487,7 +487,8 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
             <dt>{p.sType}</dt>{val(type)}
             <dt>{p.sContent}</dt>{val(content)}
           </dl>)}
-          {card("pu", "use", p.usage, usage ? <p className="ptext">{usage}</p> : missing)}
+          {/* Mode d'emploi : affiché seulement s'il est confirmé (jamais de bloc « à confirmer ») */}
+          {usage && card("pu", "use", p.usage, <p className="ptext">{usage}</p>)}
           {/* Précautions : affichées seulement si elles sont renseignées dans l'admin (jamais de bloc « à confirmer ») */}
           {precautions && card("pw", "warn", p.precautions, <p className="ptext">{precautions}</p>)}
           {x.pack?.length > 0 && <details className="pcard pk"><summary><span className="ico">{svg(IC.pack)}</span>{p.packMore}</summary>
