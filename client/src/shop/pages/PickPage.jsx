@@ -64,6 +64,7 @@ const IC = {
   use: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></svg>',
   info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
   video: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',
+  spark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M11 3l1.8 5.2L18 10l-5.2 1.8L11 17l-1.8-5.2L4 10l5.2-1.8z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg>',
   star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.5 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>',
   spec: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M8 8.5h8M8 12.5h8M8 16.5h5"/></svg>',
   warn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.3v.2"/></svg>',
@@ -451,6 +452,24 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
   const type = tr(x.type, lang) || null, content = tr(x.content, lang) || null;
   const highlights = (x.highlights && (x.highlights[lang] || x.highlights.fr)) || [];
   const missing = <p className="missingf">{p.notGiven}</p>;
+  /* Apparition douce des cartes au défilement (une seule fois par carte, jamais de disparition).
+     « Réduire les animations » ou navigateur sans IntersectionObserver : cartes affichées directement. */
+  const scrollRef = useRef(null);
+  useEffect(() => {
+    const root = scrollRef.current;
+    if (!root || RM() || !("IntersectionObserver" in window)) return;
+    const cards = [...root.querySelectorAll(".pcard")];
+    cards.forEach(c => c.classList.add("rv"));
+    const io = new IntersectionObserver(entries => {
+      entries.filter(e => e.isIntersecting).forEach((e, i) => {
+        e.target.style.transitionDelay = `${Math.min(i, 3) * 70}ms`;   // léger décalage entre cartes visibles en même temps
+        e.target.classList.add("in");
+        io.unobserve(e.target);
+      });
+    }, { root, threshold: 0.12, rootMargin: "0px 0px -4% 0px" });
+    cards.forEach(c => io.observe(c));
+    return () => io.disconnect();
+  }, [x.id, lang]);
   const card = (cls, ico, title, body) => <section className={`pcard ${cls}`}><h3><span className="ico">{svg(IC[ico])}</span>{title}</h3>{body}</section>;
   const isFile = x.video && /\.(mp4|webm|mov)(\?|$)/i.test(x.video);
   const imgs = x.images.length ? x.images : ["/images/deco/visage-masque.webp"];
@@ -462,7 +481,7 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
           <span className="ptag"><Deco k="rays" /><span className="sh"><Paper as="span" torn={3} className="yel"><span className="tag">{p.sheetTag}</span></Paper></span></span>
           <button className="pclose" type="button" ref={closeRef} aria-label={closeLabel} onClick={onClose}>{svg(CLOSE)}</button>
         </div>
-        <div className="pscroll">
+        <div className="pscroll" ref={scrollRef}>
           <div className="gwrap">
             <span className={`tape ${x.tape || "ging"}`} /><Deco k="sparks" className="dc gs1" /><Deco k="rays" className="dc gs2" />
             <div className="sh frame-sh"><Paper torn={5} className="frame"><div className="gal" id="gal" onScroll={e => { const g = e.currentTarget; const i = Math.round(Math.abs(g.scrollLeft) / g.clientWidth); if (i !== cur) setCur(i); }}>
@@ -483,7 +502,7 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
           {intro && (() => {
             // 1re phrase-question (« Peau terne ? ») mise en avant, puis le bénéfice annoncé par la marque
             const m = /^(.{3,90}?[?؟])\s+([\s\S]+)$/.exec(intro);
-            return <section className="pintro"><h3>{p.intro}</h3>{m ? <><p className="hook">{m[1]}</p><p>{m[2]}</p></> : <p>{intro}</p>}</section>;
+            return card("pintro", "spark", p.intro, m ? <><p className="hook">{m[1]}</p><p className="ptext">{m[2]}</p></> : <p className="ptext">{intro}</p>);
           })()}
           {highlights.length > 0 && card("phl", "star", p.hl, <ul className="hlist">{highlights.map((l, i) => {
             // « Titre : phrase courte » → titre en gras + phrase ; sinon la ligne telle quelle
