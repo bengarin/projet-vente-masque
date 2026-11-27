@@ -86,7 +86,7 @@ export function Torn({ torn, sides, className = "", children, wrap = "div" }) {
 export const LOGO = {
   src: "/images/logo-mapetitecoree.png", src2x: "/images/logo-mapetitecoree@2x.png",
   webp: "/images/logo-mapetitecoree.webp", webp2x: "/images/logo-mapetitecoree@2x.webp", w: 640, h: 175,
-  alt: "mapetitecoree.ma — Korean & Natural Skincare",
+  alt: "mapetitecoree.ma",
 };
 export function Logo({ cls }) {
   return (

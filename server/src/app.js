@@ -22,12 +22,13 @@ export function createApp(cfg) {
     contentSecurityPolicy: {
       directives: {
         "default-src": ["'self'"],
-        "img-src": ["'self'", "data:", "blob:"],
+        // Meta Pixel : script (connect.facebook.net) + envoi des événements (www.facebook.com/tr)
+        "img-src": ["'self'", "data:", "blob:", "https://www.facebook.com"],
         "media-src": ["'self'", "https:"],
         "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         "font-src": ["'self'", "https://fonts.gstatic.com"],
-        "script-src": ["'self'"],
-        "connect-src": ["'self'"],
+        "script-src": ["'self'", "https://connect.facebook.net"],
+        "connect-src": ["'self'", "https://www.facebook.com", "https://connect.facebook.net"],
         "frame-ancestors": ["'none'"],
         // https forcé seulement quand le site tourne en HTTPS (sinon le test en local http:// casserait)
         "upgrade-insecure-requests": cfg.cookieSecure ? [] : null,

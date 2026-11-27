@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { api } from "../../lib/api.js";
 import { MA_CITIES } from "../../lib/cities.js";
 import { iso } from "../../lib/format.js";
-import { tr } from "../../lib/i18n.js";
+import { arMasks, tr } from "../../lib/i18n.js";
 import { Deco, Paper, Torn } from "../../ui/decor.jsx";
 import { RM, useOverlay } from "../../ui/overlay.jsx";
 import { CatalogGate, Header } from "../Chrome.jsx";
@@ -16,56 +16,56 @@ const P = {
   fr: { tag: "COMMANDE", title: "Finalise ta commande", s1: "Ton pack", s2: "Livraison", s3: "Livraison et paiement", s4: "Total",
     edit: "Modifier mon panier", packLine: (n, t) => `Pack de ${t} masques · ${iso(n + "/" + t)}`, unit: "Prix unitaire", tbd: "pas encore défini",
     name: "Nom complet", phone: "Téléphone", phoneHint: "Ex. 06 12 34 56 78 ou +212 6 12 34 56 78", address: "Adresse", city: "Ville", cityOther: "Ta ville", cityPh: "Cherche ta ville…", cityTop: "Casablanca et environs", cityAll: "Autres villes", cityOtherOpt: "Autre ville (à saisir)", cityNone: "Aucune ville trouvée.", cityPick: "Choisis ta ville dans la liste, ou « Autre ville ».", area: "Quartier ou code postal", optional: "(facultatif)",
-    ship: "Mode de livraison", pay: "Mode de paiement", free: "Gratuit", freeFrom: v => `Gratuit dès ${v} d'achat`,
+    ship: "Mode de livraison", pay: "Mode de paiement", free: "Gratuit", freeFrom: v => `Gratuit dès ${v} d'achats`,
     noShip: "Aucun mode de livraison n'est encore configuré sur le site.", noPay: "Aucun mode de paiement n'est encore configuré sur le site.",
-    products: "Produits", delivery: "Livraison", total: "Total à payer", toSet: "Non défini", chooseShip: "À choisir",
+    products: "Produits", delivery: "Livraison", total: "Total à payer", toSet: "Non défini", chooseShip: "Pas encore choisi",
     confirm: "Confirmer la commande", sending: "Envoi…",
-    req: "Ce champ est obligatoire.", badPhone: "Numéro invalide : 10 chiffres (06…, 07…, 05…) ou +212…", short: "Merci de préciser davantage.",
+    req: "Ce champ est obligatoire.", badPhone: "Numéro invalide : 10 chiffres (06…, 07…, 05…) ou +212…", short: "Merci d'ajouter quelques détails.",
     pickShip: "Choisis un mode de livraison.", pickPay: "Choisis un mode de paiement.", fix: "Vérifie les champs en rouge.",
     blocked: "Commande impossible pour le moment : il manque des informations sur le site (prix, livraison ou paiement).",
     closed: "Les commandes sont fermées pour le moment.",
     sendErr: "La commande n'a pas pu être envoyée. Réessaie dans un instant.",
-    stockErr: "Un masque n'est plus disponible en quantité suffisante. Modifie ton pack.", changed: "Le catalogue a changé : vérifie ton pack et réessaie.",
+    stockErr: "Un produit n'est plus disponible en quantité suffisante. Modifie ton panier.", changed: "Le catalogue a changé : vérifie ton panier et réessaie.",
     tooMany: "Trop de commandes envoyées. Réessaie dans quelques minutes.",
     emptyTxt: "Ton pack n'est pas encore complet.", emptyGo: "Compléter mon pack",
     emptyCart: "Ton panier est vide.", goPack: "Composer un pack de masques", goSoins: "Voir les soins", s1b: "Ta commande", soinsT: "Soins à l'unité",
     okT: "Merci, ta commande est enregistrée !", okNum: "Numéro de commande", okNext: "Nous te contacterons pour la confirmer.",
     okWho: "Nom", okTel: "Téléphone", okAddr: "Adresse", okShip: "Livraison", okPay: "Paiement", okTot: "Total", okBack: "Retour à l'accueil" },
-  ar: { tag: "الطلب", title: "كمّلي الطلب ديالك", s1: "الباك ديالك", s2: "التوصيل", s3: "التوصيل والأداء", s4: "المجموع",
-    edit: "بدّلي السلة", packLine: (n, t) => `باك ديال ${t} ماسكات · ${iso(n + "/" + t)}`, unit: "ثمن الوحدة", tbd: "ما زال ما تحدّدش",
-    name: "الاسم الكامل", phone: "الهاتف", phoneHint: "مثال: 06 12 34 56 78 أو +212 6 12 34 56 78", address: "العنوان", city: "المدينة", cityOther: "المدينة ديالك", cityPh: "قلّبي على المدينة…", cityTop: "الدار البيضاء والنواحي", cityAll: "مدن أخرى", cityOtherOpt: "مدينة أخرى (كتبيها)", cityNone: "ما لقيناش هاد المدينة.", cityPick: "اختاري المدينة من اللائحة، ولا «مدينة أخرى».", area: "الحي أو الرمز البريدي", optional: "(اختياري)",
-    ship: "طريقة التوصيل", pay: "طريقة الأداء", free: "مجاني", freeFrom: v => `مجاني ابتداءً من ${v}`,
-    noShip: "ما زال ما تزادت حتى طريقة توصيل فالموقع.", noPay: "ما زال ما تزادت حتى طريقة أداء فالموقع.",
-    products: "المنتجات", delivery: "التوصيل", total: "المجموع للأداء", toSet: "ما محدّدش", chooseShip: "اختاري",
-    confirm: "أكّدي الطلب", sending: "كيتصيفط…",
-    req: "هاد الخانة ضرورية.", badPhone: "رقم غير صحيح: 10 أرقام (06…، 07…، 05…) أو +212…", short: "عافاك وضّحي أكثر.",
-    pickShip: "اختاري طريقة التوصيل.", pickPay: "اختاري طريقة الأداء.", fix: "راجعي الخانات اللي بالأحمر.",
-    blocked: "ما يمكنش تدوزي الطلب دابا: ناقصين معلومات فالموقع (الثمن، التوصيل أو الأداء).",
-    closed: "الطلبات مسدودة دابا.",
-    sendErr: "ما تصيفطش الطلب. عاودي من بعد شوية.",
-    stockErr: "شي ماسك ما بقاش متوفر بهاد الكمية. بدّلي الباك ديالك.", changed: "الكاتالوج تبدّل: راجعي الباك وعاودي.",
-    tooMany: "صيفطتي بزاف ديال الطلبات. عاودي من بعد شي دقايق.",
-    emptyTxt: "الباك ديالك ما زال ما كملش.", emptyGo: "كمّلي الباك ديالي",
-    emptyCart: "السلة خاوية.", goPack: "كوّني باك ديال الماسكات", goSoins: "شوفي منتجات العناية", s1b: "الطلب ديالك", soinsT: "منتجات العناية بالوحدة",
-    okT: "شكراً، الطلب ديالك تسجّل!", okNum: "رقم الطلب", okNext: "غادي نتاصلو بيك باش نأكدوه.",
-    okWho: "الاسم", okTel: "الهاتف", okAddr: "العنوان", okShip: "التوصيل", okPay: "الأداء", okTot: "المجموع", okBack: "رجوع للرئيسية" },
-  en: { tag: "CHECKOUT", title: "Complete your order", s1: "Your pack", s2: "Delivery details", s3: "Delivery & payment", s4: "Total",
+  ar: { tag: "الطلب", title: "أكملي طلبك", s1: "باقتك", s2: "التوصيل", s3: "التوصيل والدفع", s4: "المجموع",
+    edit: "تعديل سلتي", packLine: (n, t) => `باقة من ${arMasks(t, "gen")} · ${iso(n + "/" + t)}`, unit: "سعر الوحدة", tbd: "لم يُحدَّد بعد",
+    name: "الاسم الكامل", phone: "الهاتف", phoneHint: `مثال: ${iso("06 12 34 56 78")} أو ${iso("+212 6 12 34 56 78")}`, address: "العنوان", city: "المدينة", cityOther: "مدينتك", cityPh: "ابحثي عن مدينتك…", cityTop: "الدار البيضاء ونواحيها", cityAll: "مدن أخرى", cityOtherOpt: "مدينة أخرى (اكتبي اسمها)", cityNone: "لم يتم العثور على أي مدينة.", cityPick: "اختاري مدينتك من القائمة، أو «مدينة أخرى».", area: "الحي أو الرمز البريدي", optional: "(اختياري)",
+    ship: "طريقة التوصيل", pay: "طريقة الدفع", free: "مجاني", freeFrom: v => `مجاني ابتداءً من ${v} من المشتريات`,
+    noShip: "لم تُضَف أي طريقة توصيل إلى الموقع بعد.", noPay: "لم تُضَف أي طريقة دفع إلى الموقع بعد.",
+    products: "المنتجات", delivery: "التوصيل", total: "المبلغ الإجمالي", toSet: "غير محدَّد", chooseShip: "لم يُختر بعد",
+    confirm: "تأكيد الطلب", sending: "جارٍ الإرسال…",
+    req: "هذه الخانة إلزامية.", badPhone: `رقم غير صحيح: 10 أرقام (${iso("06…")} أو ${iso("07…")} أو ${iso("05…")}) أو ${iso("+212…")}`, short: "يُرجى إضافة مزيد من التفاصيل.",
+    pickShip: "اختاري طريقة التوصيل.", pickPay: "اختاري طريقة الدفع.", fix: "يُرجى مراجعة الخانات المميّزة باللون الأحمر.",
+    blocked: "لا يمكن إتمام الطلب حالياً: بعض معلومات الموقع غير مكتملة (السعر أو التوصيل أو الدفع).",
+    closed: "الطلبات متوقفة حالياً.",
+    sendErr: "تعذّر إرسال الطلب. يُرجى المحاولة بعد قليل.",
+    stockErr: "أحد المنتجات لم يعد متوفراً بالكمية المطلوبة. يُرجى تعديل سلتك.", changed: "تغيّرت قائمة المنتجات: راجعي سلتك وأعيدي المحاولة.",
+    tooMany: "تم إرسال عدد كبير من الطلبات. يُرجى المحاولة بعد بضع دقائق.",
+    emptyTxt: "باقتك لم تكتمل بعد.", emptyGo: "إكمال باقتي",
+    emptyCart: "سلتك فارغة.", goPack: "كوّني باقة أقنعة", goSoins: "عرض منتجات العناية", s1b: "طلبك", soinsT: "منتجات العناية بالقطعة",
+    okT: "شكراً لك، تم تسجيل طلبك!", okNum: "رقم الطلب", okNext: "سنتواصل معك لتأكيده.",
+    okWho: "الاسم", okTel: "الهاتف", okAddr: "العنوان", okShip: "التوصيل", okPay: "الدفع", okTot: "المجموع", okBack: "العودة إلى الصفحة الرئيسية" },
+  en: { tag: "CHECKOUT", title: "Complete your order", s1: "Your pack", s2: "Delivery", s3: "Delivery & payment", s4: "Total",
     edit: "Edit my cart", packLine: (n, t) => `Pack of ${t} masks · ${iso(n + "/" + t)}`, unit: "Unit price", tbd: "not set yet",
     name: "Full name", phone: "Phone", phoneHint: "e.g. 06 12 34 56 78 or +212 6 12 34 56 78", address: "Address", city: "City", cityOther: "Your city", cityPh: "Search your city…", cityTop: "Casablanca & surroundings", cityAll: "Other cities", cityOtherOpt: "Other city (type it)", cityNone: "No city found.", cityPick: "Pick your city from the list, or “Other city”.", area: "Neighbourhood or postcode", optional: "(optional)",
-    ship: "Delivery method", pay: "Payment method", free: "Free", freeFrom: v => `Free from ${v}`,
+    ship: "Delivery method", pay: "Payment method", free: "Free", freeFrom: v => `Free on orders of ${v} or more`,
     noShip: "No delivery method has been set up on the site yet.", noPay: "No payment method has been set up on the site yet.",
-    products: "Products", delivery: "Delivery", total: "Total to pay", toSet: "Not set", chooseShip: "To choose",
+    products: "Products", delivery: "Delivery", total: "Total to pay", toSet: "Not set", chooseShip: "Not chosen yet",
     confirm: "Confirm order", sending: "Sending…",
     req: "This field is required.", badPhone: "Invalid number: 10 digits (06…, 07…, 05…) or +212…", short: "Please add more detail.",
     pickShip: "Choose a delivery method.", pickPay: "Choose a payment method.", fix: "Please check the fields in red.",
     blocked: "Ordering isn't possible yet: some site information is missing (prices, delivery or payment).",
     closed: "Orders are closed for now.",
     sendErr: "The order couldn't be sent. Please try again shortly.",
-    stockErr: "A mask is no longer available in that quantity. Please change your pack.", changed: "The catalogue changed: please check your pack and try again.",
+    stockErr: "A product is no longer available in that quantity. Please update your cart.", changed: "The catalogue has changed: please check your cart and try again.",
     tooMany: "Too many orders sent. Please try again in a few minutes.",
     emptyTxt: "Your pack isn't complete yet.", emptyGo: "Complete my pack",
-    emptyCart: "Your cart is empty.", goPack: "Build a mask pack", goSoins: "See skincare", s1b: "Your order", soinsT: "Skincare (sold individually)",
-    okT: "Thank you, your order is registered!", okNum: "Order number", okNext: "We will contact you to confirm it.",
+    emptyCart: "Your cart is empty.", goPack: "Build a mask pack", goSoins: "View skincare", s1b: "Your order", soinsT: "Skincare (sold individually)",
+    okT: "Thank you, your order has been placed!", okNum: "Order number", okNext: "We will contact you to confirm it.",
     okWho: "Name", okTel: "Phone", okAddr: "Address", okShip: "Delivery", okPay: "Payment", okTot: "Total", okBack: "Back to home" },
 };
 const WARN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.5"/></svg>';
@@ -197,7 +197,7 @@ function Checkout({ p }) {
   );
   const line = ({ x, q }) => (
     <li key={x.id}><img src={x.images[0]} alt="" />
-      <div className="i"><small>{x.brand}</small><b>{x.name}</b><span className="u">{p.unit} : {x.price == null ? p.tbd : money(x.price)}</span></div>
+      <div className="i"><small>{x.brand}</small><b>{x.name}</b><span className="u">{p.unit}{lang === "fr" ? "\u00a0: " : ": "}{x.price == null ? p.tbd : money(x.price)}</span></div>
       <div className="r"><span className="q">×{q}</span>{x.price != null && <span className="lt">{money(x.price * q)}</span>}</div></li>);
 
   return (

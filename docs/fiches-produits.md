@@ -11,12 +11,12 @@ Modifiable ensuite dans l'admin : **Produits → fiche → « Fiche détaillée 
 
 | # | Marque | Nom officiel (inchangé) | Type | Contenance |
 |---|---|---|---|---|
-| 1 | MEDIHEAL | Collagen | Masque — **format exact à confirmer** | **à confirmer** |
+| 1 | MEDIHEAL | Collagen | Masque (format exact à confirmer, non affiché) | à confirmer (ligne masquée) |
 | 2 | 7th Heaven | Nutriactive Vitamin C Advanced Serum Sheet Mask | Masque en tissu au sérum | 1 masque en tissu biodégradable |
-| 3 | look AT ME | Green Blend Tea Tree + Cucumber Face Mask | Masque visage en tissu — feuille en Tencel | 25 ml / 0.84 fl oz |
-| 4 | IDC Institute | One Week Treatment — Hazel + Lavender | Masque visage (« Facial Mask ») | 22 g / 0.73 fl.oz |
-| 5 | SOME BY MI | Real Glutathione Brightening Care Mask | Masque en tissu — feuille 100 % végétale et biodégradable | Net 20 g – 0.70 oz |
-| 6 | masque BAR | Rose Gold Foil Sheet Mask | Masque en tissu | 1 masque complet — 30 ml / 1.01 US fl oz |
+| 3 | look AT ME | Green Blend Tea Tree + Cucumber Face Mask | Masque visage en tissu — feuille en Tencel | 25 ml |
+| 4 | IDC Institute | One Week Treatment — Hazel + Lavender | Masque visage | 22 g |
+| 5 | SOME BY MI | Real Glutathione Brightening Care Mask | Masque en tissu — feuille 100 % végétale et biodégradable | Poids net : 20 g |
+| 6 | masque BAR | Rose Gold Foil Sheet Mask | Masque en tissu | 1 masque complet — 30 ml |
 
 Chaque fiche contient : **Les points forts** (phrases courtes « Titre : phrase », reformulées), description, fiche technique (marque, nom, type, contenance).
 Le texte brut de l'emballage n'est plus affiché aux clientes (il reste consultable dans l'admin, champ « Mentions de l'emballage »).
@@ -25,6 +25,14 @@ Le texte brut de l'emballage n'est plus affiché aux clientes (il reste consulta
 Les sections **Mode d'emploi** et **Précautions** ne s'affichent que si elles sont confirmées (aucun texte provisoire).
 
 **Descriptions v2 (26/11/2026)** : réécrites dans un style simple, chaleureux et vendeur, avec uniquement des faits de l'emballage (ingrédients nommés, format, sachet, mentions) — aucun résultat promis. Mise à jour des bases existantes : `database/descriptions-v2.sql` (ne remplace que l'ancienne version exacte ; un texte modifié dans l'admin est conservé).
+
+**Contenu v3 (26/11/2026)** : le bloc **« Pourquoi le choisir ? »** (AR « لماذا تختارينه؟ », EN « Why choose it? ») s'affiche en premier, juste après le nom et le prix : avantages courts, tirés uniquement de l'emballage (pour toutes les peaux, ingrédient mis en avant, testé dermatologiquement, végan, non testé sur les animaux, format prêt à l'emploi). Aucun résultat promis.
+Règle des langues, vérifiée automatiquement sur les 24 fiches affichées (8 produits × 3 langues) :
+- FR : uniquement du français (« vegan » → « végan », « cruelty free » → « non testé sur les animaux », « cocooning » → « soirée douceur », « sheet mask » / « Facial Mask » / « Wednesday » retirés, contenances en ml / g) ;
+- AR : uniquement de l'arabe ; seuls les noms de marque, de produit, de gamme, d'organisation (Vegetarian Society) et la matière Tencel restent en lettres latines ; « فيتامين سي », « نباتي », « غير مختبَر على الحيوانات », unités « مل » / « غرام », prix en « درهم » ;
+- EN : uniquement de l'anglais (unités impériales conservées).
+Retiré : « testée non comédogène selon la marque » (Yuja Niacin), car l'astérisque n'est pas lisible. Les lignes Type / Contenance vides sont masquées (plus de « Information à confirmer »).
+Mise à jour des bases existantes : `database/contenu-v3.sql` (remplace seulement les versions générées v1/v2 ; un texte modifié dans l'admin est conservé).
 
 ## Informations manquantes (sections masquées tant qu'elles ne sont pas confirmées)
 

@@ -19,41 +19,41 @@ export const P = {
     empty: "Vide", removeOne: "Retirer ce masque", sheetTag: "Fiche produit", photo: n => `Photo ${n}`,
     packText: "Mentions imprimées sur l'emballage", packNote: "Recopiées telles quelles, dans la langue de l'emballage.",
     info: "Description", usage: "Mode d'emploi", video: "Vidéo", notGiven: "Information à confirmer",
-    hl: "Les points forts", specs: "Fiche technique",
+    hl: "Pourquoi le choisir ?", specs: "Fiche technique",
     sBrand: "Marque", sName: "Nom du produit", sType: "Type", sContent: "Contenance", precautions: "Précautions",
     packMore: "Voir le texte original de l'emballage",
     backTo: "Retour à mon pack", edit: "Modifier le pack", added: "Pack ajouté au panier ✓", addedBtn: "Ajouté",
     swapT: "Ton pack est complet !", swap: "Tu veux ajouter :", swapWhich: "Choisis le masque à remplacer :", swapCancel: "Annuler",
     swapGo: "Remplacer ce masque", swapPick: "Touche un masque ci-dessus", swapped: (a, b) => `${a} remplacé par ${b}`, swapAria: n => `Remplacer un masque par ${n}`,
     noProducts: "Aucun masque n'est disponible pour le moment." },
-  ar: { title: <>كوّني <span className="hl">الباك</span> ديالك!</>, sub: "اختاري الماسكات المفضلة عندك", hint: "تقدري تختاري نفس الماسك أكثر من مرة.",
-    add: "إضافة", remove: "نقص واحد", tbd: "الثمن ما زال ما تحدّدش", details: "شوفي التفاصيل", more: "شوفي المزيد",
-    prog: (n, t) => `${iso(n + "/" + t)} ماسكات مختارة`, left: k => (k === 0 ? "الباك كامل ✓" : `باقي ${k} للاختيار`),
-    mine: (n, t) => `الباك ديالي: ${iso(n + "/" + t)}`, cta: "أضيفي للسلة", toastFull: "الباك ديالك كامل!",
-    empty: "فارغ", removeOne: "حيدي هاد الماسك", sheetTag: "بطاقة المنتج", photo: n => `صورة ${n}`,
-    packText: "المكتوب على العلبة", packNote: "منقول كما هو، بلغة العلبة.",
+  ar: { title: <>كوّني <span className="hl">باقتك</span>!</>, sub: "اختاري أقنعتك المفضلة", hint: "يمكنك اختيار القناع نفسه أكثر من مرة.",
+    add: "إضافة", remove: "إزالة واحد", tbd: "السعر لم يُحدَّد بعد", details: "عرض التفاصيل", more: "عرض المزيد",
+    prog: (n, t) => `الأقنعة المختارة: ${iso(n + "/" + t)}`, left: k => (k === 0 ? "الباقة مكتملة ✓" : `بقي ${k} للاختيار`),
+    mine: (n, t) => `باقتي: ${iso(n + "/" + t)}`, cta: "أضيفي إلى السلة", toastFull: "باقتك مكتملة!",
+    empty: "فارغ", removeOne: "إزالة هذا القناع", sheetTag: "بطاقة المنتج", photo: n => `الصورة ${n}`,
+    packText: "النص المطبوع على الغلاف", packNote: "منقول كما هو، بلغة الغلاف.",
     info: "الوصف", usage: "طريقة الاستعمال", video: "فيديو", notGiven: "معلومة في انتظار التأكيد",
-    hl: "أبرز المميزات", specs: "البطاقة التقنية",
-    sBrand: "العلامة", sName: "اسم المنتج", sType: "النوع", sContent: "الكمية", precautions: "احتياطات الاستعمال",
+    hl: "لماذا تختارينه؟", specs: "البطاقة التقنية",
+    sBrand: "العلامة التجارية", sName: "اسم المنتج", sType: "النوع", sContent: "المحتوى", precautions: "احتياطات الاستعمال",
     packMore: "عرض النص الأصلي للغلاف",
-    backTo: "رجوع للباك ديالي", edit: "بدّلي الباك", added: "الباك تزاد للسلة ✓", addedBtn: "تزاد",
-    swapT: "الباك ديالك كامل!", swap: "بغيتي تزيدي:", swapWhich: "اختاري الماسك اللي غادي تبدّلي:", swapCancel: "إلغاء",
-    swapGo: "بدّلي هاد الماسك", swapPick: "اختاري ماسك من الفوق", swapped: (a, b) => `تبدّل ${a} بـ ${b}`, swapAria: n => `بدّلي ماسك بـ ${n}`,
-    noProducts: "ما كاين حتى ماسك متوفر دابا." },
+    backTo: "العودة إلى باقتي", edit: "تعديل الباقة", added: "أُضيفت الباقة إلى السلة ✓", addedBtn: "تمت الإضافة",
+    swapT: "باقتك مكتملة!", swap: "تريدين إضافة:", swapWhich: "اختاري القناع الذي تريدين استبداله:", swapCancel: "إلغاء",
+    swapGo: "استبدال هذا القناع", swapPick: "اختاري قناعاً من الأعلى", swapped: (a, b) => `تم استبدال ${a} بـ${b}`, swapAria: n => `استبدال قناع بـ${n}`,
+    noProducts: "لا يتوفر أي قناع حالياً." },
   en: { title: <>Build your <span className="hl">pack</span>!</>, sub: "Pick your favourite masks", hint: "You can pick the same mask more than once.",
     add: "Add", remove: "Remove one", tbd: "Price not set yet", details: "View details", more: "See more",
     prog: (n, t) => `${iso(n + "/" + t)} masks selected`, left: k => (k === 0 ? "Pack complete ✓" : `${k} more to pick`),
     mine: (n, t) => `My pack: ${iso(n + "/" + t)}`, cta: "Add to cart", toastFull: "Your pack is complete!",
-    empty: "Empty", removeOne: "Remove this mask", sheetTag: "Product details", photo: n => `Photo ${n}`,
+    empty: "Empty", removeOne: "Remove this mask", sheetTag: "Product sheet", photo: n => `Photo ${n}`,
     packText: "Printed on the packaging", packNote: "Copied as printed, in the packaging's language.",
     info: "Description", usage: "How to use", video: "Video", notGiven: "Information to be confirmed",
-    hl: "Key highlights", specs: "Product details",
+    hl: "Why choose it?", specs: "Product details",
     sBrand: "Brand", sName: "Product name", sType: "Type", sContent: "Contents", precautions: "Precautions",
     packMore: "See the original packaging text",
     backTo: "Back to my pack", edit: "Change pack", added: "Pack added to cart ✓", addedBtn: "Added",
-    swapT: "Your pack is complete!", swap: "You want to add:", swapWhich: "Choose the mask to replace:", swapCancel: "Cancel",
+    swapT: "Your pack is complete!", swap: "You'd like to add:", swapWhich: "Choose the mask to replace:", swapCancel: "Cancel",
     swapGo: "Replace this mask", swapPick: "Tap a mask above", swapped: (a, b) => `${a} replaced with ${b}`, swapAria: n => `Replace a mask with ${n}`,
-    noProducts: "No mask is available right now." },
+    noProducts: "No masks are available right now." },
 };
 
 const PEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>';
@@ -450,7 +450,6 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
   const type = tr(x.type, lang) || null, content = tr(x.content, lang) || null;
   const highlights = (x.highlights && (x.highlights[lang] || x.highlights.fr)) || [];
   const missing = <p className="missingf">{p.notGiven}</p>;
-  const val = v => (v ? <dd>{v}</dd> : <dd className="tbc">{p.notGiven}</dd>);
   const card = (cls, ico, title, body) => <section className={`pcard ${cls}`}><h3><span className="ico">{svg(IC[ico])}</span>{title}</h3>{body}</section>;
   const isFile = x.video && /\.(mp4|webm|mov)(\?|$)/i.test(x.video);
   const imgs = x.images.length ? x.images : ["/images/deco/visage-masque.webp"];
@@ -488,8 +487,9 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
           {card("pspec", "spec", p.specs, <dl className="specs">
             <dt>{p.sBrand}</dt><dd className="latin">{x.brand}</dd>
             <dt>{p.sName}</dt><dd className="latin">{x.name}</dd>
-            <dt>{p.sType}</dt>{val(type)}
-            <dt>{p.sContent}</dt>{val(content)}
+            {/* Lignes affichées seulement si l'information est confirmée */}
+            {type && <><dt>{p.sType}</dt><dd>{type}</dd></>}
+            {content && <><dt>{p.sContent}</dt><dd>{content}</dd></>}
           </dl>)}
           {/* Mode d'emploi : affiché seulement s'il est confirmé (jamais de bloc « à confirmer ») */}
           {usage && card("pu", "use", p.usage, <p className="ptext">{usage}</p>)}

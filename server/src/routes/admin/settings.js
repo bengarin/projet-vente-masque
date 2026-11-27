@@ -39,6 +39,7 @@ export function settingsRouter() {
     const d = settingsInput.parse(req.body);
     const pairs = [["store_name", d.storeName], ["currency", d.currency], ["orders_enabled", d.ordersEnabled ? "1" : "0"],
       ["low_stock_threshold", String(d.lowStockThreshold)]];
+    if (d.metaPixelId !== undefined) pairs.push(["meta_pixel_id", d.metaPixelId]);
     for (const [k, v] of pairs) {
       await query("INSERT INTO settings (`key`, `value`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)", [k, v]);
     }

@@ -18,7 +18,7 @@ INSERT IGNORE INTO pack_sizes (size, price, is_active) VALUES (3, NULL, 1), (4, 
 
 -- [HYPOTHÈSE] une seule catégorie : les 6 produits sont des masques en tissu (« sheet mask » sur l'emballage).
 INSERT IGNORE INTO categories (slug, name_fr, name_ar, name_en, sort_order) VALUES
-  ('masques-tissu', 'Masques en tissu', 'ماسكات القماش', 'Sheet masks', 1);
+  ('masques-tissu', 'Masques en tissu', 'الأقنعة القماشية', 'Sheet masks', 1);
 
 SET @cat := (SELECT id FROM categories WHERE slug = 'masques-tissu');
 

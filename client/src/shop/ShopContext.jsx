@@ -1,9 +1,10 @@
 /* État partagé de la boutique : langue, catalogue (chargé depuis l'API / MySQL), taille du pack, masques choisis. */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../lib/api.js";
 import { LANGS, T } from "../lib/i18n.js";
 import { fmt } from "../lib/format.js";
+import { initMetaPixel, trackPageView } from "../lib/metaPixel.js";
 import { useOverlay } from "../ui/overlay.jsx";
 
 export const PATHS = { 1: "/", 2: "/pack", 3: "/masques", 4: "/commande", soins: "/soins" };
@@ -77,7 +78,16 @@ export function ShopProvider({ children }) {
   const unitProducts = useMemo(() => products.filter(p => p.saleMode === "unit"), [products]);
   const byId = useCallback(id => products.find(p => p.id === id), [products]);
   const currency = catalog?.store.currency || "";
-  const money = useCallback(v => fmt(v, currency), [currency]);
+  // En arabe : « درهم » au lieu de « DH » / « MAD » (montant isolé pour un affichage RTL correct)
+  // Meta Pixel : chargé si un identifiant est réglé dans l'admin, puis une « PageView » à chaque écran
+  const { pathname } = useLocation();
+  const pixelId = catalog?.store.metaPixelId || "";
+  useEffect(() => { if (pixelId) { initMetaPixel(pixelId); trackPageView(pathname); } }, [pixelId, pathname]);
+
+  const money = useCallback(v => {
+    if (lang === "ar" && /^(dh|mad|dhs)$/i.test(currency.trim())) { const m = fmt(v, ""); return m == null ? null : "\u2067" + m + " درهم\u2069"; }
+    return fmt(v, currency);
+  }, [currency, lang]);
 
   const qty = useCallback(id => order.filter(x => x === id).length, [order]);
 

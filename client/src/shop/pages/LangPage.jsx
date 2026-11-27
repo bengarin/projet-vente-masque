@@ -6,7 +6,7 @@ import "../../styles/pg-lang.css";
 
 const P = {
   fr: { title: <>Choisis ta <span className="hl lavu">langue</span> !</>, sub: "Pour continuer, sélectionne ta langue.", hint: "Tu pourras la changer plus tard." },
-  ar: { title: <>اختاري <span className="hl lavu">اللغة</span>!</>, sub: "باش تكملي، اختاري اللغة ديالك.", hint: "تقدري تبدليها من بعد." },
+  ar: { title: <>اختاري <span className="hl lavu">لغتك</span>!</>, sub: "للمتابعة، اختاري لغتك.", hint: "يمكنك تغييرها لاحقاً." },
   en: { title: <>Choose your <span className="hl lavu">language</span>!</>, sub: "To continue, select your language.", hint: "You can change it later." },
 };
 const OPTS = [
