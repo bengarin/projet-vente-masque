@@ -61,6 +61,12 @@ function General({ st }) {
               <Field label="Seuil « stock bas »" error={errs.lowStockThreshold} hint="Alerte au tableau de bord"><input type="number" min="0" value={f.lowStockThreshold} onChange={e => setF({ ...f, lowStockThreshold: e.target.value })} /></Field>
             </div>
           </Card>
+          <Card title="Suivi publicitaire (Meta Pixel)" icon="eye">
+            <div className="a-fgrid a-fgrid-3">
+              <Field label="Identifiant Meta Pixel" error={errs.metaPixelId} hint="Chiffres uniquement (Gestionnaire d'événements Meta). Vide = pixel désactivé. Jamais chargé sur l'admin.">
+                <input inputMode="numeric" value={f.metaPixelId ?? ""} onChange={e => setF({ ...f, metaPixelId: e.target.value.trim() })} maxLength={20} placeholder="ex. 1665012938525216" /></Field>
+            </div>
+          </Card>
           <div className="a-right"><button className="a-btn a-btn-primary"><Ic n="check" size={16} />Enregistrer</button></div>
         </form>)}</Loader>
     </>

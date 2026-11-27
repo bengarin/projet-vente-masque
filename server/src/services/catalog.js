@@ -18,6 +18,8 @@ export async function getSettings(q = query) {
     currency: s.currency || "",
     ordersEnabled: s.orders_enabled !== "0",
     lowStockThreshold: Number.isFinite(Number(s.low_stock_threshold)) ? Number(s.low_stock_threshold) : 3,
+    // Identifiant Meta Pixel (public, visible dans le navigateur) — vide = pixel désactivé
+    metaPixelId: /^\d{5,20}$/.test(s.meta_pixel_id || "") ? s.meta_pixel_id : "",
   };
 }
 
@@ -78,7 +80,7 @@ export async function publicCatalog() {
     query("SELECT * FROM payment_methods WHERE is_active = 1 ORDER BY sort_order, id"),
   ]);
   return {
-    store: { name: settings.storeName, currency: settings.currency, ordersEnabled: settings.ordersEnabled },
+    store: { name: settings.storeName, currency: settings.currency, ordersEnabled: settings.ordersEnabled, metaPixelId: settings.metaPixelId },
     packSizes: packs.map(p => ({ size: p.size, price: p.price })),
     categories: cats.map(c => ({ id: c.id, slug: c.slug, name: tr(c, "name") })),
     products: products.map(({ isActive, ...p }) => ({ ...p, images: p.images.map(i => i.url) })),

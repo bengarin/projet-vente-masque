@@ -82,6 +82,8 @@ export const settingsInput = z.object({
   currency: text(10, 1),
   ordersEnabled: bool,
   lowStockThreshold: z.coerce.number().int().min(0).max(100000),
+  // Meta Pixel : uniquement des chiffres (5 à 20), ou vide pour le désactiver
+  metaPixelId: z.string().trim().regex(/^(\d{5,20})?$/, "L'identifiant Meta Pixel ne contient que des chiffres (ex. 1665012938525216).").optional(),
 });
 
 export const packSizeInput = z.object({

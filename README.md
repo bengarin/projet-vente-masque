@@ -158,6 +158,13 @@ vérifie le pack complet, les produits actifs, le stock (et le décompte), le mo
 - Commandes : recherche par numéro, cliente (nom / téléphone / ville), statut, dates ; détail complet ; statut nouvelle → confirmée → en préparation → expédiée → livrée, ou annulée (remet le stock, statut définitif) ; historique des changements ; note interne ; lien appel / WhatsApp.
 - Paramètres : nom de la boutique, devise, ouverture/pause des commandes, seuil de stock bas, packs, livraison, paiement, catégories.
 
+## Meta Pixel (suivi publicitaire)
+- Identifiant réglé dans **Admin → Paramètres → Suivi publicitaire** (pré-rempli : `1665012938525216` via `database/meta-pixel.sql`, ajouté seulement s'il n'existe pas). Vide = pixel désactivé.
+- Chargé par la boutique uniquement (jamais sur `/admin`), avec un événement **PageView** à chaque écran (le site ne recharge pas la page entre les étapes).
+- La sécurité du site (CSP) autorise seulement `connect.facebook.net` et `www.facebook.com`.
+- Seul **PageView** est envoyé. Les événements de vente (AddToCart, InitiateCheckout, Purchase) ne sont **pas** branchés.
+- À vérifier avec l'extension **Meta Pixel Helper** ou le « Test des événements » du Gestionnaire d'événements, sur le site en ligne.
+
 ## Arborescence
 
 ```
