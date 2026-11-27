@@ -74,6 +74,8 @@ npm run db:seed
 npm run db:fiches
 ```
 
+**Prix unitaires des 6 masques** (prix de vente choisis par la boutique, `database/prix-masques.sql`) : MEDIHEAL Collagen 40 DH · 7th Heaven Vitamin C 27 DH · look AT ME Green Blend 29 DH · IDC Institute Hazel + Lavender 29 DH · SOME BY MI Real Glutathione 40 DH · masque BAR Rose Gold Foil 35 DH. Ils ne sont posés **que si le prix du masque est vide** : un prix déjà saisi dans l'admin est conservé (le compte rendu de `db:fiches` l'indique). Les prix des packs et des soins à l'unité ne sont pas touchés.
+
 Les produits sont reconnus par leur identifiant d'origine, **ou** leur marque + nom officiels, **ou** leur photo d'origine : un identifiant modifié (ex. `hazel1`) ne bloque donc pas la mise à jour.
 
 ## 6. Créer le premier compte administrateur
@@ -131,7 +133,7 @@ L'API sert alors aussi le site compilé (`client/dist`) sur un seul port. Dans `
 
 ## Avant d'ouvrir les ventes (dans /admin)
 
-1. **Produits** → pour chaque masque : prix, stock (ou vide = non suivi), description / mode d'emploi si tu as des infos vérifiées.
+1. **Produits** → pour chaque masque : vérifier le prix (pré-rempli, voir étape 5), stock (ou vide = non suivi), description / mode d'emploi si tu as des infos vérifiées.
 2. **Paramètres → Tailles et prix des packs** → prix fixe par pack (ou vide = somme des prix unitaires).
 3. **Paramètres → Modes de livraison** → au moins un mode actif avec ses frais réels.
 4. **Paramètres → Modes de paiement** → au moins un mode actif (ex. paiement à la livraison).
@@ -173,7 +175,7 @@ server/                 API Express
   uploads/              photos envoyées depuis l'admin (non versionnées)
 database/
   migrations/           structure SQL
-  seed.sql              données de départ (sans prix)
+  seed.sql              données de départ (prix des masques : prix-masques.sql)
 legacy/                 ancienne maquette HTML statique (archive)
 ```
 

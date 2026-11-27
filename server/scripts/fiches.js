@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 import mysql from "mysql2/promise";
 import { loadConfig, PROJECT_ROOT } from "../src/config.js";
 
-const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql", "descriptions-v2.sql", "points-forts-v2.sql", "contenu-v3.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
+const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql", "descriptions-v2.sql", "points-forts-v2.sql", "contenu-v3.sql", "prix-masques.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
 
 /* Découpe le fichier en blocs « -- fiche: <clé> | <libellé> » + une requête UPDATE */
 async function blocks() {
@@ -37,6 +37,12 @@ export async function applyFiches(conn, { quiet = false } = {}) {
       results.push({ ...b, created: true, matched: present, changed: r.affectedRows });
       continue;
     }
+    if (b.key.startsWith("prix-")) {           // prix : posé seulement si vide → on relit le prix réellement en base
+      const sel = b.sql.replace(/^[\s\S]*?WHERE price IS NULL AND sale_mode = 'pack' AND /, "SELECT price, sale_mode FROM products WHERE ");
+      const [rows] = await conn.query(sel);
+      results.push({ ...b, matched: rows.length, changed: r.affectedRows, prices: rows.map(x => x.price == null ? "vide" : `${Number(x.price)} DH${x.sale_mode === "unit" ? " (vendu à l'unité)" : ""}`) });
+      continue;
+    }
     const matched = Number(/Rows matched:\s*(\d+)/i.exec(r.info || "")?.[1] ?? r.affectedRows);
     results.push({ ...b, matched, changed: r.changedRows ?? r.affectedRows });
   }
@@ -47,10 +53,12 @@ export async function applyFiches(conn, { quiet = false } = {}) {
       const sec = r.key.startsWith("desc-") ? "Descriptions (nouvelle version) :"
         : r.key.startsWith("pf-") ? "Points forts (nouvelle version) :"
         : r.key.startsWith("v3-") ? "Fiches v3 — avantages d'abord, une langue par texte :"
+        : r.key.startsWith("prix-") ? "Prix unitaires des masques (posés seulement si le prix est vide) :"
         : r.key.startsWith("produit-") || r.key.startsWith("categorie") || r.key.startsWith("photo-orjena") || r.key.startsWith("photo-somebymi") ? "Soins à l'unité :"
         : r.key.startsWith("photo-") ? "Photos d'ambiance :" : "";
       if (sec && sec !== section) { console.log("\n" + sec); section = sec; }
       const state = r.matched === 0 ? "INTROUVABLE dans la base"
+        : r.key.startsWith("prix-") ? (r.changed ? `prix posé → ${r.prices.join(", ")}` : `prix déjà saisi, conservé → ${r.prices.join(", ")}`)
         : r.created ? (r.changed ? "ajoutée" : "déjà présente")
         : r.key.startsWith("desc-") || r.key.startsWith("pf-") || r.key.startsWith("v3-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
         : r.changed ? `complétée (${r.matched} produit(s))` : `déjà à jour (${r.matched} produit(s))`;
