@@ -60,7 +60,7 @@ export async function applyFiches(conn, { quiet = false } = {}) {
         : r.key.startsWith("v3-") ? "Fiches v3 — avantages d'abord, une langue par texte :"
         : r.key.startsWith("langue-") ? "Corrections de langue (FR / AR / EN) :"
         : r.key.startsWith("reglage-") ? "Réglages :"
-        : r.key.startsWith("intro-") ? "Introductions des fiches (« Ton moment de soin ») :"
+        : r.key.startsWith("intro-") ? "Introductions des fiches (« Ce qu’il t’apporte ») :"
         : r.key.startsWith("prix-") ? "Prix unitaires des masques (posés seulement si le prix est vide) :"
         : r.key.startsWith("produit-") || r.key.startsWith("categorie") || r.key.startsWith("photo-orjena") || r.key.startsWith("photo-somebymi") ? "Soins à l'unité :"
         : r.key.startsWith("photo-") ? "Photos d'ambiance :" : "";
@@ -69,7 +69,7 @@ export async function applyFiches(conn, { quiet = false } = {}) {
         : r.key.startsWith("reglage-") ? (r.changed ? `ajouté → ${r.setting}` : `déjà réglé, conservé → ${r.setting}`)
         : r.key.startsWith("prix-") ? (r.changed ? `prix posé → ${r.prices.join(", ")}` : `prix déjà saisi, conservé → ${r.prices.join(", ")}`)
         : r.created ? (r.changed ? "ajoutée" : "déjà présente")
-        : r.key.startsWith("desc-") || r.key.startsWith("pf-") || r.key.startsWith("v3-") || r.key.startsWith("langue-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
+        : r.key.startsWith("desc-") || r.key.startsWith("pf-") || r.key.startsWith("v3-") || r.key.startsWith("langue-") || r.key.startsWith("intro-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
         : r.changed ? `complétée (${r.matched} produit(s))` : `déjà à jour (${r.matched} produit(s))`;
       console.log(`  ${r.matched ? "✔" : "✖"} ${r.label.padEnd(62)} ${state}`);
     }

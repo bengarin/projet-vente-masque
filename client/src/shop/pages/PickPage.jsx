@@ -19,7 +19,7 @@ export const P = {
     empty: "Vide", removeOne: "Retirer ce masque", sheetTag: "Fiche produit", photo: n => `Photo ${n}`,
     packText: "Mentions imprimées sur l'emballage", packNote: "Recopiées telles quelles, dans la langue de l'emballage.",
     info: "Description", usage: "Mode d'emploi", video: "Vidéo", notGiven: "Information à confirmer",
-    intro: "Ton moment de soin", hl: "Pourquoi le choisir ?", specs: "Fiche technique",
+    intro: "Ce qu'il t'apporte", hl: "Pourquoi le choisir ?", specs: "Fiche technique",
     sBrand: "Marque", sName: "Nom du produit", sType: "Type", sContent: "Contenance", precautions: "Précautions",
     packMore: "Voir le texte original de l'emballage",
     backTo: "Retour à mon pack", edit: "Modifier le pack", added: "Pack ajouté au panier ✓", addedBtn: "Ajouté",
@@ -33,7 +33,7 @@ export const P = {
     empty: "فارغ", removeOne: "إزالة هذا القناع", sheetTag: "بطاقة المنتج", photo: n => `الصورة ${n}`,
     packText: "النص المطبوع على الغلاف", packNote: "منقول كما هو، بلغة الغلاف.",
     info: "الوصف", usage: "طريقة الاستعمال", video: "فيديو", notGiven: "معلومة في انتظار التأكيد",
-    intro: "لحظة العناية بك", hl: "لماذا تختارينه؟", specs: "البطاقة التقنية",
+    intro: "ما يقدّمه لكِ", hl: "لماذا تختارينه؟", specs: "البطاقة التقنية",
     sBrand: "العلامة التجارية", sName: "اسم المنتج", sType: "النوع", sContent: "المحتوى", precautions: "احتياطات الاستعمال",
     packMore: "عرض النص الأصلي للغلاف",
     backTo: "العودة إلى باقتي", edit: "تعديل الباقة", added: "أُضيفت الباقة إلى السلة ✓", addedBtn: "تمت الإضافة",
@@ -47,7 +47,7 @@ export const P = {
     empty: "Empty", removeOne: "Remove this mask", sheetTag: "Product sheet", photo: n => `Photo ${n}`,
     packText: "Printed on the packaging", packNote: "Copied as printed, in the packaging's language.",
     info: "Description", usage: "How to use", video: "Video", notGiven: "Information to be confirmed",
-    intro: "Your care moment", hl: "Why choose it?", specs: "Product details",
+    intro: "What it does for you", hl: "Why choose it?", specs: "Product details",
     sBrand: "Brand", sName: "Product name", sType: "Type", sContent: "Contents", precautions: "Precautions",
     packMore: "See the original packaging text",
     backTo: "Back to my pack", edit: "Change pack", added: "Pack added to cart ✓", addedBtn: "Added",
@@ -480,7 +480,11 @@ export function ProductModal({ p, x, lang, closeLabel, qtyCtl, onClose, money })
             <div className={`pprice${x.price == null ? " tbd" : ""}`}>{x.price == null ? p.tbd : money(x.price)}</div>
           </section>
           {/* Introduction : ce que le produit apporte et comment il s'intègre au moment de soin (masquée si vide) */}
-          {intro && <section className="pintro"><h3>{p.intro}</h3><p>{intro}</p></section>}
+          {intro && (() => {
+            // 1re phrase-question (« Peau terne ? ») mise en avant, puis le bénéfice annoncé par la marque
+            const m = /^(.{3,90}?[?؟])\s+([\s\S]+)$/.exec(intro);
+            return <section className="pintro"><h3>{p.intro}</h3>{m ? <><p className="hook">{m[1]}</p><p>{m[2]}</p></> : <p>{intro}</p>}</section>;
+          })()}
           {highlights.length > 0 && card("phl", "star", p.hl, <ul className="hlist">{highlights.map((l, i) => {
             // « Titre : phrase courte » → titre en gras + phrase ; sinon la ligne telle quelle
             const m = /^(.{2,48}?)\s*[:：]\s+(.+)$/.exec(l);
