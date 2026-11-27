@@ -1,75 +1,102 @@
-# Présentation des fiches — version vérifiée (27/11/2026)
+# Présentation des fiches — version 4 (27/11/2026)
 
-Bloc **« Présentation »** (AR « نبذة عن المنتج », EN « Overview ») affiché en premier. Chaque phrase est vérifiée sur la photo de l'emballage.
-Structure : ce que c'est → ingrédients / caractéristiques confirmés → ce que dit l'emballage (« selon l'emballage », « la marque le présente comme ») → format.
-Aucune question marketing, aucune situation d'utilisation inventée, aucun résultat garanti.
+Bloc **« Présentation »** affiché en premier. Voix de la boutique, centrée sur le besoin de la cliente, la sensation et le type de soin.
+Effets cosmétiques prudents (« aide à », « sensation de »), uniquement s'ils sont annoncés pour **ce produit précis** (emballage + description officielle ou revendeurs). Aucun bénéfice déduit d'un ingrédient seul, aucun résultat garanti.
+Les caractéristiques techniques restent dans « Pourquoi le choisir ? » et « Fiche technique ».
 
 ## 1. MEDIHEAL — Collagen
 
-**Source (emballage) :** « COLLAGEN » ; « 98 % » (texte coréen « 순도 UPGRADE ») ; « CORE FIRMING » ; « DERMATOLOGY TEST COMPLETED » ; « MEDIHEAL DERMATOLOGY ». Contenance et type exact (tissu, gel…) : non indiqués.
+- **FR** — Ce masque est pensé pour les peaux qui manquent de fermeté et de confort. Nous l'avons choisi pour sa formule au collagène, associée à des peptides et à de l'acide hyaluronique : il aide à hydrater ta peau et lui apporte une agréable sensation de souplesse.
+- **AR** — هذا القناع مصمَّم للبشرة التي تفتقر إلى التماسك والراحة. اخترناه لتركيبته بالكولاجين، مع الببتيدات وحمض الهيالورونيك: يساعد على ترطيب بشرتك ويمنحها إحساساً لطيفاً بالمرونة.
+- **EN** — This mask is made for skin that lacks firmness and comfort. We chose it for its collagen formula, paired with peptides and hyaluronic acid: it helps hydrate your skin and leaves it feeling supple.
 
-- **FR** — Masque visage MEDIHEAL au collagène, d'une pureté de 98 % selon l'emballage. La marque le présente comme un soin destiné à la fermeté de la peau. Il est testé dermatologiquement (gamme Mediheal Dermatology).
-- **AR** — قناع للوجه من MEDIHEAL بالكولاجين، بنقاوة 98% حسب الغلاف. تقدّمه العلامة كعناية موجّهة لتماسك البشرة. وهو مختبَر جلدياً (مجموعة Mediheal Dermatology).
-- **EN** — MEDIHEAL face mask with collagen, 98% pure according to the packaging. The brand presents it as a care for skin firmness. It is dermatologically tested (Mediheal Dermatology line).
+**Ce qui est confirmé :** Emballage : collagène 98 %, « Core Firming », testé dermatologiquement. Description officielle (Sephora) : collagène de bas poids moléculaire + « 3X Firming Booster » (peptides, élastine, acide hyaluronique de bas poids moléculaire).
+
+**Choix d'écriture :** « aide à hydrater » (acide hyaluronique annoncé par la marque) ; « sensation de souplesse » ; besoin « fermeté » = positionnement de la marque. Liste INCI complète non confirmée.
+
+**Sources :** [www.sephora.me](https://www.sephora.me/om-en/p/collagen-essential-mask-core-firming/P10064553) · [skinsort.com](https://skinsort.com/products/mediheal/collagen-essential-mask/core-firming)
 
 ## 2. 7th Heaven — Vitamin C
 
-**Source (emballage) :** « VITAMIN C » ; « ADVANCED SERUM SHEET MASK » ; « ANTI-FATIGUE — Brightening + Re-Energising » ; « FOR ALL SKIN TYPES » ; « Vegetarian Society Vegan Approved » ; « 1 BIODEGRADABLE SHEET MASK ». Le « 5 % Active Complex* » n'est pas repris (astérisque non expliqué).
+- **FR** — Les jours où ton teint paraît fatigué ou terne, ce masque t'apporte un vrai coup de pouce. Son sérum à la vitamine C aide à raviver l'éclat de ta peau et à lui donner un air plus reposé. Il convient à tous les types de peau, et nous l'aimons aussi pour sa formule végane.
+- **AR** — في الأيام التي تبدو فيها بشرتك متعبة أو باهتة، يمنحك هذا القناع دفعة لطيفة. يساعد سيرومه بفيتامين سي على إعادة الإشراق إلى بشرتك ومنحها مظهراً أكثر راحة. وهو مناسب لجميع أنواع البشرة، ونحبّه أيضاً لتركيبته النباتية.
+- **EN** — On days when your skin looks tired or dull, this mask gives it a real boost. Its vitamin C serum helps bring back radiance and a more rested look. It suits all skin types, and we also love its vegan formula.
 
-- **FR** — Masque en tissu imprégné d'un sérum à la vitamine C, adapté à tous les types de peau. Selon l'emballage, c'est un masque anti-fatigue qui aide à illuminer et à redynamiser la peau. Il est végan (approuvé par la Vegetarian Society) et le sachet contient un masque en tissu biodégradable.
-- **AR** — قناع قماشي مشبّع بسيروم فيتامين سي، مناسب لجميع أنواع البشرة. حسب الغلاف، هو قناع لمظاهر التعب يساعد على إشراق البشرة وتنشيطها. وهو نباتي (معتمد من Vegetarian Society)، ويحتوي الكيس على قناع قماشي واحد قابل للتحلل الحيوي.
-- **EN** — Sheet mask soaked in a vitamin C serum, suitable for all skin types. According to the packaging, it is an anti-fatigue mask that helps brighten and re-energise the skin. It is vegan (approved by the Vegetarian Society) and the sachet contains one biodegradable sheet mask.
+**Ce qui est confirmé :** Emballage : sérum vitamine C, « Anti-Fatigue — Brightening + Re-Energising », toutes peaux, végan. Revendeurs : pour les peaux fatiguées et ternes.
+
+**Choix d'écriture :** « aide à raviver l'éclat » et « air plus reposé » = promesse de l'emballage formulée avec « aide à ». Liste INCI complète non trouvée.
+
+**Sources :** [www.ocado.com](https://www.ocado.com/products/7th-heaven-nutriactive-vit-c-sheet-mask/674467011) · [groceries.morrisons.com](https://groceries.morrisons.com/products/7th-heaven-nutri-active-vitamin-c-mask/113941481)
 
 ## 3. look AT ME — Green Blend
 
-**Source (emballage) :** « TEA TREE + CUCUMBER FACE MASK » ; « Revitalizing & Soothing » ; « TENCEL SHEET » ; « 1 SINGLE USE SHEET MASK » ; « 25ml / 0.84 fl oz » ; « MADE IN KOREA ».
+- **FR** — Pour les peaux qui ont besoin d'être apaisées, nous avons choisi ce masque à l'arbre à thé et au concombre. Il aide à calmer et à revitaliser la peau, et laisse une agréable sensation de fraîcheur.
+- **AR** — للبشرة التي تحتاج إلى التهدئة، اخترنا هذا القناع بشجرة الشاي والخيار. يساعد على تهدئة البشرة وإنعاشها، ويترك إحساساً منعشاً لطيفاً.
+- **EN** — For skin that needs soothing, we chose this tea tree and cucumber mask. It helps calm and revitalise the skin, and leaves a pleasant fresh feeling.
 
-- **FR** — Masque visage en tissu à l'arbre à thé et au concombre, sur une feuille en Tencel. Selon l'emballage, il aide à revitaliser et à apaiser la peau. Le sachet contient un masque à usage unique de 25 ml, fabriqué en Corée.
-- **AR** — قناع قماشي للوجه بشجرة الشاي والخيار، على ورقة من ألياف Tencel. حسب الغلاف، يساعد على إنعاش البشرة وتهدئتها. يحتوي الكيس على قناع واحد للاستعمال مرة واحدة بحجم 25 مل، مصنوع في كوريا.
-- **EN** — Face sheet mask with tea tree and cucumber, on a Tencel sheet. According to the packaging, it helps revitalise and soothe the skin. The sachet contains one single-use 25 ml mask, made in Korea.
+**Ce qui est confirmé :** Emballage : arbre à thé + concombre, « Revitalizing & Soothing ». Revendeurs : masque en tissu hydratant, arbre à thé apaisant.
+
+**Choix d'écriture :** « aide à calmer et revitaliser » = emballage ; « sensation de fraîcheur » = masque en tissu au concombre (sensation, pas résultat). Allégation « contrôle du sébum » des revendeurs non reprise.
+
+**Sources :** [kosmosbeauty.com](https://kosmosbeauty.com/products/look-at-me-green-blend-tea-tree-cucumber-face-mask-25ml) · [www.nahdionline.com](https://www.nahdionline.com/en-sa/look-at-me-green-blend-tencel-face-mask/pdp/103029834)
 
 ## 4. IDC Institute — Hazel + Lavender
 
-**Source (emballage) :** « ONE WEEK TREATMENT » ; « 3 — WEDNESDAY » ; « Hazel + Lavender » ; « 22g / 0.73 fl.oz — FACIAL MASK » ; logo « CRUELTY FREE » ; « Nettoie les pores et élimine la fatigue de la peau » (texte français imprimé).
+- **FR** — Quand ta peau a besoin d'un bon nettoyage et d'un peu de repos, ce masque à l'hamamélis et à la lavande est fait pour toi. Il aide à nettoyer les pores et à estomper les signes de fatigue. C'est le masque n°3 de la gamme One Week Treatment, prévu pour le mercredi.
+- **AR** — عندما تحتاج بشرتك إلى تنظيف جيد وقليل من الراحة، فهذا القناع بالهماميليس واللافندر مناسب لك. يساعد على تنظيف المسام وتخفيف مظاهر التعب. وهو القناع رقم 3 من مجموعة One Week Treatment، المخصّص ليوم الأربعاء.
+- **EN** — When your skin needs a good cleanse and a little rest, this witch hazel and lavender mask is made for you. It helps cleanse the pores and ease signs of tiredness. It's mask no. 3 in the One Week Treatment line, the one for Wednesday.
 
-- **FR** — Masque visage à l'hamamélis et à la lavande, n°3 (mercredi) de la gamme One Week Treatment d'IDC Institute. Selon l'emballage, il nettoie les pores et élimine la fatigue de la peau. Il n'est pas testé sur les animaux et le sachet contient un masque de 22 g.
-- **AR** — قناع للوجه بالهماميليس واللافندر، رقم 3 (الأربعاء) من مجموعة One Week Treatment من IDC Institute. حسب الغلاف، ينظّف المسام ويزيل مظاهر التعب عن البشرة. وهو غير مختبَر على الحيوانات، ويحتوي الكيس على قناع واحد بوزن 22 غرام.
-- **EN** — Face mask with witch hazel and lavender, no. 3 (Wednesday) in IDC Institute's One Week Treatment line. According to the packaging, it cleans the pores and removes tiredness from the face. It is cruelty free and the sachet contains one 22 g mask.
+**Ce qui est confirmé :** Emballage : « Nettoie les pores et élimine la fatigue de la peau », hamamélis + lavande, n°3 mercredi. Aucune fiche en ligne exacte trouvée.
+
+**Choix d'écriture :** Texte basé uniquement sur l'emballage ; « élimine » adouci en « aide à estomper les signes de fatigue ».
+
+**Sources :** [www.promofarma.com](https://www.promofarma.com/en/idc-institute-mascarilla-facial-lavanda-1ud/p-678071) (produit proche, non repris)
 
 ## 5. SOME BY MI — Real Glutathione
 
-**Source (emballage) :** « Moisturizing | Radiance » ; « Dermatologist Tested » ; « A 100% plant-based biodegradable sheet mask formulated with Real Glutathione that revitalizes dull skin and promotes a brighter, more even skin tone » ; « NET 20 G ».
+- **FR** — Pensé pour les teints ternes, ce masque au glutathion aide à hydrater la peau et à lui redonner de l'éclat, pour un teint qui paraît plus lumineux et plus uniforme. Nous l'avons aussi choisi pour sa feuille 100 % végétale et biodégradable.
+- **AR** — مصمَّم للبشرة الباهتة، يساعد هذا القناع بالغلوتاثيون على ترطيب البشرة وإعادة إشراقها، لتبدو أكثر إشراقاً وتوحّداً. واخترناه أيضاً لورقته النباتية 100% والقابلة للتحلل الحيوي.
+- **EN** — Made for dull-looking skin, this glutathione mask helps hydrate and bring back radiance, for a complexion that looks brighter and more even. We also chose it for its 100% plant-based, biodegradable sheet.
 
-- **FR** — Masque en tissu au glutathion, sur une feuille 100 % végétale et biodégradable. Selon l'emballage, il hydrate, ravive les peaux ternes et favorise un teint plus lumineux et plus uniforme. Il est testé dermatologiquement ; poids net : 20 g.
-- **AR** — قناع قماشي بالغلوتاثيون، على ورقة نباتية 100% وقابلة للتحلل الحيوي. حسب الغلاف، يرطّب البشرة وينعش البشرة الباهتة ويساعد على لون بشرة أكثر إشراقاً وتوحّداً. وهو مختبَر جلدياً، ووزنه الصافي 20 غرام.
-- **EN** — Sheet mask with glutathione, on a 100% plant-based, biodegradable sheet. According to the packaging, it moisturises, revitalises dull skin and promotes a brighter, more even skin tone. It is dermatologist tested; net weight: 20 g.
+**Ce qui est confirmé :** Emballage : « Moisturizing | Radiance », « revitalizes dull skin and promotes a brighter, more even skin tone ». Ingrédients (bases INCI) : glycérine, glutathion, vitamine E.
+
+**Choix d'écriture :** « aide à hydrater » (glycérine + emballage) ; « redonner de l'éclat, teint qui paraît plus lumineux et uniforme » = emballage, formulé en apparence. « Atténue les taches » (revendeurs) non repris.
+
+**Sources :** [skinsort.com](https://skinsort.com/products/some-by-mi/care-mask/real-glutathione-brightening) · [incidecoder.com](https://incidecoder.com/products/some-by-mi-real-glutathione-brightening-care-mask)
 
 ## 6. masque BAR — Rose Gold Foil
 
-**Source (emballage) :** « sheet mask » ; « enriched with extracts that help nourish and hydrate your skin » ; « Contains: Soybean Extract, Mushroom Extract, Witch Hazel Water » ; « 1 COMPLETE MASK — 30 ml » ; « UNMASQUE BEAUTY ».
+- **FR** — Pour la peau qui tiraille ou manque de confort, ce masque aide à hydrater et à nourrir, et laisse une agréable sensation de douceur. Sa formule associe un extrait de champignon, un extrait de soja et de l'eau d'hamamélis.
+- **AR** — للبشرة التي تشعر بالشدّ أو تفتقر إلى الراحة، يساعد هذا القناع على ترطيبها وتغذيتها، ويترك إحساساً لطيفاً بالنعومة. تجمع تركيبته بين مستخلص الفطر ومستخلص الصويا وماء الهماميليس.
+- **EN** — For skin that feels tight or uncomfortable, this mask helps hydrate and nourish, and leaves a soft, comfortable feel. Its formula combines mushroom extract, soybean extract and witch hazel water.
 
-- **FR** — Masque en tissu Rose Gold Foil de masque BAR, contenant des extraits de soja et de champignon ainsi que de l'eau d'hamamélis. Selon l'emballage, ces extraits aident à nourrir et hydrater la peau. Le sachet contient un masque complet de 30 ml.
-- **AR** — قناع قماشي Rose Gold Foil من masque BAR، يحتوي على مستخلص الصويا ومستخلص الفطر وماء الهماميليس. حسب الغلاف، تساعد هذه المستخلصات على تغذية البشرة وترطيبها. يحتوي الكيس على قناع كامل بحجم 30 مل.
-- **EN** — masque BAR Rose Gold Foil sheet mask, containing soybean and mushroom extracts as well as witch hazel water. According to the packaging, these extracts help nourish and hydrate the skin. The sachet contains one complete 30 ml mask.
+**Ce qui est confirmé :** Emballage : « extracts that help nourish and hydrate your skin », soja, champignon, eau d'hamamélis. Revendeurs : champignon tremella, soja fermenté.
+
+**Choix d'écriture :** « aide à hydrater et nourrir » = emballage ; « sensation de douceur » ; besoin « peau qui tiraille » = besoin associé à l'hydratation.
+
+**Sources :** [incidecoder.com](https://incidecoder.com/products/masquebar-rose-gold-foil-sheet-mask) · [www.kw.boots.com](https://www.kw.boots.com/en/buy-masque-bar%C2%A0%C2%A0rose-gold-foil-sheet-mask.html)
 
 ## 7. ORJENA — Power Collagen Emulsion
 
-**Source (emballage) :** « POWER COLLAGEN EMULSION » ; « SKIN ELASTICITY / SKIN NUTRITION / REFRESH » ; « FOR ALL SKIN TYPES » ; « 100ml ». Mode d'emploi : visuel « Nettoyez et tonifiez / Versez dans la paume / Appliquez par pressions douces ». ⚠ Visuels générés par IA : une vraie photo du produit est recommandée.
+- **FR** — Plus fluide qu'une crème, cette émulsion au collagène aide à hydrater et à nourrir la peau, et lui apporte une sensation de fraîcheur et de souplesse. Elle convient à tous les types de peau et s'applique juste après le tonique.
+- **AR** — أخفّ من الكريم، يساعد هذا المستحلب بالكولاجين على ترطيب البشرة وتغذيتها، ويمنحها إحساساً بالانتعاش والمرونة. وهو مناسب لجميع أنواع البشرة، ويُطبَّق مباشرة بعد التونر.
+- **EN** — Lighter than a cream, this collagen emulsion helps hydrate and nourish the skin, and leaves it feeling fresh and supple. It suits all skin types and goes on right after your toner.
 
-- **FR** — Émulsion pour le visage au collagène, adaptée à tous les types de peau. Selon l'emballage, elle est destinée à l'élasticité, à la nutrition et à la fraîcheur de la peau. Elle s'applique après le nettoyage et le tonique, par pressions douces. Flacon de 100 ml.
-- **AR** — مستحلب للوجه بالكولاجين، مناسب لجميع أنواع البشرة. حسب الغلاف، هو موجّه لمرونة البشرة وتغذيتها وانتعاشها. يُطبَّق بعد التنظيف والتونر بضغطات خفيفة. قارورة بحجم 100 مل.
-- **EN** — Collagen face emulsion, suitable for all skin types. According to the packaging, it is designed for skin elasticity, nourishment and freshness. Apply after cleansing and toning, with gentle pressing motions. 100 ml bottle.
+**Ce qui est confirmé :** Visuels : « Skin Elasticity / Skin Nutrition / Refresh », « For all skin types ». Bases INCI : collagène hydrolysé, adénosine, bétaïne, allantoïne… (pas de page officielle).
+
+**Choix d'écriture :** « aide à hydrater et nourrir », « sensation de fraîcheur et de souplesse » = mentions du visuel. « Anti-rides » (revendeur) non repris. ⚠ Visuels générés par IA : vraie photo recommandée.
+
+**Sources :** [skinsort.com](https://skinsort.com/products/orjena/power-collagen-emulsion) · [www.skincarisma.com](https://www.skincarisma.com/products/orjena/power-collagen-emulsion)
 
 ## 8. SOME BY MI — Yuja Niacin
 
-**Source (emballage) :** « YUJA NIACIN ANTI BLEMISH CREAM » ; « YUJA EXTRACT » ; « NIACINAMIDE 5 % » ; « NET 60 G » (écrit « 60 6 » sur le visuel IA). « Non-Comedogenic Tested(*) » non repris (astérisque non expliqué). Mode d'emploi : texte officiel confirmé.
+- **FR** — Pour les peaux sujettes aux petites imperfections et au teint irrégulier, nous avons choisi cette crème au yuja et à la niacinamide. Elle aide à hydrater la peau, à prendre soin des imperfections et à unifier l'apparence du teint.
+- **AR** — للبشرة المعرّضة للشوائب الصغيرة وعدم توحّد اللون، اخترنا هذا الكريم باليوجا والنياسيناميد. يساعد على ترطيب البشرة والعناية بالشوائب وتوحيد مظهر لون البشرة.
+- **EN** — For skin prone to small blemishes and uneven tone, we chose this yuja and niacinamide cream. It helps hydrate the skin, care for blemishes and even out the look of your complexion.
 
-- **FR** — Crème pour le visage à l'extrait de yuja (un agrume coréen) et à 5 % de niacinamide. La marque la présente comme une crème anti-imperfections. Elle s'applique en fine couche, après le nettoyage et le tonique. Pot de 60 g.
-- **AR** — كريم للوجه بمستخلص اليوجا (حمضيات كورية) و5% من النياسيناميد. تقدّمه العلامة ككريم مضاد للشوائب. يُطبَّق بطبقة رقيقة بعد التنظيف والتونر. علبة بوزن 60 غرام.
-- **EN** — Face cream with yuja extract (a Korean citrus fruit) and 5% niacinamide. The brand presents it as an anti-blemish cream. Apply a thin layer after cleansing and toning. 60 g jar.
+**Ce qui est confirmé :** Emballage : « Anti Blemish Cream », extrait de yuja, niacinamide 5 %. Revendeurs : crème hydratante pour imperfections et teint irrégulier.
 
-## Autres corrections (même principe)
+**Choix d'écriture :** « aide à hydrater, prendre soin des imperfections, unifier l'apparence du teint » ; « atténue taches / mélasma » (revendeurs) non repris.
 
-- **Descriptions** des 8 produits : remplacées par une présentation sobre de l'emballage et de la gamme (fin de « soirée entre copines », « rendez-vous beauté », « à portée de main », « plein de peps »…).
-- **Pourquoi le choisir ?** : 3 lignes rendues factuelles — MEDIHEAL (« facile à emporter ou à offrir » → « un masque par sachet »), ORJENA (« à garder à portée de main » → « un flacon de 100 ml »), masque BAR (« une touche chic » → « ligne Unmasque Beauty »).
-- Fichiers : `database/introductions.sql`, `database/fiches-sobres.sql` (un texte modifié dans l'admin n'est jamais écrasé).
+**Sources :** [www.beautybay.com](https://www.beautybay.com/p/some-by-mi/yuja-niacin-anti-blemish-cream/) · [www.vitacost.com](https://www.vitacost.com/products/some-by-mi-yuja-niacin-anti-blemish-cream-2-11-oz-60-g-135944)
+
