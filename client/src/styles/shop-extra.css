@@ -132,3 +132,9 @@ details.pk>.orig{padding-bottom:12px}
 .hl-d{font-size:14.5px;font-weight:600;color:var(--ink);opacity:.82;line-height:1.45;unicode-bidi:plaintext}
 [dir=rtl] .hl-t,[dir=rtl] .hl-d{text-align:right}
 .hl-d::first-letter{text-transform:uppercase}
+
+/* Introduction de la fiche (« Ton moment de soin ») : texte d'accroche, avant « Pourquoi le choisir ? » */
+.pmodal .pintro{margin:4px 0 14px;padding:14px 16px 15px;border-radius:16px;background:linear-gradient(135deg,#f1ebff 0%,#fff8dc 100%);border:1.5px dashed var(--lav2,#b9a6f2)}
+.pmodal .pintro h3{margin:0 0 6px;font-size:13px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;color:var(--cob,#1530C8)}
+[dir=rtl] .pmodal .pintro h3{text-transform:none;letter-spacing:0;font-size:15px}
+.pmodal .pintro p{margin:0;font-size:16px;line-height:1.55;font-weight:600;color:var(--navy,#1b1f5e);unicode-bidi:plaintext;text-align:start}

@@ -36,6 +36,7 @@ export function mapProductRow(p, images = []) {
     isActive: !!p.is_active,
     tape: p.tape,
     video: p.video_url || null,
+    intro: anyTr(tr(p, "intro")),
     info: anyTr(tr(p, "description")),
     usage: anyTr(tr(p, "usage")),
     type: anyTr(tr(p, "product_type")),

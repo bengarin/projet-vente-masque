@@ -7,7 +7,7 @@ import { Ic } from "../icons.jsx";
 const TAPES = [["ging", "Vichy jaune"], ["dots", "Pois lavande"], ["grid", "Quadrillé bleu"], ["ydots", "Pois jaunes"], ["checkl", "Damier lavande"], ["check", "Damier bleu"]];
 const LANGS = [["Fr", "Français"], ["Ar", "العربية"], ["En", "English"]];
 const EMPTY = { brand: "", name: "", slug: "", categoryId: "", price: "", stock: "", isActive: true, saleMode: "pack", tape: "ging", videoUrl: "", sortOrder: 0,
-  descriptionFr: "", descriptionAr: "", descriptionEn: "", usageFr: "", usageAr: "", usageEn: "", packMentions: "",
+  introFr: "", introAr: "", introEn: "", descriptionFr: "", descriptionAr: "", descriptionEn: "", usageFr: "", usageAr: "", usageEn: "", packMentions: "",
   typeFr: "", typeAr: "", typeEn: "", contentFr: "", contentAr: "", contentEn: "",
   highlightsFr: "", highlightsAr: "", highlightsEn: "", precautionsFr: "", precautionsAr: "", precautionsEn: "" };
 const SHEET_KEYS = ["type", "content", "highlights", "precautions"];
@@ -15,6 +15,7 @@ const SHEET_KEYS = ["type", "content", "highlights", "precautions"];
 const fromProduct = p => ({
   brand: p.brand, name: p.name, slug: p.slug, categoryId: p.categoryId ?? "", price: numStr(p.price), stock: numStr(p.stock),
   isActive: p.isActive, saleMode: p.saleMode || "pack", tape: p.tape, videoUrl: p.raw.videoUrl || "", sortOrder: p.raw.sortOrder,
+  introFr: p.raw.introFr || "", introAr: p.raw.introAr || "", introEn: p.raw.introEn || "",
   descriptionFr: p.raw.descriptionFr || "", descriptionAr: p.raw.descriptionAr || "", descriptionEn: p.raw.descriptionEn || "",
   usageFr: p.raw.usageFr || "", usageAr: p.raw.usageAr || "", usageEn: p.raw.usageEn || "", packMentions: p.raw.packMentions || "",
   ...Object.fromEntries(SHEET_KEYS.flatMap(k => ["Fr", "Ar", "En"].map(l => [k + l, p.raw[k + l] || ""]))),
@@ -46,6 +47,7 @@ export default function ProductForm() {
   const [loadErr, setLoadErr] = useState(null);
   const [flash, setFlash] = useFlash();
   const [descLang, setDescLang] = useState("Fr");
+  const [introLang, setIntroLang] = useState("Fr");
   const [useLang, setUseLang] = useState("Fr");
   const [sheetLang, setSheetLang] = useState("Fr");
   const [dirty, setDirty] = useState(false);
@@ -97,6 +99,12 @@ export default function ProductForm() {
               <Field label="Marque" hint="Telle qu'imprimée sur l'emballage" required error={errs.brand}><input {...fp("brand")} maxLength={120} /></Field>
               <Field label="Nom du produit" hint="Tel qu'imprimé sur l'emballage" required error={errs.name}><input {...fp("name")} maxLength={255} /></Field>
             </div>
+          </Card>
+
+          <Card title="Introduction (ton moment de soin)" icon="star" actions={<Tabs small label="Langue de l'introduction" tabs={langTabs("intro")} value={introLang} onChange={setIntroLang} />}>
+            {LANGS.map(([k, l]) => k === introLang && (
+              <Field key={k} label={`Introduction — ${l}`} error={errs["intro" + k]} hint="Affichée en premier sur la fiche : 2-3 phrases courtes. Les effets annoncés par l'emballage sont présentés comme la description de la marque, jamais comme un résultat garanti. Vide = bloc masqué.">
+                <textarea rows={4} dir={k === "Ar" ? "rtl" : undefined} {...fp("intro" + k)} /></Field>))}
           </Card>
 
           <Card title="Description" icon="note" actions={<Tabs small label="Langue de la description" tabs={langTabs("description")} value={descLang} onChange={setDescLang} />}>

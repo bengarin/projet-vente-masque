@@ -12,6 +12,7 @@ const slugify = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerC
 function toColumns(d) {
   return {
     category_id: d.categoryId, brand: d.brand, name: d.name,
+    intro_fr: d.introFr, intro_ar: d.introAr, intro_en: d.introEn,
     description_fr: d.descriptionFr, description_ar: d.descriptionAr, description_en: d.descriptionEn,
     usage_fr: d.usageFr, usage_ar: d.usageAr, usage_en: d.usageEn,
     product_type_fr: d.typeFr, product_type_ar: d.typeAr, product_type_en: d.typeEn,
@@ -35,6 +36,7 @@ async function getProduct(id) {
   const imgs = await query("SELECT id, url FROM product_images WHERE product_id = ? ORDER BY sort_order, id", [id]);
   const p = mapProductRow(row, imgs);
   return { ...p, raw: {
+    introFr: row.intro_fr, introAr: row.intro_ar, introEn: row.intro_en,
     descriptionFr: row.description_fr, descriptionAr: row.description_ar, descriptionEn: row.description_en,
     usageFr: row.usage_fr, usageAr: row.usage_ar, usageEn: row.usage_en, packMentions: row.pack_mentions,
     typeFr: row.product_type_fr, typeAr: row.product_type_ar, typeEn: row.product_type_en,
