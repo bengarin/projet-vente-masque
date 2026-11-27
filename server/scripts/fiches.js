@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 import mysql from "mysql2/promise";
 import { loadConfig, PROJECT_ROOT } from "../src/config.js";
 
-const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql", "descriptions-v2.sql", "points-forts-v2.sql", "contenu-v3.sql", "prix-masques.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
+const FILES = ["fiches-produits.sql", "photos-produits.sql", "produits-soins.sql", "descriptions-v2.sql", "points-forts-v2.sql", "contenu-v3.sql", "prix-masques.sql", "corrections-langue.sql"].map(f => path.join(PROJECT_ROOT, "database", f));
 
 /* Découpe le fichier en blocs « -- fiche: <clé> | <libellé> » + une requête UPDATE */
 async function blocks() {
@@ -53,6 +53,7 @@ export async function applyFiches(conn, { quiet = false } = {}) {
       const sec = r.key.startsWith("desc-") ? "Descriptions (nouvelle version) :"
         : r.key.startsWith("pf-") ? "Points forts (nouvelle version) :"
         : r.key.startsWith("v3-") ? "Fiches v3 — avantages d'abord, une langue par texte :"
+        : r.key.startsWith("langue-") ? "Corrections de langue (FR / AR / EN) :"
         : r.key.startsWith("prix-") ? "Prix unitaires des masques (posés seulement si le prix est vide) :"
         : r.key.startsWith("produit-") || r.key.startsWith("categorie") || r.key.startsWith("photo-orjena") || r.key.startsWith("photo-somebymi") ? "Soins à l'unité :"
         : r.key.startsWith("photo-") ? "Photos d'ambiance :" : "";
@@ -60,7 +61,7 @@ export async function applyFiches(conn, { quiet = false } = {}) {
       const state = r.matched === 0 ? "INTROUVABLE dans la base"
         : r.key.startsWith("prix-") ? (r.changed ? `prix posé → ${r.prices.join(", ")}` : `prix déjà saisi, conservé → ${r.prices.join(", ")}`)
         : r.created ? (r.changed ? "ajoutée" : "déjà présente")
-        : r.key.startsWith("desc-") || r.key.startsWith("pf-") || r.key.startsWith("v3-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
+        : r.key.startsWith("desc-") || r.key.startsWith("pf-") || r.key.startsWith("v3-") || r.key.startsWith("langue-") ? (r.changed ? "réécrite" : "déjà à jour (ou modifiée dans l'admin : conservée)")
         : r.changed ? `complétée (${r.matched} produit(s))` : `déjà à jour (${r.matched} produit(s))`;
       console.log(`  ${r.matched ? "✔" : "✖"} ${r.label.padEnd(62)} ${state}`);
     }

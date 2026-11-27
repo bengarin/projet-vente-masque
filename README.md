@@ -68,7 +68,7 @@ npm run db:seed
 
 - `db:migrate` crée toutes les tables (fichiers `database/migrations/*.sql`, suivis dans la table `schema_migrations` : on peut le relancer sans risque).
 - `db:seed` ajoute les 6 masques de l'ancienne version (marque, nom, mentions d'emballage, photo), la catégorie « Masques en tissu » et les tailles de pack 3 / 4 / 6 — **sans prix ni stock** — puis complète leurs fiches détaillées FR / AR / EN (`database/fiches-produits.sql`, voir `docs/fiches-produits.md`). Relancer `db:seed` ne crée aucun doublon et n'écrase jamais un champ déjà rempli.
-- `db:migrate` complète aussi automatiquement les fiches des produits déjà présents, et ajoute les soins vendus à l'unité (`database/produits-soins.sql`, voir `docs/produits-soins.md`), puis met à jour les descriptions et les points forts (`database/descriptions-v2.sql`, `database/points-forts-v2.sql`, `database/contenu-v3.sql`, sans écraser un texte modifié dans l'admin). Pour voir ce qui est rempli produit par produit (FR/AR/EN) :
+- `db:migrate` complète aussi automatiquement les fiches des produits déjà présents, et ajoute les soins vendus à l'unité (`database/produits-soins.sql`, voir `docs/produits-soins.md`), puis met à jour les descriptions et les points forts (`database/descriptions-v2.sql`, `database/points-forts-v2.sql`, `database/contenu-v3.sql`, `database/corrections-langue.sql`, sans écraser un texte modifié dans l'admin). Pour voir ce qui est rempli produit par produit (FR/AR/EN) :
 
 ```bash
 npm run db:fiches
@@ -189,5 +189,5 @@ npm test
 
 - **Paiement en ligne** : non intégré. Les « modes de paiement » sont des libellés (ex. paiement à la livraison). Une carte bancaire (CMI, Stripe…) demanderait un contrat et une intégration dédiée.
 - **Notifications** (e-mail / WhatsApp à chaque commande) : non branchées.
-- **Traductions arabes** : reprises de l'ancienne version, à faire relire par une personne native.
+- **Traductions arabes** : toute la boutique est en arabe standard simple (voir `docs/corrections-langue.md`) ; relecture par une personne native conseillée.
 - **Admin** : en français uniquement ; un seul niveau d'accès (tous les admins ont tous les droits).

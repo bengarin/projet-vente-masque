@@ -3,27 +3,28 @@ import { Link, useNavigate } from "react-router-dom";
 import { Deco, ICON, MaskStack, Paper, Torn } from "../../ui/decor.jsx";
 import { useBodyClass, useOverlay } from "../../ui/overlay.jsx";
 import { CatalogGate, Header, StepDots } from "../Chrome.jsx";
+import { arMasks } from "../../lib/i18n.js";
 import { PATHS, useShop } from "../ShopContext.jsx";
 import "../../styles/pg-pack.css";
 
 const P = {
   fr: { title: "Choisis ton pack !", sub: <>Combien de masques veux-tu <span className="hl cobu">composer</span> ?</>,
-    line1: "Pack de", line2: "masques", later: "Prix du pack affiché ensuite",
-    cur: c => `Ta sélection actuelle : ${c} masque${c > 1 ? "s" : ""}. Elle est conservée.`,
+    line1: "Pack de", line2: "masques", later: "Prix du pack affiché à l'étape suivante",
+    cur: c => `Ta sélection actuelle : ${c} masque${c > 1 ? "s" : ""}. Elle sera conservée.`,
     shrinkT: "Réduire ton pack ?", shrink: (c, n, k) => `Tu as déjà choisi ${c} masques. Le pack de ${n} n'en garde que ${n} : ${k === 1 ? "ce masque sera retiré" : "ces " + k + " masques seront retirés"} (les derniers ajoutés).`,
     ok: n => `Oui, passer au pack de ${n}`, cancel: "Annuler, garder mon pack", done: (n, k) => `Pack de ${n} : ${k} masque${k > 1 ? "s" : ""} retiré${k > 1 ? "s" : ""}.`,
     none: "Aucune taille de pack n'est disponible pour le moment." },
-  ar: { title: "اختاري الباك ديالك!", sub: <>شحال من ماسك بغيتي <span className="hl cobu">تجمعي</span>؟</>,
-    line1: "باك ديال", line2: "ماسكات", later: "ثمن الباك غادي يبان من بعد",
-    cur: c => `الاختيار ديالك دابا: ${c} ماسكات. غادي يبقى محفوظ.`,
-    shrinkT: "تصغّري الباك؟", shrink: (c, n, k) => `اخترتي ${c} ماسكات. باك ${n} فيه غير ${n}: ${k === 1 ? "هاد الماسك غادي يتحيّد" : "هاد " + k + " ماسكات غادي يتحيّدو"} (آخر اللي تزادو).`,
-    ok: n => `إيه، دوزي لباك ${n}`, cancel: "لا، خلي الباك ديالي", done: (n, k) => (k === 1 ? `باك ${n}: تحيّد ماسك واحد.` : `باك ${n}: تحيّدو ${k} ماسكات.`),
-    none: "ما كاين حتى باك متوفر دابا." },
+  ar: { title: "اختاري باقتك!", sub: <>كم قناعاً تريدين <span className="hl cobu">أن تجمعي</span>؟</>,
+    line1: "باقة من", line2: "أقنعة", later: "يظهر سعر الباقة لاحقاً",
+    cur: c => `اختيارك الحالي: ${arMasks(c)}. سيتم الاحتفاظ به.`,
+    shrinkT: "تصغير باقتك؟", shrink: (c, n, k) => `لقد اخترتِ ${arMasks(c, "acc")}. الباقة من ${arMasks(n, "gen")} لا تتسع إلا لـ${n}: ${k === 1 ? "سيُزال هذا القناع" : k === 2 ? "سيُزال هذان القناعان" : "ستُزال هذه الأقنعة (" + k + ")"} (آخر ما أُضيف).`,
+    ok: n => `نعم، الانتقال إلى الباقة من ${arMasks(n, "gen")}`, cancel: "إلغاء، الاحتفاظ بباقتي", done: (n, k) => `الباقة من ${arMasks(n, "gen")}: ${k === 1 ? "أُزيل قناع واحد" : k === 2 ? "أُزيل قناعان" : "أُزيلت " + arMasks(k)}.`,
+    none: "لا تتوفر أي باقة حالياً." },
   en: { title: "Choose your pack!", sub: <>How many masks would you like to <span className="hl cobu">put together</span>?</>,
-    line1: "Pack of", line2: "masks", later: "Pack price shown next",
-    cur: c => `Your current selection: ${c} mask${c > 1 ? "s" : ""}. It is kept.`,
-    shrinkT: "Make your pack smaller?", shrink: (c, n, k) => `You have already picked ${c} masks. The pack of ${n} only keeps ${n}: ${k === 1 ? "this mask will be removed" : "these " + k + " masks will be removed"} (the last ones added).`,
-    ok: n => `Yes, switch to the pack of ${n}`, cancel: "Cancel, keep my pack", done: (n, k) => `Pack of ${n}: ${k} mask${k > 1 ? "s" : ""} removed.`,
+    line1: "Pack of", line2: "masks", later: "Pack price shown at the next step",
+    cur: c => `Your current selection: ${c} mask${c > 1 ? "s" : ""}. It will be kept.`,
+    shrinkT: "Make your pack smaller?", shrink: (c, n, k) => `You have already picked ${c} masks. A pack of ${n} only holds ${n}: ${k === 1 ? "this mask will be removed" : "these " + k + " masks will be removed"} (the last ones added).`,
+    ok: n => `Yes, switch to a pack of ${n}`, cancel: "Cancel, keep my pack", done: (n, k) => `Pack of ${n}: ${k} mask${k > 1 ? "s" : ""} removed.`,
     none: "No pack size is available right now." },
 };
 const DECOS = [
