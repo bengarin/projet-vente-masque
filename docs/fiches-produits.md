@@ -34,6 +34,10 @@ Règle des langues, vérifiée automatiquement sur les 24 fiches affichées (8 p
 Retiré : « testée non comédogène selon la marque » (Yuja Niacin), car l'astérisque n'est pas lisible. Les lignes Type / Contenance vides sont masquées (plus de « Information à confirmer »).
 Mise à jour des bases existantes : `database/contenu-v3.sql` (remplace seulement les versions générées v1/v2 ; un texte modifié dans l'admin est conservé).
 
+**Introductions v2 (27/11/2026)** : bloc **« Ce qu'il t'apporte »** (AR « ما يقدّمه لكِ », EN « What it does for you »). Une question courte en gras (« Peau terne ? »), puis le bénéfice annoncé par l'emballage avec « aide à », « conçu pour », « selon la marque ». Remplace la 1re version (« Ton moment de soin ») affiché en premier, avant « Pourquoi le choisir ? ». 2 phrases : le geste (poser le masque sur le visage ; pour les 2 soins, le mode d'emploi confirmé) puis l'effet **annoncé par l'emballage**, toujours attribué à la marque (« MEDIHEAL le présente comme… », « 7th Heaven le décrit comme… »). Aucune promesse de résultat.
+Source des effets cités : Core Firming (MEDIHEAL), Anti-Fatigue / Brightening + Re-Energising (7th Heaven), Revitalizing & Soothing (look AT ME), « Nettoie les pores et élimine la fatigue de la peau » (IDC Institute), Moisturizing / Radiance + « revitalizes dull skin » (SOME BY MI Glutathione), « help nourish and hydrate » (masque BAR), Skin Elasticity / Nutrition / Refresh (ORJENA), Anti Blemish (nom du produit SOME BY MI Yuja).
+Fichiers : colonne `intro_fr/ar/en` (`database/migrations/005_introduction_produit.sql`), textes `database/introductions.sql` (remplit seulement une introduction vide). Modifiable dans l'admin : **Produits → fiche → « Introduction (ce qu'il t'apporte) »**.
+
 ## Informations manquantes (sections masquées tant qu'elles ne sont pas confirmées)
 
 | Information | Produits concernés | Ce qu'il faut fournir |

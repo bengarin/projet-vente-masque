@@ -132,3 +132,37 @@ details.pk>.orig{padding-bottom:12px}
 .hl-d{font-size:14.5px;font-weight:600;color:var(--ink);opacity:.82;line-height:1.45;unicode-bidi:plaintext}
 [dir=rtl] .hl-t,[dir=rtl] .hl-d{text-align:right}
 .hl-d::first-letter{text-transform:uppercase}
+
+/* ===== Fiche produit : cartes distinctes (thème scrapbook lavande / jaune beurre / bleu cobalt) =====
+   Fond de la fenêtre : --paper (#F6F3FB). Chaque carte a son pastel, une bordure et une ombre « papier » pour s'en détacher. */
+.pmodal .pcard{margin-top:18px;padding:16px 18px 18px;border-radius:20px;border:2px solid var(--c-bd);background:var(--c-bg);
+  box-shadow:0 4px 0 var(--c-sh),0 10px 22px rgba(27,18,64,.07);--c-bg:#fff;--c-bd:var(--lav2);--c-sh:var(--lav2);--c-ico:var(--yel)}
+.pmodal .pcard h3{margin:0 0 12px;padding-bottom:11px;border-bottom:2px dashed var(--c-bd);font-size:18px;font-weight:800;line-height:1.25;color:var(--navy)}
+.pmodal .pcard h3 .ico{width:38px;height:38px;border-radius:12px;background:var(--c-ico);box-shadow:0 2px 0 var(--c-sh)}
+.pmodal .pcard .ptext{margin:0;font-size:16px;line-height:1.65;font-weight:500;color:var(--ink);unicode-bidi:plaintext;text-align:start}
+[dir=rtl] .pmodal .pcard .ptext{font-size:16.5px;line-height:1.8}
+/* Présentation : lavande */
+.pmodal .pcard.pintro{margin-top:14px;--c-bg:#E9DFFF;--c-bd:#C9B6F6;--c-sh:#B49CEB;--c-ico:#fff}
+.pmodal .pcard.pintro .ptext{font-weight:600;color:var(--navy)}
+.pmodal .pcard.pintro .hook{margin:0 0 6px;font-size:18.5px;line-height:1.3;font-weight:800;color:var(--cob)}
+/* Pourquoi le choisir ? : jaune beurre */
+.pmodal .pcard.phl{--c-bg:#FFF3C4;--c-bd:#F3CF45;--c-sh:#E5BC24;--c-ico:#fff}
+.pmodal .phl .hlist li{border-bottom-color:rgba(229,188,36,.55)}
+/* Description : bleu cobalt pastel */
+.pmodal .pcard.pi{--c-bg:#E5EBFF;--c-bd:#B9C7FF;--c-sh:#97AAF4;--c-ico:#fff}
+/* Fiche technique : blanc, bordure lavande */
+.pmodal .pcard.pspec{--c-bg:#fff;--c-bd:var(--lav2);--c-sh:var(--lav2);--c-ico:var(--lav)}
+/* Mode d'emploi / précautions / vidéo : déclinaisons douces */
+.pmodal .pcard.pu{--c-bg:var(--lav);--c-bd:var(--lav2);--c-sh:#B49CEB;--c-ico:#fff}
+.pmodal .pcard.pw{--c-bg:#FFE9E4;--c-bd:#F5B9AC;--c-sh:#E89C8B;--c-ico:#fff}
+.pmodal .pcard.pv{--c-bg:#fff;--c-bd:var(--lav2);--c-sh:var(--lav2)}
+
+/* Apparition au défilement : fondu + légère montée, une seule fois (classes ajoutées par le script) */
+.pmodal .pcard.rv{opacity:0;transform:translateY(14px)}
+.pmodal .pcard.rv.in{opacity:1;transform:none;transition:opacity .5s ease-out,transform .55s cubic-bezier(.2,.7,.2,1)}
+@media (prefers-reduced-motion: reduce){
+  .pmodal .pcard.rv,.pmodal .pcard.rv.in{opacity:1;transform:none;transition:none}
+}
+@media (min-width:700px){
+  .pmodal .pcard{padding:18px 22px 20px}
+}

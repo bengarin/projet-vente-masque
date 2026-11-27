@@ -46,6 +46,7 @@ export const productInput = z.object({
   categoryId: z.union([id, z.null(), z.literal("")]).optional().transform(v => (v === "" || v === undefined ? null : v)),
   brand: text(120, 1),
   name: text(255, 1),
+  introFr: optText(1500), introAr: optText(1500), introEn: optText(1500),
   descriptionFr: optText(5000), descriptionAr: optText(5000), descriptionEn: optText(5000),
   usageFr: optText(5000), usageAr: optText(5000), usageEn: optText(5000),
   typeFr: optText(200), typeAr: optText(200), typeEn: optText(200),
