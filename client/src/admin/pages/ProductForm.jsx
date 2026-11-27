@@ -101,9 +101,9 @@ export default function ProductForm() {
             </div>
           </Card>
 
-          <Card title="Introduction (ce qu’il t’apporte)" icon="star" actions={<Tabs small label="Langue de l'introduction" tabs={langTabs("intro")} value={introLang} onChange={setIntroLang} />}>
+          <Card title="Présentation (affichée en premier)" icon="star" actions={<Tabs small label="Langue de l'introduction" tabs={langTabs("intro")} value={introLang} onChange={setIntroLang} />}>
             {LANGS.map(([k, l]) => k === introLang && (
-              <Field key={k} label={`Introduction — ${l}`} error={errs["intro" + k]} hint="Affichée en premier sur la fiche : une question courte (« Peau terne ? »), puis le bénéfice annoncé par l’emballage avec « aide à », « conçu pour » ou « selon la marque ». Les effets annoncés par l'emballage sont présentés comme la description de la marque, jamais comme un résultat garanti. Vide = bloc masqué.">
+              <Field key={k} label={`Introduction — ${l}`} error={errs["intro" + k]} hint="Affichée en premier sur la fiche : ce que c’est, les ingrédients ou caractéristiques confirmés, puis ce que dit l’emballage (« selon l’emballage », « la marque le présente comme »). Pas de question marketing ni de situation inventée. Les effets annoncés par l'emballage sont présentés comme la description de la marque, jamais comme un résultat garanti. Vide = bloc masqué.">
                 <textarea rows={4} dir={k === "Ar" ? "rtl" : undefined} {...fp("intro" + k)} /></Field>))}
           </Card>
 
